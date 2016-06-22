@@ -1,0 +1,75 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+// Don't need these task, so disabling them. Makes it possible to avoid
+// declaring a single application main class.
+startScripts.enabled = false
+run.enabled = false
+
+// Also don't need the regular application distribution packages since
+// this is just a set of samples. So disabling to make the build output
+// cleaner
+distTar.enabled=false
+distZip.enabled=false
+
+applicationName = 'sl-getstarted'
+version = '0.0.1-SNAPSHOT'
+
+jar {
+	baseName = 'sl-getstarted-java'
+    version =  version
+    manifest {
+        attributes 'Implementation-Title': 'Solace Labs Getting Started Samples',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+    flatDir {
+       dirs 'libs'
+   }
+}
+
+dependencies {
+    // Solace Messaging API for Java Dependencies
+    compile("commons-lang:commons-lang:2.6")
+    compile("commons-logging:commons-logging:1.2")
+    compile("com.solacesystems:sol-common:+")
+    compile("com.solacesystems:sol-jcsmp:+")
+}
+
+task createAllStartScripts() << {
+     // just a placeholder
+}
+  def scripts = [ 'topicPublisher':'com.solacelabs.getstarted.TopicPublisher',
+				 'topicSubscriber':'com.solacelabs.getstarted.TopicSubscriber',
+				 'queueProducer':'com.solacelabs.getstarted.QueueProducer',
+				 'queueConsumer':'com.solacelabs.getstarted.QueueConsumer',
+				 'basicRequestor':'com.solacelabs.getstarted.BasicRequestor',
+				 'basicReplier':'com.solacelabs.getstarted.BasicReplier',
+				 'confirmedPublish':'com.solacelabs.getstarted.ConfirmedPublish',
+				 'topicToQueueMapping':'com.solacelabs.getstarted.TopicToQueueMapping'
+]
+  scripts.each() { scriptName, className ->
+          def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
+        mainClassName = className
+        applicationName = scriptName
+        outputDir = new File(project.buildDir, 'scripts')
+        classpath = jar.outputs.files + project.configurations.runtime
+    }
+      applicationDistribution.into("bin") {
+            from(t)
+            fileMode = 0755
+			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    createAllStartScripts.dependsOn(t)
+}
+
+installDist {
+    destinationDir = new File(project.buildDir, 'staged')
+}
+
+assemble.dependsOn installDist
