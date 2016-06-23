@@ -200,10 +200,4 @@ $ java -cp sol-jcsmp-VERSION/lib/*:. BasicRequestor HOST
 
 With that you now know how to successfully implement the request-reply message exchange pattern using Direct messages.
 
-If you have any issues sending and receiving a message, check the Solace community Q&A for answers to common issues seen.
-
----
-
-## Up Next:
-
-*   [Learn how to use Solace guaranteed messaging](http://dev.solacesystems.com/docs/get-started/persistence-with-queues_java/).
+If you have any issues sending and receiving a message, check the [Solace community](http://dev.solacesystems.com/community/) for answers to common issues.

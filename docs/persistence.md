@@ -229,9 +229,3 @@ $ java -cp sol-jcsmp-VERSION/lib/*:. QueueConsumer HOST
 You have now successfully connected a client, sent persistent messages to a queue and received them from a consumer flow.
 
 If you have any issues sending and receiving a message, check the [Solace community](http://dev.solacesystems.com/community/) for answers to common issues.
-
----
-
-## Up Next:
-
-*   [Learn how to enable effective message acknowledgements.](http://dev.solacesystems.com/docs/get-started/confirmed-delivery/)

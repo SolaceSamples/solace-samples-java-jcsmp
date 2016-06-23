@@ -57,5 +57,10 @@ To generate IDEA metadata (.iml and .ipr files), do the following:
 
 ## Resources
 
-For more information, please visit the Solace Developer Portal website at:
+For more information try these resources:
+
+- The Solace Developer Portal website at:
 [http://dev.solacesystems.com](http://dev.solacesystems.com/)
+- Get a better understanding of [Solace technology.](http://dev.solacesystems.com/tech/)
+- Check out the [Solace blog](http://dev.solacesystems.com/blog/) for other interesting discussions around Solace technology
+- Ask the [Solace community.](http://dev.solacesystems.com/community/)

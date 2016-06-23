@@ -209,13 +209,6 @@ Exiting.
 
 The received message is printed to the screen. The TextMessage contents was “Hello world!” as expected and the message dump contains extra information about the Solace message that was received.
 
-If you have any issues sending and receiving a message, check the [Solace community Q&A ](http://dev.solacesystems.com/community) for answers to common issues seen.
-
 You have now successfully connected a client, subscribed to a topic and exchanged messages using this topic.
 
----
-
-## Up Next:
-
-*   [Learn how to use Solace guaranteed messaging](http://dev.solacesystems.com/docs/get-started/persistence-with-queues_java/).
-*   [Learn how to exchange requests and replies](http://dev.solacesystems.com/docs/get-started/request-reply/).
+If you have any issues sending and receiving a message, check the [Solace community](http://dev.solacesystems.com/community/) for answers to common issues.
