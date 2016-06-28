@@ -14,11 +14,11 @@ This repository contains code and matching tutorial walk throughs for five diffe
 
 See the individual tutorials for details:
 
-- [Publish/Subscribe](docs/pubsub.md): Learn how to set up pub/sub messaging on a Solace VMR.
-- [Persistence](docs/persistence.md): Learn how to set up persistence for guaranteed delivery.
-- [Request/Reply](docs/requestreply.md): Learn how to set up request/reply messaging.
-- [Confirmed Delivery](docs/confirmeddelivery.md): Learn how to confirm that your messages are received by a Solace message router.
-- [Topic to Queue Mapping](docs/topicmapping.md): Learn how to map existing topics to Solace queues.
+- [Publish/Subscribe](https://mdspielman.github.io/solace-getting-started-java/docs/publish-subscribe): Learn how to set up pub/sub messaging on a Solace VMR.
+- [Persistence](https://mdspielman.github.io/solace-getting-started-java/docs/persistence-with-queues): Learn how to set up persistence for guaranteed delivery.
+- [Request/Reply](https://mdspielman.github.io/solace-getting-started-java/docs/request-reply): Learn how to set up request/reply messaging.
+- [Confirmed Delivery](https://mdspielman.github.io/solace-getting-started-java/docs/confirmed-delivery): Learn how to confirm that your messages are received by a Solace message router.
+- [Topic to Queue Mapping](https://mdspielman.github.io/solace-getting-started-java/docs/topic-to-queue-mapping): Learn how to map existing topics to Solace queues.
 
 ## Checking out and Building
 
