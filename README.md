@@ -8,7 +8,7 @@ These tutorials will get you up to speed and sending messages with Solace techno
 
 ## Contents
 
-This repository contains code and matching tutorial walk throughs for five different basic Solace messaging patterns. For a nice introduction to the Solace API and associated tutorials, check out the [tutorials landing page](https://mdspielman.github.io/solace-getting-started-java.
+This repository contains code and matching tutorial walk throughs for five different basic Solace messaging patterns. For a nice introduction to the Solace API and associated tutorials, check out the [tutorials landing page](https://mdspielman.github.io/solace-getting-started-java).
 
 See the individual tutorials for details:
 
