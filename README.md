@@ -8,15 +8,15 @@ These tutorials will get you up to speed and sending messages with Solace techno
 
 ## Contents
 
-This repository contains code and matching tutorial walk throughs for five different basic Solace messaging patterns. For a nice introduction to the Solace API and associated tutorials, check out the [tutorials landing page](https://mdspielman.github.io/solace-getting-started-java).
+This repository contains code and matching tutorial walk throughs for five different basic Solace messaging patterns. For a nice introduction to the Solace API and associated tutorials, check out the [tutorials landing page](https://solacesamples.github.io/solace-samples-java/).
 
 See the individual tutorials for details:
 
-- [Publish/Subscribe](https://mdspielman.github.io/solace-getting-started-java/docs/publish-subscribe): Learn how to set up pub/sub messaging on a Solace VMR.
-- [Persistence](https://mdspielman.github.io/solace-getting-started-java/docs/persistence-with-queues): Learn how to set up persistence for guaranteed delivery.
-- [Request/Reply](https://mdspielman.github.io/solace-getting-started-java/docs/request-reply): Learn how to set up request/reply messaging.
-- [Confirmed Delivery](https://mdspielman.github.io/solace-getting-started-java/docs/confirmed-delivery): Learn how to confirm that your messages are received by a Solace message router.
-- [Topic to Queue Mapping](https://mdspielman.github.io/solace-getting-started-java/docs/topic-to-queue-mapping): Learn how to map existing topics to Solace queues.
+- [Publish/Subscribe](https://solacesamples.github.io/solace-samples-java/docs/publish-subscribe): Learn how to set up pub/sub messaging on a Solace VMR.
+- [Persistence](https://solacesamples.github.io/solace-samples-java/docs/persistence-with-queues): Learn how to set up persistence for guaranteed delivery.
+- [Request/Reply](https://solacesamples.github.io/solace-samples-java/docs/request-reply): Learn how to set up request/reply messaging.
+- [Confirmed Delivery](https://solacesamples.github.io/solace-samples-java/docs/confirmed-delivery): Learn how to confirm that your messages are received by a Solace message router.
+- [Topic to Queue Mapping](https://solacesamples.github.io/solace-samples-java/docs/topic-to-queue-mapping): Learn how to map existing topics to Solace queues.
 
 ## Checking out and Building
 
@@ -44,7 +44,7 @@ Once complete, you may then import the projects into Eclipse as usual:
 
  *File -> Import -> Existing projects into workspace*
 
-Browse to the *'solace-getting-started-java'* root directory. All projects should import
+Browse to the *'solace-samples-java'* root directory. All projects should import
 free of errors.
 
 ## Using IntelliJ IDEA
@@ -62,5 +62,3 @@ For more information try these resources:
 - Get a better understanding of [Solace technology.](http://dev.solacesystems.com/tech/)
 - Check out the [Solace blog](http://dev.solacesystems.com/blog/) for other interesting discussions around Solace technology
 - Ask the [Solace community.](http://dev.solacesystems.com/community/)
-
-
