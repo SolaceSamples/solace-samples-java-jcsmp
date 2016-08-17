@@ -22,9 +22,9 @@ See the individual tutorials for details:
 
 To check out the project and build from source, do the following:
 
-    git clone git://github.com/mdspielman/solace-getting-started-java
-    cd solace-getting-started-java
-    ./gradlew assemble
+  1. clone this GitHub repository
+  1. `cd solace-getting-started-java`
+  1. `./gradlew assemble`
 
 ## Running the Samples
 
