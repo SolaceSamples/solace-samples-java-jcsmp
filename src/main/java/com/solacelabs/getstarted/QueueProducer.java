@@ -1,15 +1,20 @@
-/**
- *  Copyright 2015-2016 Solace Systems, Inc. All rights reserved.
- * 
- *  http://www.solacesystems.com
- * 
- *  This source is distributed under the terms and conditions of
- *  any contract or license agreement between Solace Systems, Inc.
- *  ("Solace") and you or your company. If there are no licenses or
- *  contracts in place use of this source is not authorized. This 
- *  source is provided as is and is not supported by Solace unless
- *  such support is provided for under an agreement signed between 
- *  you and Solace.
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package com.solacelabs.getstarted;
@@ -56,7 +61,7 @@ public class QueueProducer {
 		final Queue queue = JCSMPFactory.onlyInstance().createQueue(queueName);
         // Actually provision it, and do not fail if it already exists
 		session.provision(queue, endpointProps, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
-        
+
         /** Anonymous inner-class for handling publishing events */
         final XMLMessageProducer prod = session.getMessageProducer(
                 new JCSMPStreamingPublishEventHandler() {
@@ -71,12 +76,12 @@ public class QueueProducer {
 
         // Publish-only session is now hooked up and running!
         System.out.printf("Connected. About to send message to queue '%s'...%n",queue.getName());
-        
+
         TextMessage msg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
         msg.setDeliveryMode(DeliveryMode.PERSISTENT);
         String text = "Persistent Queue Tutorial! "+DateFormat.getDateTimeInstance().format(new Date());
         msg.setText(text);
-        
+
         // Send message directly to the queue
         prod.send(msg, queue);
         System.out.println("Message sent. Exiting.");

@@ -1,15 +1,20 @@
-/**
- *  Copyright 2015-2016 Solace Systems, Inc. All rights reserved.
- * 
- *  http://www.solacesystems.com
- * 
- *  This source is distributed under the terms and conditions of
- *  any contract or license agreement between Solace Systems, Inc.
- *  ("Solace") and you or your company. If there are no licenses or
- *  contracts in place use of this source is not authorized. This 
- *  source is provided as is and is not supported by Solace unless
- *  such support is provided for under an agreement signed between 
- *  you and Solace.
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package com.solacelabs.getstarted;
@@ -34,10 +39,10 @@ import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
 public class TopicToQueueMapping  {
-    
+
     final int count = 5;
     final CountDownLatch latch = new CountDownLatch(count); // used for
-    
+
     class SimplePrintingMessageListener implements XMLMessageListener {
         public void onReceive(BytesXMLMessage msg) {
             if (msg instanceof TextMessage) {
@@ -46,7 +51,7 @@ public class TopicToQueueMapping  {
                 System.out.println("Message received.");
             }
             System.out.printf("Message Dump:%n%s%n", msg.dump());
-            
+
             msg.ackMessage();
             latch.countDown(); // unblock main thread
         }
@@ -64,17 +69,17 @@ public class TopicToQueueMapping  {
         properties.setProperty(JCSMPProperties.HOST, args[0]); // msg-backbone ip:port
         properties.setProperty(JCSMPProperties.VPN_NAME, "default"); // message-vpn
         properties.setProperty(JCSMPProperties.USERNAME, "clientUsername"); // client-username (assumes no password)
-        
+
         // Make sure that the session is tolerant of the subscription already existing on the queue.
         properties.setProperty(JCSMPProperties.IGNORE_DUPLICATE_SUBSCRIPTION_ERROR, true);
-        
+
         final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
         session.connect();
-        
+
         // Confirm the current session supports the capabilities required.
-        if (session.isCapable(CapabilityType.PUB_GUARANTEED) && 
-            session.isCapable(CapabilityType.SUB_FLOW_GUARANTEED) && 
-            session.isCapable(CapabilityType.ENDPOINT_MANAGEMENT) && 
+        if (session.isCapable(CapabilityType.PUB_GUARANTEED) &&
+            session.isCapable(CapabilityType.SUB_FLOW_GUARANTEED) &&
+            session.isCapable(CapabilityType.ENDPOINT_MANAGEMENT) &&
             session.isCapable(CapabilityType.QUEUE_SUBSCRIPTIONS)) {
             System.out.println("All required capabilities supported!");
         } else {
@@ -85,9 +90,9 @@ public class TopicToQueueMapping  {
             System.out.println("Capability - QUEUE_SUBSCRIPTIONS: " + session.isCapable(CapabilityType.QUEUE_SUBSCRIPTIONS));
             System.exit(1);
         }
-        
+
         Queue queue = JCSMPFactory.onlyInstance().createQueue("Q/tutorial/topicToQueueMapping");
-        
+
         /*
          * Provision a new queue on the appliance, ignoring if it already
          * exists. Set permissions, access type, quota (100MB), and provisioning flags.
@@ -98,11 +103,11 @@ public class TopicToQueueMapping  {
         endpointProvisionProperties.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
         endpointProvisionProperties.setQuota(100);
         session.provision(queue, endpointProvisionProperties, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
-        
+
         // Add the Topic Subscription to the Queue.
         Topic tutorialTopic = JCSMPFactory.onlyInstance().createTopic("T/mapped/topic/sample");
         session.addSubscription(queue, tutorialTopic, JCSMPSession.WAIT_FOR_CONFIRM);
-        
+
         /** Anonymous inner-class for handling publishing events */
         final XMLMessageProducer prod = session.getMessageProducer(
                 new JCSMPStreamingPublishEventHandler() {
@@ -114,7 +119,7 @@ public class TopicToQueueMapping  {
                                 messageID,timestamp,e);
                     }
                 });
-        
+
         TextMessage msg =  JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
         msg.setDeliveryMode(DeliveryMode.PERSISTENT);
         for (int i = 1; i <= count; i++) {
@@ -124,10 +129,10 @@ public class TopicToQueueMapping  {
         System.out.println("Sent messages.");
 
         /*
-         * Create a Flow to consume messages on the Queue. There should be 
+         * Create a Flow to consume messages on the Queue. There should be
          * five messages on the Queue.
          */
-        
+
         ConsumerFlowProperties flow_prop = new ConsumerFlowProperties();
         flow_prop.setEndpoint(queue);
         Consumer cons = session.createFlow(new SimplePrintingMessageListener(), flow_prop);
@@ -139,17 +144,17 @@ public class TopicToQueueMapping  {
             System.out.println("I was awoken while waiting");
         }
         System.out.println("Finished consuming expected messages.");
-          
+
 
         // Close consumer
         cons.close();
         System.out.println("Exiting.");
         session.closeSession();
     }
-    
 
-    
-    
+
+
+
 
 
     public static void main(String... args) throws JCSMPException {
