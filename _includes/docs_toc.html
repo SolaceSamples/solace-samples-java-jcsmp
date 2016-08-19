@@ -1,0 +1,24 @@
+<div class="unit one-fifth">
+  <aside style="padding-top: 30px; position: fixed;">
+
+    {% for section in site.data.docs %}
+    <h4 class="navheading"><a href="{{ site.baseurl }}/">{{ section.title }}</a></h4>
+
+    <ul class="navlist">
+      {% for item in section.docs %}
+        {% assign item_url = item | prepend:"/docs/" | append:"/" %}
+        {% assign p = site.docs | where:"url", item_url | first %}
+        <li class="navlink{% if item_url == page.url %}_current{% endif %}"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
+      {% endfor %}
+    </ul>
+
+    {% endfor %}
+
+    <h4 class="navheading">Quick Links</h4>
+    <ul class="navlist">
+      <li class="navlink"><a href="{{ site.repository }}" target="_blank">View source on GitHub</a> <img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"></li>
+      <li class="navlink"><a href="{{ site.repository }}/blob/gh-pages/{{ page.path }}" target="_blank">Improve this Page</a> <img src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}"></li>
+    </ul>
+
+  </aside>
+</div>

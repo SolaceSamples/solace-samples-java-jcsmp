@@ -1,0 +1,35 @@
+---
+layout: default
+---
+<section>
+  {% include intro.html %}
+
+  {% for section in site.data.docs %}
+    <!-- For now assume no need for section titles -->
+    {% for item in section.docs %}
+      {% assign item_url = item | prepend:"/docs/" | append:"/" %}
+      {% assign p = site.docs | where:"url", item_url | first %}
+      {% assign loopindex = forloop.index | modulo: 2 %}
+      {% if loopindex == 1 or forloop.first %}
+        <div class="grid">
+      {% endif %}
+          <div class="unit half" style='padding:10px;'>
+            <div class="grid" style='border-width:1px; border-color:#d3d3d3; border-style:solid; padding:10px; background-color:#ffffff; border-radius:5px;'>
+              <div class='unit half '  style='font-size:14px; '  itemprop="text" >
+                <h3 class="nolineheading">{{ p.title }}</h3>
+                <p>
+                  {{ p.summary }}
+                </p>
+                <div class="button"><a href="{{ site.baseurl }}{{ p.url }}" class="button-text">Start Tutorial</a></div>
+              </div>
+              <div class="unit half">
+                <img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}" style='float:right'/>
+              </div>
+            </div>
+          </div>
+      {% if loopindex != 1 or forloop.last %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</section>

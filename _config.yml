@@ -1,0 +1,22 @@
+# Site settings
+title: Solace Messaging API for Java (JCSMP)
+baseurl: "/solace-samples-template" # the subpath of your site, e.g. /solace-samples-java
+repository: https://github.com/SolaceSamples/solace-samples-template
+
+# Also see _includes/intro.html to customize the description which gets included in index.html.
+
+
+#----------------------------------------------------
+# Generally don't modify items below this point
+url: "solacesamples.github.io" # the base hostname & protocol for your site
+
+# Google services
+google_analytics: UA-3921398-7
+
+# Build settings
+markdown: kramdown
+
+collections:
+  docs:
+    output: true
+    permalink: /docs/:path/

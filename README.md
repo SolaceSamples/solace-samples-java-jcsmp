@@ -1,1 +1,2 @@
-# solace-samples-template
+# Solace Samples Template
+
