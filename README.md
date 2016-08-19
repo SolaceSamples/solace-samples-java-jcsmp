@@ -1,2 +1,3 @@
 # Solace Samples Template
 
+The goal of this project is to host all common files for a Solace Samples repo gh-pages branch. This should mean that new projects simply merge from here into their gh-pages branch, updates a few tutorials and their up and running with samples. Additionally changes to the template can be pushed out by merging from this repo into the gh-pages branch. Nothing should overlap.
