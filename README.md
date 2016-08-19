@@ -1,0 +1,1 @@
+# solace-samples-template
