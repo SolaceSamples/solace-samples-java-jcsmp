@@ -20,7 +20,7 @@ See the individual tutorials for details:
 
 ## Checking out and Building
 
-To build these samples, download and unpacked the Java API library to a known location. Then copy the contents of the `sol-jcsmp-VERSION/lib` directory to a `libs` sub-directory in your `solace-samples-java` project.
+To build these samples, download and unpacked the Java API library to a known location. The Java API library can be [downloaded here](http://dev.solacesystems.com/downloads/). Then copy the contents of the `sol-jcsmp-VERSION/lib` directory to a `libs` sub-directory in your `solace-samples-java` project.
 
 In the following command line replace `VERSION` with the Solace API version you downloaded. For example:
 
