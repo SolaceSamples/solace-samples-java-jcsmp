@@ -1,4 +1,4 @@
-## How to contribute to a Solace Projet
+## How to contribute to a Solace Project
 
 #### **Did you find a bug?**
 
