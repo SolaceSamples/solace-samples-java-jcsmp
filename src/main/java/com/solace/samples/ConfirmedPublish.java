@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package com.solacelabs.getstarted;
+package com.solace.samples;
 
 import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;

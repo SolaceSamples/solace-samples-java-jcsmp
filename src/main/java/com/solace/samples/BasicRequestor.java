@@ -17,39 +17,46 @@
  * under the License.
  */
 
-package com.solacelabs.getstarted;
+package com.solace.samples;
 
+import com.solacesystems.jcsmp.BytesXMLMessage;
 import com.solacesystems.jcsmp.JCSMPException;
 import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
+import com.solacesystems.jcsmp.JCSMPRequestTimeoutException;
 import com.solacesystems.jcsmp.JCSMPSession;
 import com.solacesystems.jcsmp.JCSMPStreamingPublishEventHandler;
+import com.solacesystems.jcsmp.Requestor;
 import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.Topic;
+import com.solacesystems.jcsmp.XMLMessageConsumer;
+import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
-public class TopicPublisher {
+public class BasicRequestor {
 
     public static void main(String... args) throws JCSMPException {
     	// Check command line arguments
         if (args.length < 1) {
-            System.out.println("Usage: TopicPublisher <msg_backbone_ip:port>");
+            System.out.println("Usage: BasicRequestor <msg_backbone_ip:port>");
             System.exit(-1);
         }
-        System.out.println("TopicPublisher initializing...");
+        System.out.println("BasicRequestor initializing...");
 
     	// Create a JCSMP Session
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);      // msg-backbone ip:port
         properties.setProperty(JCSMPProperties.VPN_NAME, "default"); // message-vpn
-        properties.setProperty(JCSMPProperties.USERNAME, "helloWorldTutorial"); // client-username (assumes no password)
+        properties.setProperty(JCSMPProperties.USERNAME, "clientUsername"); // client-username (assumes no password)
         final JCSMPSession session =  JCSMPFactory.onlyInstance().createSession(properties);
         session.connect();
 
-        final Topic topic = JCSMPFactory.onlyInstance().createTopic("tutorial/topic");
+        //This will have the session create the producer and consumer required
+        //by the Requestor used below.
 
         /** Anonymous inner-class for handling publishing events */
-        XMLMessageProducer prod = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
+        @SuppressWarnings("unused")
+		XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
             public void responseReceived(String messageID) {
                 System.out.println("Producer received response for msg: " + messageID);
             }
@@ -58,14 +65,34 @@ public class TopicPublisher {
                         messageID,timestamp,e);
             }
         });
-        // Publish-only session is now hooked up and running!
 
-        TextMessage msg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
-        final String text = "Hello world!";
-        msg.setText(text);
-        System.out.printf("Connected. About to send message '%s' to topic '%s'...%n",text,topic.getName());
-        prod.send(msg,topic);
-        System.out.println("Message sent. Exiting.");
+        XMLMessageConsumer consumer = session.getMessageConsumer((XMLMessageListener)null);
+        consumer.start();
+
+        final Topic topic = JCSMPFactory.onlyInstance().createTopic("tutorial/requests");
+
+        //Time to wait for a reply before timing out
+        final int timeoutMs = 10000;
+        TextMessage request = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
+        final String text = "Sample Request";
+        request.setText(text);
+
+        try {
+        	Requestor requestor = session.createRequestor();
+        	System.out.printf("Connected. About to send request message '%s' to topic '%s'...%n",text,topic.getName());
+            BytesXMLMessage reply = requestor.request(request, timeoutMs, topic);
+
+            // Process the reply
+        	if (reply instanceof TextMessage) {
+                System.out.printf("TextMessage response received: '%s'%n",
+                        ((TextMessage)reply).getText());
+            }
+            System.out.printf("Response Message Dump:%n%s%n",reply.dump());
+        } catch (JCSMPRequestTimeoutException e) {
+            System.out.println("Failed to receive a reply in " + timeoutMs + " msecs");
+        }
+
+        System.out.println("Exiting...");
         session.closeSession();
     }
 }

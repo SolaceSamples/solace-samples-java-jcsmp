@@ -14,14 +14,14 @@ run.enabled = false
 distTar.enabled=false
 distZip.enabled=false
 
-applicationName = 'sl-getstarted'
-version = '0.0.1-SNAPSHOT'
+applicationName = 'solace-samples-java'
+version = ''
 
 jar {
-	baseName = 'sl-getstarted-java'
+	baseName = 'solace-samples-java'
     version =  version
     manifest {
-        attributes 'Implementation-Title': 'Solace Labs Getting Started Samples',
+        attributes 'Implementation-Title': 'Solace Getting Started Samples',
                    'Implementation-Version': version
     }
 }
@@ -44,14 +44,14 @@ dependencies {
 task createAllStartScripts() << {
      // just a placeholder
 }
-  def scripts = [ 'topicPublisher':'com.solacelabs.getstarted.TopicPublisher',
-				 'topicSubscriber':'com.solacelabs.getstarted.TopicSubscriber',
-				 'queueProducer':'com.solacelabs.getstarted.QueueProducer',
-				 'queueConsumer':'com.solacelabs.getstarted.QueueConsumer',
-				 'basicRequestor':'com.solacelabs.getstarted.BasicRequestor',
-				 'basicReplier':'com.solacelabs.getstarted.BasicReplier',
-				 'confirmedPublish':'com.solacelabs.getstarted.ConfirmedPublish',
-				 'topicToQueueMapping':'com.solacelabs.getstarted.TopicToQueueMapping'
+  def scripts = [ 'topicPublisher':'com.solace.samples.TopicPublisher',
+				 'topicSubscriber':'com.solace.samples.TopicSubscriber',
+				 'queueProducer':'com.solace.samples.QueueProducer',
+				 'queueConsumer':'com.solace.samples.QueueConsumer',
+				 'basicRequestor':'com.solace.samples.BasicRequestor',
+				 'basicReplier':'com.solace.samples.BasicReplier',
+				 'confirmedPublish':'com.solace.samples.ConfirmedPublish',
+				 'topicToQueueMapping':'com.solace.samples.TopicToQueueMapping'
 ]
   scripts.each() { scriptName, className ->
           def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
