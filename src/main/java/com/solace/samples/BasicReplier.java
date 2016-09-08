@@ -35,83 +35,83 @@ import com.solacesystems.jcsmp.XMLMessageProducer;
 
 public class BasicReplier {
 
-	public void run(String... args) throws JCSMPException {
-		System.out.println("BasicReplier initializing...");
-		final JCSMPProperties properties = new JCSMPProperties();
-		properties.setProperty(JCSMPProperties.HOST, args[0]); // msg-backbone ip:port
-		properties.setProperty(JCSMPProperties.VPN_NAME, "default"); // message-vpn
-		properties.setProperty(JCSMPProperties.USERNAME, "clientUsername"); // client-username (assumes no password)
-		final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
-		session.connect();
+    public void run(String... args) throws JCSMPException {
+        System.out.println("BasicReplier initializing...");
+        final JCSMPProperties properties = new JCSMPProperties();
+        properties.setProperty(JCSMPProperties.HOST, args[0]); // msg-backbone ip:port
+        properties.setProperty(JCSMPProperties.VPN_NAME, "default"); // message-vpn
+        properties.setProperty(JCSMPProperties.USERNAME, "clientUsername"); // client-username (assumes no password)
+        final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
+        session.connect();
 
-		final Topic topic = JCSMPFactory.onlyInstance().createTopic("tutorial/requests");
+        final Topic topic = JCSMPFactory.onlyInstance().createTopic("tutorial/requests");
 
-		/** Anonymous inner-class for handling publishing events */
-		final XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
-			public void responseReceived(String messageID) {
-				System.out.println("Producer received response for msg: " + messageID);
-			}
+        /** Anonymous inner-class for handling publishing events */
+        final XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
+            public void responseReceived(String messageID) {
+                System.out.println("Producer received response for msg: " + messageID);
+            }
 
-			public void handleError(String messageID, JCSMPException e, long timestamp) {
-				System.out.printf("Producer received error for msg: %s@%s - %s%n", messageID, timestamp, e);
-			}
-		});
+            public void handleError(String messageID, JCSMPException e, long timestamp) {
+                System.out.printf("Producer received error for msg: %s@%s - %s%n", messageID, timestamp, e);
+            }
+        });
 
-		/** Anonymous inner-class for request handling **/
-		final XMLMessageConsumer cons = session.getMessageConsumer(new XMLMessageListener() {
-			public void onReceive(BytesXMLMessage request) {
+        /** Anonymous inner-class for request handling **/
+        final XMLMessageConsumer cons = session.getMessageConsumer(new XMLMessageListener() {
+            public void onReceive(BytesXMLMessage request) {
 
-				if (request.getReplyTo() != null) {
-					System.out.println("Received request, generating response");
-					TextMessage reply = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
+                if (request.getReplyTo() != null) {
+                    System.out.println("Received request, generating response");
+                    TextMessage reply = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
 
-					final String text = "Sample response";
-					reply.setText(text);
+                    final String text = "Sample response";
+                    reply.setText(text);
 
-					try {
-						producer.sendReply(request, reply);
-					} catch (JCSMPException e) {
-						System.out.println("Error sending reply.");
-						e.printStackTrace();
-					}
-				} else {
-					System.out.println("Received message without reply-to field");
-				}
+                    try {
+                        producer.sendReply(request, reply);
+                    } catch (JCSMPException e) {
+                        System.out.println("Error sending reply.");
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("Received message without reply-to field");
+                }
 
-			}
+            }
 
-			public void onException(JCSMPException e) {
-				System.out.printf("Consumer received exception: %s%n", e);
-			}
-		});
+            public void onException(JCSMPException e) {
+                System.out.printf("Consumer received exception: %s%n", e);
+            }
+        });
 
-		session.addSubscription(topic);
-		cons.start();
+        session.addSubscription(topic);
+        cons.start();
 
-		// Consume-only session is now hooked up and running!
-		System.out.println("Listening for request messages on topic " + topic + " ... Press enter to exit");
-		try {
-			System.in.read();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        // Consume-only session is now hooked up and running!
+        System.out.println("Listening for request messages on topic " + topic + " ... Press enter to exit");
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		// Close consumer
-		cons.close();
-		System.out.println("Exiting.");
-		session.closeSession();
+        // Close consumer
+        cons.close();
+        System.out.println("Exiting.");
+        session.closeSession();
 
-	}
+    }
 
-	public static void main(String... args) throws JCSMPException {
+    public static void main(String... args) throws JCSMPException {
 
-		// Check command line arguments
-		if (args.length < 1) {
-			System.out.println("Usage: BasicReplier <msg_backbone_ip:port>");
-			System.exit(-1);
-		}
+        // Check command line arguments
+        if (args.length < 1) {
+            System.out.println("Usage: BasicReplier <msg_backbone_ip:port>");
+            System.exit(-1);
+        }
 
-		BasicReplier replier = new BasicReplier();
-		replier.run(args);
-	}
+        BasicReplier replier = new BasicReplier();
+        replier.run(args);
+    }
 }

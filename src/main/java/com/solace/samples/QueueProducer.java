@@ -53,14 +53,14 @@ public class QueueProducer {
 
         String queueName = "Q/tutorial";
         System.out.printf("Attempting to provision the queue '%s' on the appliance.%n", queueName);
-		final EndpointProperties endpointProps = new EndpointProperties();
-		// set queue permissions to "consume" and access-type to "exclusive"
-		endpointProps.setPermission(EndpointProperties.PERMISSION_CONSUME);
-		endpointProps.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
-		// create the queue object locally
-		final Queue queue = JCSMPFactory.onlyInstance().createQueue(queueName);
+        final EndpointProperties endpointProps = new EndpointProperties();
+        // set queue permissions to "consume" and access-type to "exclusive"
+        endpointProps.setPermission(EndpointProperties.PERMISSION_CONSUME);
+        endpointProps.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
+        // create the queue object locally
+        final Queue queue = JCSMPFactory.onlyInstance().createQueue(queueName);
         // Actually provision it, and do not fail if it already exists
-		session.provision(queue, endpointProps, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
+        session.provision(queue, endpointProps, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
 
         /** Anonymous inner-class for handling publishing events */
         final XMLMessageProducer prod = session.getMessageProducer(

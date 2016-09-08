@@ -36,14 +36,14 @@ import com.solacesystems.jcsmp.XMLMessageProducer;
 public class BasicRequestor {
 
     public static void main(String... args) throws JCSMPException {
-    	// Check command line arguments
+        // Check command line arguments
         if (args.length < 1) {
             System.out.println("Usage: BasicRequestor <msg_backbone_ip:port>");
             System.exit(-1);
         }
         System.out.println("BasicRequestor initializing...");
 
-    	// Create a JCSMP Session
+        // Create a JCSMP Session
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);      // msg-backbone ip:port
         properties.setProperty(JCSMPProperties.VPN_NAME, "default"); // message-vpn
@@ -56,7 +56,7 @@ public class BasicRequestor {
 
         /** Anonymous inner-class for handling publishing events */
         @SuppressWarnings("unused")
-		XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
+        XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
             public void responseReceived(String messageID) {
                 System.out.println("Producer received response for msg: " + messageID);
             }
@@ -78,12 +78,12 @@ public class BasicRequestor {
         request.setText(text);
 
         try {
-        	Requestor requestor = session.createRequestor();
-        	System.out.printf("Connected. About to send request message '%s' to topic '%s'...%n",text,topic.getName());
+            Requestor requestor = session.createRequestor();
+            System.out.printf("Connected. About to send request message '%s' to topic '%s'...%n",text,topic.getName());
             BytesXMLMessage reply = requestor.request(request, timeoutMs, topic);
 
             // Process the reply
-        	if (reply instanceof TextMessage) {
+            if (reply instanceof TextMessage) {
                 System.out.printf("TextMessage response received: '%s'%n",
                         ((TextMessage)reply).getText());
             }
