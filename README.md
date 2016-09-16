@@ -18,11 +18,15 @@ See the individual tutorials for details:
 - [Confirmed Delivery](https://solacesamples.github.io/solace-samples-java/docs/confirmed-delivery): Learn how to confirm that your messages are received by a Solace message router.
 - [Topic to Queue Mapping](https://solacesamples.github.io/solace-samples-java/docs/topic-to-queue-mapping): Learn how to map existing topics to Solace queues.
 
-## Checking out and Building
+## Prerequisites
 
-To build these samples, download and unpacked the Java API library to a known location. The Java API library can be [downloaded here](http://dev.solacesystems.com/downloads/). Then copy the contents of the `sol-jcsmp-VERSION/lib` directory to a `libs` sub-directory in your `solace-samples-java` project.
+This tutorial requires the Solace Systems Java API library. Download the Java API library to your computer from [here](http://dev.solacesystems.com/downloads/).
 
-In the following command line replace `VERSION` with the Solace API version you downloaded. For example:
+## Build the Samples
+
+Copy the contents of the `sol-jcsmp-VERSION/lib` directory from the Java API library to a `libs` sub-directory in your `solace-samples-java` project.
+
+In the following command line replace `VERSION` with the Solace Java API version you downloaded. For example:
 
   1. clone this GitHub repository
   1. `cd solace-samples-java`
@@ -38,7 +42,13 @@ To try individual samples, build the project from source and then run samples li
 
 The individual tutorials linked above provide full details which can walk you through the samples, what they do, and how to correctly run them to explore Solace messaging.
 
-## Using Eclipse
+## Exploring the Samples
+
+### Setting up your preferred IDE
+
+Using a a modern Java  IDE provides cool productivity features like auto-completion, on-the-fly compilation, assisted refactoring and debugging which can be useful when your exploring the samples and even modifying the samples. Follow the steps below for your preferred IDE.
+
+#### Using Eclipse
 
 To generate Eclipse metadata (.classpath and .project files), do the following:
 
@@ -51,7 +61,7 @@ Once complete, you may then import the projects into Eclipse as usual:
 Browse to the *'solace-samples-java'* root directory. All projects should import
 free of errors.
 
-## Using IntelliJ IDEA
+#### Using IntelliJ IDEA
 
 To generate IDEA metadata (.iml and .ipr files), do the following:
 
