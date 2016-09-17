@@ -46,7 +46,7 @@ The individual tutorials linked above provide full details which can walk you th
 
 ### Setting up your preferred IDE
 
-Using a a modern Java  IDE provides cool productivity features like auto-completion, on-the-fly compilation, assisted refactoring and debugging which can be useful when your exploring the samples and even modifying the samples. Follow the steps below for your preferred IDE.
+Using a modern Java IDE provides cool productivity features like auto-completion, on-the-fly compilation, assisted refactoring and debugging which can be useful when your exploring the samples and even modifying the samples. Follow the steps below for your preferred IDE.
 
 #### Using Eclipse
 
