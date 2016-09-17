@@ -20,7 +20,7 @@ See the individual tutorials for details:
 
 ## Prerequisites
 
-This tutorial requires the Solace Systems Java API library. Download the Java API library to your computer from [here](http://dev.solacesystems.com/downloads/).
+This tutorial requires the Solace Java API library. Download the Java API library to your computer from [here](http://dev.solacesystems.com/downloads/).
 
 ## Build the Samples
 
