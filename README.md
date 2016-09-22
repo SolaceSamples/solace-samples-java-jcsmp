@@ -9,7 +9,14 @@ Here are some instructions once you've forked the repository and are creating ne
 1. Update the repository links in [](CONTRIBUTING.md)
 2. Add your Samples source code to the master branch
 3. Update this README with instructions on how to build and run.
-4. Create walk through tutorials on the gh-pages branch. Again see [README](https://github.com/SolaceSamples/solace-samples-template/blob/gh-pages/README.md) on that branch for details.
+4. Create walk through tutorials in the docs directory. Specifically by modifying `_config.yml`, `_data/tutorials.yml`, and `_tutorials/...` 
+
+To merge changes to a Samples project from the template, you would use the following commands:
+
+    git remote add samples-template https://github.com/SolaceSamples/solace-samples-template.git
+    git fetch samples-template
+    git merge samples-template/gh-pages
+    git remote remove samples-template
 
 Below this are common sections that should appear in all Solace Samples README.md. Leave them! :)
 
