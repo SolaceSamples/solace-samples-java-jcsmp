@@ -20,7 +20,13 @@ To merge changes to a Samples project from the template, you would use the follo
 
 Below this are common sections that should appear in all Solace Samples README.md. Leave them! :)
 
-## Using Eclipse
+## Exploring the Samples
+
+### Setting up your preferred IDE
+
+Using a modern Java IDE provides cool productivity features like auto-completion, on-the-fly compilation, assisted refactoring and debugging which can be useful when you're exploring the samples and even modifying the samples. Follow the steps below for your preferred IDE.
+
+#### Using Eclipse
 
 To generate Eclipse metadata (.classpath and .project files), do the following:
 
@@ -33,7 +39,7 @@ Once complete, you may then import the projects into Eclipse as usual:
 Browse to the *'solace-samples-java'* root directory. All projects should import
 free of errors.
 
-## Using IntelliJ IDEA
+#### Using IntelliJ IDEA
 
 To generate IDEA metadata (.iml and .ipr files), do the following:
 
