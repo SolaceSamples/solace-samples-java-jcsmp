@@ -1,3 +1,7 @@
-- title: Tutorials
+- title: Java Tutorials
   tutorials:
-  - tutorial-1
+  - publish-subscribe
+  - persistence-with-queues
+  - request-reply
+  - confirmed-delivery
+  - topic-to-queue-mapping

@@ -1,7 +1,7 @@
 # Site settings
-title: Solace Samples Template
-baseurl: "/solace-samples-template" # the subpath of your site, e.g. /solace-samples-java
-repository: https://github.com/SolaceSamples/solace-samples-template
+title: Solace Messaging API for Java (JCSMP)
+baseurl: "/solace-samples-java" # the subpath of your site, e.g. /solace-samples-java
+repository: https://github.com/SolaceSamples/solace-samples-java
 
 # Also see _includes/intro.html to customize the description which gets included in index.html.
 
