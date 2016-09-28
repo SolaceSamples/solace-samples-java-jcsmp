@@ -31,7 +31,7 @@ In the following command line replace `VERSION` with the Solace Java API version
   1. clone this GitHub repository
   1. `cd solace-samples-java`
   1. `mkdir libs`
-  1. `cp  ../sol-jcsmp-VERSION/lib/* libs`
+  1. `cp -r ../sol-jcsmp-VERSION/lib/* libs`
   1. `./gradlew assemble`
 
 ## Running the Samples
