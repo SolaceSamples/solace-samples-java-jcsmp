@@ -5,6 +5,8 @@ repository: https://github.com/SolaceSamples/solace-samples-template
 
 # Also see _includes/intro.html to customize the description which gets included in index.html.
 
+# Links
+docs-vmr-setup: http://docs.solace.com/Solace-VMR-Set-Up/Setting-Up-VMRs.htm
 
 #----------------------------------------------------
 # Generally don't modify items below this point
