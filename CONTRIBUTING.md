@@ -18,4 +18,4 @@
 
 #### **Do you have questions about the source code?**
 
-* Ask any question about the code or how to use Solace messaging in the [Solace community](http://dev.solacesystems.com/community/).
+* Ask any question about the code or how to use Solace messaging in the [Solace community](http://dev.solace.com/community/).

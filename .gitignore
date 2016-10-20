@@ -8,6 +8,7 @@ _site/
 .project
 .settings/
 /bin/
+*.class
 hs_err_pid*
 _site
 .DS_Store

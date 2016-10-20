@@ -4,11 +4,11 @@
 These tutorials will get you up to speed and sending messages with Solace technology as quickly as possible. There are two ways you can get started:
 
 - If your company has Solace message routers deployed, contact your middleware team to obtain the host name or IP address of a Solace message router to test against, a username and password to access it, and a VPN in which you can produce and consume messages.
-- If you do not have access to a Solace message router, you will need to go through the “[Set up a VMR](http://dev.solacesystems.com/get-started/vmr-setup-tutorials/setting-up-solace-vmr/)” tutorial to download and install the software.
+- If you do not have access to a Solace message router, you will need to go through the “[Set up a VMR](http://docs.solace.com/Solace-VMR-Set-Up/Setting-Up-VMRs.htm)” tutorial to download and install the software.
 
 ## Contents
 
-This repository contains code and matching tutorial walk throughs for five different basic Solace messaging patterns. For a nice introduction to the Solace API and associated tutorials, check out the [tutorials landing page](https://solacesamples.github.io/solace-samples-java/).
+This repository contains code and matching tutorial walk throughs for five different basic Solace messaging patterns. For a nice introduction to the Solace API and associated tutorials, check out the [tutorials home page](https://solacesamples.github.io/solace-samples-java/).
 
 See the individual tutorials for details:
 
@@ -20,7 +20,7 @@ See the individual tutorials for details:
 
 ## Prerequisites
 
-This tutorial requires the Solace Java API library. Download the Java API library to your computer from [here](http://dev.solacesystems.com/downloads/).
+This tutorial requires the Solace Java API library. Download the Java API library to your computer from [here](http://dev.solace.com/downloads/).
 
 ## Build the Samples
 
@@ -83,7 +83,7 @@ This project is licensed under the Apache License, Version 2.0. - See the [LICEN
 
 For more information try these resources:
 
-- The Solace Developer Portal website at: [http://dev.solacesystems.com](http://dev.solacesystems.com/)
-- Get a better understanding of [Solace technology.](http://dev.solacesystems.com/tech/)
-- Check out the [Solace blog](http://dev.solacesystems.com/blog/) for other interesting discussions around Solace technology
-- Ask the [Solace community.](http://dev.solacesystems.com/community/)
+- The Solace Developer Portal website at: http://dev.solace.com
+- Get a better understanding of [Solace technology](http://dev.solace.com/tech/).
+- Check out the [Solace blog](http://dev.solace.com/blog/) for other interesting discussions around Solace technology
+- Ask the [Solace community.](http://dev.solace.com/community/)
