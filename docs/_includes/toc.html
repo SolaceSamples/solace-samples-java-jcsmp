@@ -18,7 +18,23 @@
     <ul class="navlist">
       <li class="navlink"><a href="{{ site.repository }}" target="_blank">View source on GitHub</a> <img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"></li>
       <li class="navlink"><a href="{{ site.repository }}/blob/master/docs/{{ page.path }}" target="_blank">Improve this Page</a> <img src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}"></li>
+      <li style="">
+        <form name="jump" class="center">
+          <select name="menu" onchange="top.window.location = this.value" style="width: 165px; margin: 7px 0 0 -8px;">
+            <option value="#" selected>Pick Another API</option>
+            <option value="http://dev.solace.com//get-started/c-tutorials/">C</option>
+            <option value="http://dev.solace.com//get-started/dotnet-tutorials/">C#/.NET</option>
+            <option value="http://dev.solace.com//get-started/java-tutorials/">Java</option>
+            <option value="http://dev.solace.com//get-started/javascript-tutorials/">JavaScript</option>
+            <option value="http://dev.solace.com//get-started/jms-tutorials/">JMS</option>
+            <option value="http://dev.solace.com//get-started/mqtt-tutorials/">MQTT</option>
+            <option value="http://dev.solace.com//get-started/node-js-tutorials/">Node.js</option>
+            <option value="http://dev.solace.com//get-started/openmama-tutorials/">OpenMAMA</option>
+            <option value="http://dev.solace.com//get-started/pcf-tutorials/">Pivotal Cloud Foundry</option>
+            <option value="http://dev.solace.com//get-started/rest-tutorials/">REST Messaging</option>
+          </select>
+        </form>
+      </li>
     </ul>
-
   </aside>
 </div>
