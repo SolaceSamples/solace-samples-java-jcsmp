@@ -67,6 +67,27 @@ body {
  .button:hover {background:#013a6a;}
  a.button-text {text-decoration:none; color:#fff;}
 
+ /* GitHub
+================================================== */
+.forkme-banner {
+    display: block;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    z-index: 10;
+    padding: 15px 55px 15px 10px;
+    color: #fff;
+    background: url(../images/common/github-med-icon.png) #005dab no-repeat 95% 50%;
+    font-weight: 500;
+    border: 1px solid #013a6a;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.forkme-banner:hover { background-color:#013a6a; }
+
+@media screen and (max-width: 650px) {
+  .forkme-banner {display:none}
+}
  /* Table
 ================================================== */
 table {
