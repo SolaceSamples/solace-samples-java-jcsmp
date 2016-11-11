@@ -79,7 +79,7 @@ body {
     color: #fff;
     background: url(../images/common/github-med-icon.png) #005dab no-repeat 95% 50%;
     font-weight: 500;
-    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    border: 1px solid #013a6a;
     border-radius: 4px;
     text-decoration: none;
 }
