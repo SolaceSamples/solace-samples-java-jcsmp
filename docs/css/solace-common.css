@@ -72,7 +72,7 @@ body {
 .forkme-banner {
     display: block;
     position: absolute;
-    top: 0;
+    top: 5px;
     right: 10px;
     z-index: 10;
     padding: 15px 55px 15px 10px;
