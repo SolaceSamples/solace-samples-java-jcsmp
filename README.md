@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/SolaceSamples/solace-samples-java.svg?branch=master)](https://travis-ci.org/SolaceSamples/solace-samples-java)
+
 # Getting Started Examples
 ## Solace Messaging API for Java (JCSMP)
 
