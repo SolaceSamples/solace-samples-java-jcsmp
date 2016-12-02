@@ -29,11 +29,33 @@ The goal of this tutorial is to understand the following:
 
 *  How to properly handle persistent message acknowledgements on message send.
 
+## Obtaining the Solace API
+
+This tutorial depends on you having the Solace Messaging API for Java (JCSMP). Here are a few easy ways to get the Java API. The instructions in the [Building](#building) section assume you're using Gradle and pulling the jars from maven central. If your environment differs then adjust the build instructions appropriately.
+
+### Get the API: Using Gradle
+
+```
+compile("com.solacesystems:sol-jcsmp:10.+")
+```
+
+### Get the API: Using Maven
+
+```
+<dependency>
+  <groupId>com.solacesystems</groupId>
+  <artifactId>sol-jcsmp</artifactId>
+  <version>10.+</version>
+</dependency>
+```
+
+### Get the API: Using the Solace Developer Portal
+
+The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
+
 ## Trying it yourself
 
 This tutorial is available in [GitHub]({{ site.repository }}){:target="_blank"} along with the other [Solace Developer Getting Started Examples]({{ site.links-get-started }}){:target="_top"}.
-
-To successfully build the samples you must have the Java API downloaded and available. The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples.
 
 At the end, this tutorial walks through downloading and running the sample from source.
 
@@ -167,22 +189,13 @@ cd {{ site.baseurl | remove: '/'}}
 
 ### Building
 
-Building these examples is simple.  Download and unpacked the Java API library to a known location. Then copy the contents of the `sol-jcsmp-VERSION/lib` directory to a `libs` sub-directory in your `{{ site.baseurl | remove: '/'}}`.
-
-In the following command line replace VERSION with the Solace API version you downloaded.
-
-```
-mkdir libs
-cp  ../sol-jcsmp-VERSION/lib/* libs
-```
-
-Now you can simply build the project using Gradle.
+Building these examples is simple.  You can simply build the project using Gradle.
 
 ```
 ./gradlew assemble
 ```
 
-This build all of the Java Getting Started Samples with OS specific launch scripts. The files are staged in the `build/staged` directory.
+This builds all of the Java Getting Started Samples with OS specific launch scripts. The files are staged in the `build/staged` directory.
 
 ### Running the Sample
 

@@ -24,14 +24,9 @@ This tutorial requires the Solace Java API library. Download the Java API librar
 
 ## Build the Samples
 
-Copy the contents of the `sol-jcsmp-VERSION/lib` directory from the Java API library to a `libs` sub-directory in your `solace-samples-java` project.
-
-In the following command line replace `VERSION` with the Solace Java API version you downloaded. For example:
+Just clone and build. For example:
 
   1. clone this GitHub repository
-  1. `cd solace-samples-java`
-  1. `mkdir libs`
-  1. `cp  ../sol-jcsmp-VERSION/lib/* libs`
   1. `./gradlew assemble`
 
 ## Running the Samples
