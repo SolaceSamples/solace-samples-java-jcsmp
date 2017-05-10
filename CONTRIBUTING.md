@@ -95,6 +95,6 @@ That's it! Thank you for your contribution!
 
 * Open a GitHub [enhancement request issue](https://github.com/SolaceSamples/solace-samples-template/issues/new) and describe the new functionality.
 
-##  <a name="features"></a> Do you have questions about the source code?
+##  <a name="questions"></a> Do you have questions about the source code?
 
 * Ask any question about the code or how to use Solace messaging in the [Solace community](http://dev.solace.com/community/).
