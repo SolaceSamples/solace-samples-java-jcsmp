@@ -24,57 +24,66 @@ Before you submit your pull request consider the following guidelines:
 
 ### Submitting a Pull Request
 
-Please follow these steps for all pull requests.
+Please follow these steps for all pull requests. These steps are derived from the [GitHub flow](https://help.github.com/articles/github-flow/).
 
 #### Step 1: Fork
 
 Fork the project [on GitHub](https://github.com/SolaceSamples/solace-samples-template) and clone your fork
 locally.
 
+```sh
+git clone https://github.com/<my-github-repo>/solace-samples-template
+```
+
 #### Step 2: Branch
 
 Make your changes on a new git branch in your fork of the repository.
 
-     ```shell
-     git checkout -b my-fix-branch master
-     ```
+```sh
+git checkout -b my-fix-branch master
+```
 
 #### Step 3: Commit
 
 Commit your changes using a descriptive commit message.
 
-     ```shell
-     git commit -a
-     ```
-  Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
+```sh
+git commit -a -m "Your Commit Message"
+```
 
-#### Step 4: Rebase 
+Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
 
-Use `git rebase` (not `git merge`) to synchronize your work with the main
+#### Step 4: Rebase (if possible) 
+
+Assuming you have not yet pushed your branch to origin, use `git rebase` (not `git merge`) to synchronize your work with the main
 repository.
 
-```shell
+```sh
 $ git fetch upstream
 $ git rebase upstream/master
 ```
 
 If you have not set the upstream, do so as follows:
 
-```shell
+```sh
 $ git remote add upstream https://github.com/SolaceSamples/solace-samples-template
 ```
+
+If you have already pushed your fork, then do not rebase. Instead merge any changes from master that are not already part of your branch.
 
 #### Step 5: Push
 
 Push your branch to your fork in GitHub:
 
-    ```shell
-    git push origin my-fix-branch
-    ```
+```sh
+git push origin my-fix-branch
+```
 
 #### Step 6: Pull Request
 
-In GitHub, send a pull request to `solace-samples-template:master`.
+In GitHub, send a pull request to `solace-samples-template:master`. 
+
+When fixing an existing issue, use the [commit message keywords](https://help.github.com/articles/closing-issues-via-commit-messages/) to close the associated GitHub issue.
 
 * If we suggest changes then:
   * Make the required updates.
