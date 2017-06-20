@@ -18,11 +18,26 @@ applicationName = 'solace-samples-java'
 version = ''
 
 jar {
-	baseName = 'solace-samples-java'
+    baseName = 'solace-samples-java'
     version =  version
     manifest {
         attributes 'Implementation-Title': 'Solace Getting Started Samples',
                    'Implementation-Version': version
+    }
+}
+
+// Download context sensitive help and/or source code for eclipse and idea
+eclipse {
+    classpath {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
     }
 }
 
