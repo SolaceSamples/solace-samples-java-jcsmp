@@ -67,8 +67,8 @@ body {
  .button:hover {background:#013a6a;}
  a.button-text {text-decoration:none; color:#fff;}
 
- /* GitHub
-================================================== */
+ /* GitHub (Old): To be replaced with the new CSS below.
+================================================== 
 .forkme-banner {
     display: block;
     position: absolute;
@@ -87,6 +87,138 @@ body {
 
 @media screen and (max-width: 650px) {
   .forkme-banner {display:none}
+}
+*/
+
+/* Github
+=================================================*/
+
+#forkme-container{   
+    padding: 15px 15px 25px 15px;
+    margin: 0 auto;
+}
+.forkme-banner{
+    position: absolute;
+    display: block;
+    top: 15px;
+    right:10px;   
+    padding: 10px 12px;
+    border: 1px solid #013a6a;
+    border-radius: 5px;
+    text-decoration: none;
+    border-width:1px; 
+    border-color:#005eab; 
+    border-style:solid;
+    font-weight: 500;
+    background-color:#dee6ed; 
+    width: 22%;  
+    vertical-align: baseline;
+    overflow:hidden;
+    clear:both;
+    z-index:10;
+}
+@media screen and (max-width: 650px) {
+  .forkme-banner {display:none;}
+}
+    
+a{
+    color:#005dab;
+    border-bottom: #bbb;
+    border-width: 0px 0px 1px 0px;
+    border-style: none none dotted none; 
+}
+/* Adds mouse hover effect to the hylerlinked text in the Github banner
+================================================*/
+.forkme-banner a:link {
+    text-decoration: none !important;
+    
+}
+.forkme-banner a:hover {
+    color: #F36F23; 
+    border-style: none;    
+}
+
+/* This aligns the left hand side text with the banner and does not overflow
+================================================*/
+.forkme-banner-text{
+    position:relative;
+    right: 10px;
+    width: 78%;    
+    padding: 10px 10px 0px 0px;
+    clear:both;
+}
+
+img.fork-img{
+    max-width: 100%; 
+    height: auto;
+    text-align: center;
+    display: block;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+input:focus{
+    outline: none;
+    border-color: #e1e1e1; 
+    background-color: #d4d4d4;
+    color: #3d3d3d;
+    box-shadow: 0px 2px 10px #d4d4d4;
+}
+
+input[type="text"]{
+    margin-top:5px;  
+    border-color: #d4d4d4; 
+    padding: 8px 6px; 
+    border-radius: 1px; 
+    border: 1px solid #e1e1e1; 
+    background-color: #d4d4d4;
+    box-sizing: border-box;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    text-align: start;
+    cursor: auto;
+    -webkit-appearance: none; 
+    margin-bottom: 10px;
+    text-rendering: auto;
+    display: block;
+}
+
+/* Adds mouse-hover effect to the input button in the Github banner
+================================================*/
+
+.btn:hover {box-shadow: 0 0 2px 1px rgba(61, 61, 61, 0.5);}
+
+.btn:active {
+  background-color: #d4d4d4;
+  box-shadow: 0 1px #666;
+  transform: translateY(2px);
+}
+
+/* Download button
+================================================*/
+.btn-download {
+    display: block;
+    background:#005dab ;
+    width: 225px; 
+    height: 35px;
+    border-radius: 3px;
+    border: 1px solid #013a6a !important;
+    -webkit-border-radius: 1;
+    -moz-border-radius: 1;
+    color: #ffffff !important;
+    padding:  5px;
+    text-align: center;
+    text-decoration: none; 
+    margin-left: 0px;
+    margin-top: 5px;
+}   
+
+.btn-download:hover {
+    background-color: #013a6a; 
+    border-style: none;    
 }
  /* Table
 ================================================== */
