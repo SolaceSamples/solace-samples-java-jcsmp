@@ -67,35 +67,18 @@ body {
  .button:hover {background:#013a6a;}
  a.button-text {text-decoration:none; color:#fff;}
 
- /* GitHub (Old): To be replaced with the new CSS below.
-================================================== 
-.forkme-banner {
-    display: block;
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    z-index: 10;
-    padding: 15px 55px 15px 10px;
-    color: #fff;
-    background: url(../images/common/github-med-icon.png) #005dab no-repeat 95% 50%;
-    font-weight: 500;
-    border: 1px solid #013a6a;
-    border-radius: 4px;
-    text-decoration: none;
-}
-.forkme-banner:hover { background-color:#013a6a; }
-
-@media screen and (max-width: 650px) {
-  .forkme-banner {display:none}
-}
-*/
-
 /* Github
 =================================================*/
-
+.grid{
+    position:relative;
+}
 #forkme-container{   
     padding: 15px 15px 25px 15px;
     margin: 0 auto;
+}
+#forkme-container-toc{
+    padding: 15px;
+    margin: 10px 0px 0px -15px;
 }
 .forkme-banner{
     position: absolute;
@@ -117,10 +100,30 @@ body {
     clear:both;
     z-index:10;
 }
+
+.forkme-banner-toc {
+    float:left;
+    display:inline-block;
+    top: 15px;
+    right:10px;   
+    padding: 10px 15px 10px 15px;
+    border: 1px solid #013a6a;
+    border-radius: 5px;
+    text-decoration: none;
+    border-width:1px; 
+    border-color:#005eab; 
+    border-style:solid;
+    font-weight: 500;
+    color: #3d3d3d;
+    background-color:#dee6ed; 
+    width: 100%;  
+    overflow:hidden;
+    clear:both;
+    z-index:10;
+}
 @media screen and (max-width: 650px) {
   .forkme-banner {display:none;}
-}
-    
+}    
 a{
     color:#005dab;
     border-bottom: #bbb;
@@ -137,6 +140,14 @@ a{
     color: #F36F23; 
     border-style: none;    
 }
+.forkme-banner-toc a:link {
+    text-decoration: none !important;
+    
+}
+.forkme-banner-toc a:hover {
+    color: #F36F23; 
+    border-style: none;    
+}
 
 /* This aligns the left hand side text with the banner and does not overflow
 ================================================*/
@@ -147,7 +158,20 @@ a{
     padding: 10px 10px 0px 0px;
     clear:both;
 }
+div.view-sample{
+    padding-top: 5px;
+}
 
+#post-shortlink{
+    float: left; margin-top:12px;  width: 190px; height: 36px;
+}
+
+div.download-zip{
+    float: left; max-width: 100%; display:inline-block; padding-top: 5px; padding-bottom: 10px;
+}
+.download-zip img{
+    vertical-align:-15%;
+}
 img.fork-img{
     max-width: 100%; 
     height: auto;
@@ -156,7 +180,9 @@ img.fork-img{
    margin-left: auto;
    margin-right: auto;
 }
-
+.fork-icon, .view-sample img{
+    vertical-align:-15%;
+}
 input:focus{
     outline: none;
     border-color: #e1e1e1; 
@@ -186,9 +212,19 @@ input[type="text"]{
     display: block;
 }
 
+/* Clipboard button
+===================*/
+
+.btn{
+    margin-top:11px;  
+    cursor: pointer; 
+    float: left;  
+    height: 36px !important; 
+    width: 34px !important; 
+}
+
 /* Adds mouse-hover effect to the input button in the Github banner
 ================================================*/
-
 .btn:hover {box-shadow: 0 0 2px 1px rgba(61, 61, 61, 0.5);}
 
 .btn:active {

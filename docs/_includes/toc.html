@@ -1,30 +1,28 @@
 
         <div class="unit one-fifth">
-          <aside style="padding-top: 20px; position: fixed;">
+          <aside >
             {% for section in site.data.tutorials %}              
-              <div class="grid" style="position:relative">   
-                  <div id="forkme-container" style="margin:10px 0px 0px -15px;" >          
-                    <div class="forkme-banner" style="float:left; width:100%;position:inherit; padding: 10px 15px 10px 15px;">          
-                        <div style="color: #3d3d3d; display:inline-block;" >                  
-                            <p>
-                          <img class="fork-img"  src="{{ "/images/common/hosted-in-github.png" alt="hosted-in-github" | prepend: site.baseurl }}" width="150" height="76" /><br />      
-                         <span>
-                             <img style="vertical-align:-15%;" class="forkme-icon"  src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>&nbsp;&nbsp;<a href="{{ site.repository }}" target="_blank" >View source</a> <br />
-                          </span>
-                            </p>
-                             <p >
-                                <img style="vertical-align:-15%;"  src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="{{ site.repository }}/blob/master/docs/{{ page.path }}" target="_blank">Improve this page</a>
-                            </p >
-                           <p >
-                              <img style="vertical-align:-15%;" src="{{ "/images/common/issue-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="https://github.com/SolaceSamples/solace-samples-template/issues/new">Raise an issue</a> 
-                            </p>                            
-                      </div>           
-                    </div>           
-                </div> 
-             </div>
-                <div style="top">
+              <div class="grid" >   
+                  <div id="forkme-container-toc" >
+                      <div class="forkme-banner-toc">
+                          <p>
+                              <img class="fork-img"  src="{{ "/images/common/hosted-in-github.png" alt="hosted-in-github" | prepend: site.baseurl }}" width="150" height="76" /><br />
+                              <span>
+                                  <img class="fork-icon" class="forkme-icon"  src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>&nbsp;&nbsp;<a href="{{ site.repository }}" target="_blank" >View source</a> <br />
+                              </span>
+                          </p>
+                          <p>
+                              <img class="fork-icon" src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="{{ site.repository }}/blob/master/docs/{{ page.path }}" target="_blank">Improve this page</a>
+                          </p>
+                          <p>
+                              <img class="fork-icon" src="{{ "/images/common/issue-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="https://github.com/SolaceSamples/solace-samples-template/issues/new">Raise an issue</a>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+                <div >
                     <ul class="navlist" style="padding-top:10px;">
-                      <li style="clear:right;">
+                      <li >
                         <form name="jump" class="center">
                           <select name="menu" onchange="top.window.location = this.value" style="width: 165px; margin-top: 7px;">
                             <option value="#" selected>Pick Another API</option>
