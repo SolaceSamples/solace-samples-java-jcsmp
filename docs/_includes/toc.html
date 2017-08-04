@@ -15,7 +15,7 @@
                               <img class="fork-icon" src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="{{ site.repository }}/blob/master/docs/{{ page.path }}" target="_blank">Improve this page</a>
                           </p>
                           <p>
-                              <img class="fork-icon" src="{{ "/images/common/issue-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="https://github.com/SolaceSamples/solace-samples-template/issues/new">Raise an issue</a>
+                              <img class="fork-icon" src="{{ "/images/common/issue-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="{{ site.repository }}/issues/new">Raise an issue</a>
                           </p>
                       </div>
                   </div>
@@ -26,6 +26,10 @@
                         <form name="jump" class="center">
                           <select name="menu" onchange="top.window.location = this.value" style="width: 165px; margin-top: 7px;">
                             <option value="#" selected>Pick Another API</option>
+                            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-11/">JMS 1.1 over AMQP</option> 
+                            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-2/">JMS 2.0 over AMQP</option> 
+                            <option value="http://dev.solace.com/get-started/amqp-tutorials-node-js/">Node.js over AMQP</option>
+                              
                             <option value="http://dev.solace.com//get-started/c-tutorials/">C</option>
                             <option value="http://dev.solace.com//get-started/dotnet-tutorials/">C#/.NET</option>
                             <option value="http://dev.solace.com//get-started/java-tutorials/">Java</option>
