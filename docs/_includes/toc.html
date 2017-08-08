@@ -1,40 +1,60 @@
-<div class="unit one-fifth">
-  <aside style="padding-top: 30px; position: fixed;">
 
-    {% for section in site.data.tutorials %}
-    <h4 class="navheading"><a href="{{ site.baseurl }}/">{{ section.title }}</a></h4>
+        <div class="unit one-fifth">
+          <aside >
+            {% for section in site.data.tutorials %}              
+              <div class="grid" >   
+                  <div id="forkme-container-toc" >
+                      <div class="forkme-banner-toc">
+                          <p>
+                              <img class="fork-img"  src="{{ "/images/common/hosted-in-github.png" alt="hosted-in-github" | prepend: site.baseurl }}" width="150" height="76" /><br />
+                              <span>
+                                  <img class="fork-icon" class="forkme-icon"  src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>&nbsp;&nbsp;<a href="{{ site.repository }}" target="_blank" >View source</a> <br />
+                              </span>
+                          </p>
+                          <p>
+                              <img class="fork-icon" src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="{{ site.repository }}/blob/master/docs/{{ page.path }}" target="_blank">Improve this page</a>
+                          </p>
+                          <p>
+                              <img class="fork-icon" src="{{ "/images/common/issue-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="{{ site.repository }}/issues/new" target="_blank">Raise an issue</a>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+                <div >
+                    <ul class="navlist" style="padding-top:10px;">
+                      <li >
+                        <form name="jump" class="center">
+                          <select name="menu" onchange="top.window.location = this.value" style="width: 165px; margin-top: 7px;">
+                            <option value="#" selected>Pick Another API</option> 
+                            <option value="http://dev.solace.com//get-started/c-tutorials/">C</option>
+                            <option value="http://dev.solace.com//get-started/dotnet-tutorials/">C#/.NET</option>                               
+                            <option value="http://dev.solace.com//get-started/java-tutorials/">Java</option>
+                            <option value="http://dev.solace.com//get-started/javascript-tutorials/">JavaScript</option>
+                            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-11/">JMS 1.1 over AMQP</option> 
+                            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-2/">JMS 2.0 over AMQP</option>
+                            <option value="http://dev.solace.com//get-started/jms-tutorials/">JMS</option>
+                            <option value="http://dev.solace.com//get-started/mqtt-tutorials/">MQTT</option>
+                            <option value="http://dev.solace.com/get-started/amqp-tutorials-node-js/">Node.js over AMQP</option>
+                            <option value="http://dev.solace.com//get-started/node-js-tutorials/">Node.js</option>
+                            <option value="http://dev.solace.com//get-started/openmama-tutorials/">OpenMAMA</option>
+                            <option value="http://dev.solace.com//get-started/pcf-tutorials/">Pivotal Cloud Foundry</option>
+                            <option value="http://dev.solace.com//get-started/rest-tutorials/">REST Messaging</option>
+                          </select>
+                        </form>
+                      </li>
+                    </ul>
+                </div>           
+            <div>
+                <h4 class="navheading"><a href="{{ site.baseurl }}/">{{ section.title }}</a></h4>
+                <ul class="navlist">
+                  {% for item in section.tutorials %}
+                    {% assign item_url = item | prepend:"/" | append:"/" %}
+                    {% assign p = site.tutorials | where:"url", item_url | first %}
+                    <li class="navlink{% if item_url == page.url %}_current{% endif %}"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
+                  {% endfor %}
+                </ul>
 
-    <ul class="navlist">
-      {% for item in section.tutorials %}
-        {% assign item_url = item | prepend:"/" | append:"/" %}
-        {% assign p = site.tutorials | where:"url", item_url | first %}
-        <li class="navlink{% if item_url == page.url %}_current{% endif %}"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
-      {% endfor %}
-    </ul>
-
-    {% endfor %}
-
-    <h4 class="navheading">Quick Links</h4>
-    <ul class="navlist">
-      <li class="navlink"><a href="{{ site.repository }}" target="_blank">View source on GitHub</a> <img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"></li>
-      <li class="navlink"><a href="{{ site.repository }}/blob/master/docs/{{ page.path }}" target="_blank">Improve this Page</a> <img src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}"></li>
-      <li style="">
-        <form name="jump" class="center">
-          <select name="menu" onchange="top.window.location = this.value" style="width: 165px; margin: 7px 0 0 -8px;">
-            <option value="#" selected>Pick Another API</option>
-            <option value="http://dev.solace.com//get-started/c-tutorials/">C</option>
-            <option value="http://dev.solace.com//get-started/dotnet-tutorials/">C#/.NET</option>
-            <option value="http://dev.solace.com//get-started/java-tutorials/">Java</option>
-            <option value="http://dev.solace.com//get-started/javascript-tutorials/">JavaScript</option>
-            <option value="http://dev.solace.com//get-started/jms-tutorials/">JMS</option>
-            <option value="http://dev.solace.com//get-started/mqtt-tutorials/">MQTT</option>
-            <option value="http://dev.solace.com//get-started/node-js-tutorials/">Node.js</option>
-            <option value="http://dev.solace.com//get-started/openmama-tutorials/">OpenMAMA</option>
-            <option value="http://dev.solace.com//get-started/pcf-tutorials/">Pivotal Cloud Foundry</option>
-            <option value="http://dev.solace.com//get-started/rest-tutorials/">REST Messaging</option>
-          </select>
-        </form>
-      </li>
-    </ul>
-  </aside>
-</div>
+                {% endfor %}
+           </div>
+          </aside>
+        </div>
