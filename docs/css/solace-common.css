@@ -127,7 +127,7 @@ body {
 a{
     color:#005dab;
     border-bottom: #bbb;
-    border-width: 0px 0px 1px 0px;
+    border-width: 0px 0px 0px 0px;
     border-style: none none dotted none; 
 }
 /* Adds mouse hover effect to the hylerlinked text in the Github banner
