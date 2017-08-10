@@ -1,7 +1,7 @@
 ---
 layout: tutorials
 title: Topic to Queue Mapping
-summary: Learn how to map existing topics to Solace queues.
+summary: Learn how to map topics to Solace queues.
 icon: topic-to-queue-mapping.png
 ---
 
@@ -23,11 +23,18 @@ If you have a durable queue named `Q`, it will receive messages published direct
 This tutorial assumes the following:
 
 *   You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
+*   You understand the basics introduced in [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues)
+*   You have access to Solace messaging with the following configuration details:
+    *   Connectivity information for a Solace message-VPN configured for guaranteed messaging support
+    *   Enabled client username and password
+    *   Client-profile enabled with guaranteed messaging permissions.
+
+One simple way to get access to Solace messaging quickly is to create a messaging service in DataGo [as outlined here]({{ site.links-datago-setup}}){:target="_top"}. This service will meet the configuration requirements. You can find other ways to get access to Solace messaging on the [home page]({{ site.baseurl }}/) of these tutorials.
+
 *   You have access to a running Solace message router with the following configuration:
     *   Enabled message VPN configured for guaranteed messaging support.
     *   Enabled client username.
     *   Client-profile enabled with guaranteed messaging permissions.
-*   You understand the basics introduced in [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues)
 
 Note that one simple way to get access to a Solace message router is to start a Solace VMR load [as outlined here]({{ site.docs-vmr-setup }}){:target="_top"}. By default the Solace VMR will with the “default” message VPN configured and ready for guaranteed messaging. Going forward, this tutorial assumes that you are using the Solace VMR. If you are using a different Solace message router configuration adapt the tutorial appropriately to match your configuration.
 
@@ -63,12 +70,6 @@ compile("com.solacesystems:sol-jcsmp:10.+")
 ### Get the API: Using the Solace Developer Portal
 
 The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
-
-## Trying it yourself
-
-This tutorial is available in [GitHub]({{ site.repository }}){:target="_blank"} along with the other [Solace Developer Getting Started Examples]({{ site.links-get-started }}){:target="_top"}.
-
-At the end, this tutorial walks through downloading and running the sample from source.
 
 ## Connection setup
 
@@ -160,7 +161,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ### Getting the Source
 
-Clone the GitHub repository containing the Solace samples.
+This tutorial is available in GitHub.  To get started, clone the GitHub repository containing the Solace samples.
 
 ```
 git clone {{ site.repository }}

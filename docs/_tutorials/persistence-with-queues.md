@@ -1,7 +1,7 @@
 ---
 layout: tutorials
 title: Persistence with Queues
-summary: Learn how to set up persistence for guaranteed delivery.
+summary: Learn how send persistent messages to a Queue.
 icon: persistence-tutorial.png
 ---
 
@@ -15,14 +15,12 @@ and receive persistent messages from a Solace message router queue in a point to
 This tutorial assumes the following:
 
 *   You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-*   You have access to a running Solace message router with the following configuration:
-    *   Enabled message VPN
-    *   Enabled client username
+*   You have access to Solace messaging with the following configuration details:
+    *   Connectivity information for a Solace message-VPN configured for guaranteed messaging support
+    *   Enabled client username and password
     *   Client-profile enabled with guaranteed messaging permissions.
 
-One simple way to get access to a Solace message router is to start a Solace VMR load [as outlined here]({{ site.docs-vmr-setup }}){:target="_top"}. By default the Solace VMR will run with the “default” message VPN configured and ready for messaging. Going forward, this tutorial assumes that you are using the Solace VMR. If you are using a different Solace message router configuration, adapt the instructions to match your configuration.
-
-The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
+One simple way to get access to Solace messaging quickly is to create a messaging service in DataGo [as outlined here]({{ site.links-datago-setup}}){:target="_top"}. This service will meet the configuration requirements. You can find other ways to get access to Solace messaging on the [home page]({{ site.baseurl }}/) of these tutorials.
 
 ## Goals
 
@@ -31,10 +29,6 @@ The goal of this tutorial is to understand the following:
 1.  How to programmatically create a durable queue on the Solace message router
 2.  How to send a persistent message to a Solace queue
 3.  How to bind to this queue and receive a persistent message
-
-## Solace message router properties
-
-As with other tutorials, this tutorial will connect to the default message VPN of a Solace VMR which has authentication disabled. So the only required information to proceed is the Solace VMR host string which this tutorial accepts as an argument.
 
 ## Obtaining the Solace API
 
@@ -52,19 +46,13 @@ compile("com.solacesystems:sol-jcsmp:10.+")
 <dependency>
   <groupId>com.solacesystems</groupId>
   <artifactId>sol-jcsmp</artifactId>
-  <version>10.+</version>
+  <version>[10,)</version>
 </dependency>
 ```
 
 ### Get the API: Using the Solace Developer Portal
 
 The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
-
-## Trying it yourself
-
-This tutorial is available in [GitHub]({{ site.repository }}){:target="_blank"} along with the other [Solace Developer Getting Started Examples]({{ site.links-get-started }}){:target="_top"}.
-
-At the end, this tutorial walks through downloading and running the sample from source.
 
 ## Provisioning a Queue through the API
 
@@ -123,9 +111,13 @@ So the message producer creation code can remain the same as shown here:
 
 ```java
 XMLMessageProducer prod = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
+    
+    @Override
     public void responseReceived(String messageID) {
         System.out.println("Producer received response for msg: " + messageID);
     }
+
+    @Override
     public void handleError(String messageID, JCSMPException e, long timestamp) {
         System.out.printf("Producer received error for msg: %s@%s - %s%n",messageID,timestamp,e);
     }
@@ -182,6 +174,7 @@ The following example shows you a basic flow receiver which receives messages, p
 
 ```java
 final FlowReceiver cons = session.createFlow(new XMLMessageListener() {
+    @Override
     public void onReceive(BytesXMLMessage msg) {
         if (msg instanceof TextMessage) {
             System.out.printf("TextMessage received: '%s'%n", ((TextMessage) msg).getText());
@@ -196,6 +189,7 @@ final FlowReceiver cons = session.createFlow(new XMLMessageListener() {
         latch.countDown(); // unblock main thread
     }
 
+    @Override
     public void onException(JCSMPException e) {
         System.out.printf("Consumer received exception: %s%n", e);
         latch.countDown(); // unblock main thread
@@ -229,7 +223,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ### Getting the Source
 
-Clone the GitHub repository containing the Solace samples.
+This tutorial is available in GitHub.  To get started, clone the GitHub repository containing the Solace samples.
 
 ```
 git clone {{ site.repository }}
@@ -237,6 +231,8 @@ cd {{ site.baseurl | remove: '/'}}
 ```
 
 ### Building
+
+The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
 
 Building these examples is simple.  You can simply build the project using Gradle.
 
@@ -251,8 +247,8 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 First start the `QueueProducer` to send a message to the queue. Then you can use the `QueueConsumer` sample to receive the messages from the queue.
 
 ```
-$ ./build/staged/bin/queueProducer <HOST>
-$ ./build/staged/bin/queueConsumer <HOST>
+$ ./build/staged/bin/queueProducer <host:port> <message-vpn> <client-username> <client-password>
+$ ./build/staged/bin/queueConsumer <host:port> <message-vpn> <client-username> <client-password>
 ```
 
 You have now successfully connected a client, sent persistent messages to a queue and received them from a consumer flow.
