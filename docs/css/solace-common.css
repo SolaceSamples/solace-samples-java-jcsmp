@@ -26,11 +26,12 @@
 
 body {
         background:#F8F8F8;
-	font: 13px/1.65em "Open Sans", Helvetica, Arial, sans-serif;
+	font: 15px/1.65em Helvetica, Arial, sans-serif;
 	color: #444;
 	-webkit-text-size-adjust: 100%;
  }
 
+ 
 .content-box {
 	border:1px #c9c9c9 solid;
 	border-radius:5px;
@@ -44,7 +45,9 @@ body {
 
 	/*default*/
 	h1, h2, h3, h4, h5, h6 {
-		font-weight: 600; }
+		font-weight: 300;
+    color: #333;
+  }
 	#top h1 a, #top h2 a, #top h3 a, #top h4 a, #top h5 a, #top h6 a { font-weight: inherit; text-decoration: none; color: inherit; }
 	#top h1 strong, #top h2 strong, #top h3 strong, #top h4 strong, #top h5 strong, #top h6 strong { color: inherit; }
 	h1 { font-size: 34px; line-height: 1.1em; margin-bottom: 14px;}
@@ -329,10 +332,39 @@ li.navlink a:hover {font-weight:700;}
 li.navlink_current {list-style-image: url('../images/common/indicator-arrow.png') !important;}
 li.navlink_current a {color:#003b74; text-decoration:none; font-weight:700;}
 
-/* Landing Page Headings
+/* Landing Pages
 ================================================== */
 h2.nolineheading { margin-top:0; padding-top:0; border-top:none; }
 h3.nolineheading { margin-top:0; padding-top:0; border-top:none;}
+
+h2.intro { 
+  color: #013a6a;
+  font-weight:500;
+  margin-bottom: 20px;
+}
+
+h3.intro {
+  border-top:none;
+  margin-bottom: 10px;
+  margin-top:0; 
+}
+
+div.intro { 
+  color: #666;
+  padding-top: 10px;
+  font-size: 120%;
+}
+
+a.intro {
+  text-decoration:none; 
+  border-style: none; 
+  color:#005dab;
+}
+
+a.intro:hover {
+  text-decoration:none; 
+  color: #F36F23;
+}
 
 
 /**

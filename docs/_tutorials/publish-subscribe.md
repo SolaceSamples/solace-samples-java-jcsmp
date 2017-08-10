@@ -1,7 +1,7 @@
 ---
 layout: tutorials
 title: Publish/Subscribe
-summary: Learn how to set up pub/sub messaging on a Solace VMR.
+summary: Learn to publish and subscribe to messages.
 icon: publish-subscribe.png
 ---
 
@@ -15,13 +15,11 @@ This tutorial will introduce you to the fundamentals of the Solace API by connec
 This tutorial assumes the following:
 
 *   You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-*   You have access to a running Solace message router with the following configuration:
-    *   Enabled message VPN
-    *   Enabled client username
+*   You have access to Solace messaging with the following configuration details:
+    *   Connectivity information for a Solace message-VPN
+    *   Enabled client username and password
 
-One simple way to get access to a Solace message router is to start a Solace VMR load [as outlined here]({{ site.docs-vmr-setup }}){:target="_top"}. By default the Solace VMR will run with the “default” message VPN configured and ready for messaging. Going forward, this tutorial assumes that you are using the Solace VMR. If you are using a different Solace message router configuration, adapt the instructions to match your configuration.
-
-The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
+One simple way to get access to Solace messaging quickly is to create a messaging service in DataGo [as outlined here]({{ site.links-datago-setup}}){:target="_top"}. This service will meet the configuration requirements. You can find other ways to get access to Solace messaging on the [home page]({{ site.baseurl }}/) of these tutorials.
 
 ## Goals
 
@@ -34,7 +32,6 @@ The goal of this tutorial is to demonstrate the most basic messaging interaction
 
 In order to send or receive messages to a Solace message router, you need to know a few details of how to connect to the Solace message router. Specifically you need to know the following:
 
-
 <table>
   <tr>
     <th>Resource</th>
@@ -43,27 +40,38 @@ In order to send or receive messages to a Solace message router, you need to kno
   </tr>
   <tr>
     <td>Host</td>
-    <td>String of the form <code>DNS name</code> or <code>IP:Port</code></td>
-    <td>This is the address clients use when connecting to the Solace message router to send and receive messages. For a Solace VMR this there is only a single interface so the IP is the same as the management IP address. For Solace message router appliances this is the host address of the message-backbone.</td>
+    <td>String</td>
+    <td>This is the address clients use when connecting to the Solace messaging to send and receive messages. (See Notes below)</td>
   </tr>
   <tr>
     <td>Message VPN</td>
     <td>String</td>
-    <td>The Solace message router Message VPN that this client should connect to. The simplest option is to use the “default” message-vpn which is present on all Solace message routers and fully enabled for message traffic on Solace VMRs.</td>
+    <td>The Solace message router Message VPN that this client should connect to. </td>
   </tr>
   <tr>
     <td>Client Username</td>
     <td>String</td>
-    <td>The client username. For the Solace VMR default message VPN, authentication is disabled by default, so this can be any value.</td>
+    <td>The client username. (See Notes below)</td>
   </tr>
   <tr>
     <td>Client Password</td>
     <td>String</td>
-    <td>The optional client password. For the Solace VMR default message VPN, authentication is disabled by default, so this can be any value or omitted.</td>
+    <td>The client password. (See Notes below)</td>
   </tr>
 </table>
 
-For the purposes of this tutorial, you will connect to the default message VPN of a Solace VMR so the only required information to proceed is the Solace VMR host string which this tutorial accepts as an argument.
+### Notes
+
+* Finding the connectivity information:
+    * **For DataGo**, this messaging connectivity information is found in the service details in the connectivity tab.
+    * **For a Solace VMR**, you can use the default message-vpn which has authentication disabled by default. You simply need to know the host address.
+    * **For Solace message router appliances**, you will need the host address of the message-backbone along with the required message-vpn details.
+
+* Host String format:
+    * `DNS_NAME:Port` or `IP:Port`
+
+* Client Username / Password on the Solace VMR
+    * In some cases, like the Solace VMR default message VPN, authentication is disabled by default. In this scenario, these fields are still required by the samples but can be any value.
 
 ## Obtaining the Solace API
 
@@ -81,7 +89,7 @@ compile("com.solacesystems:sol-jcsmp:10.+")
 <dependency>
   <groupId>com.solacesystems</groupId>
   <artifactId>sol-jcsmp</artifactId>
-  <version>10.+</version>
+  <version>[10,)</version>
 </dependency>
 ```
 
@@ -89,24 +97,20 @@ compile("com.solacesystems:sol-jcsmp:10.+")
 
 The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
 
-## Trying it yourself
-
-This tutorial is available in [GitHub]({{ site.repository }}){:target="_blank"} along with the other [Solace Developer Getting Started Examples]({{ site.links-get-started }}){:target="_top"}.
-
-At the end, this tutorial walks through downloading and running the sample from source.
-
 ## Connecting to the Solace message router
 
 In order to send or receive messages, an application must connect a Solace session. The Solace session is the basis for all client communication with the Solace message router.
 
-In the Solace messaging API for Java (JCSMP), Solace sessions are created from the JCSMP factory from a set of properties.
+In the Solace messaging API for Java (JCSMP), Solace sessions are created from the JCSMP factory using a set of properties. 
 
 ```java
 final JCSMPProperties properties = new JCSMPProperties();
-properties.setProperty(JCSMPProperties.HOST, args[0]);
-properties.setProperty(JCSMPProperties.VPN_NAME, "default");
-properties.setProperty(JCSMPProperties.USERNAME, "helloWorldTutorial");
+properties.setProperty(JCSMPProperties.HOST, args[0]);     
+properties.setProperty(JCSMPProperties.VPN_NAME, args[1]); 
+properties.setProperty(JCSMPProperties.USERNAME, args[2]); 
+properties.setProperty(JCSMPProperties.PASSWORD, args[3]); 
 final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
+
 session.connect();
 ```
 
@@ -124,6 +128,8 @@ With a session connected in the previous step, the next step is to create a mess
 final CountDownLatch latch = new CountDownLatch(1);
 
 final XMLMessageConsumer cons = session.getMessageConsumer(new XMLMessageListener() {
+    
+    @Override
     public void onReceive(BytesXMLMessage msg) {
         if (msg instanceof TextMessage) {
             System.out.printf("TextMessage received: '%s'%n",
@@ -134,6 +140,8 @@ final XMLMessageConsumer cons = session.getMessageConsumer(new XMLMessageListene
         System.out.printf("Message Dump:%n%s%n",msg.dump());
         latch.countDown();  // unblock main thread
     }
+
+    @Override
     public void onException(JCSMPException e) {
         System.out.printf("Consumer received exception: %s%n",e);
         latch.countDown();  // unblock main thread
@@ -173,9 +181,13 @@ In JCSMP, a message producer is required for sending messages to a Solace messag
 
 ```java
 XMLMessageProducer prod = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
+    
+    @Override
     public void responseReceived(String messageID) {
         System.out.println("Producer received response for msg: " + messageID);
     }
+    
+    @Override
     public void handleError(String messageID, JCSMPException e, long timestamp) {
         System.out.printf("Producer received error for msg: %s@%s - %s%n",
                            messageID,timestamp,e);
@@ -208,7 +220,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ### Getting the Source
 
-Clone the GitHub repository containing the Solace samples.
+This tutorial is available in GitHub.  To get started, clone the GitHub repository containing the Solace samples.
 
 ```
 git clone {{ site.repository }}
@@ -216,6 +228,8 @@ cd {{ site.baseurl | remove: '/'}}
 ```
 
 ### Building
+
+The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
 
 Building these examples is simple.  You can simply build the project using Gradle.
 
@@ -227,18 +241,18 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 
 ### Running the Sample
 
-If you start the `TopicSubscriber` with a single argument for the Solace message router host address it will connect and wait for a message.
+If you start the `TopicSubscriber`, with the required arguments of your Solace messaging, it will connect and wait for a message. 
 
 ```
-$ ./build/staged/bin/topicSubscriber <HOST>
+$ ./build/staged/bin/topicSubscriber <host:port> <message-vpn> <client-username> <client-password>
 TopicSubscriber initializing...
 Connected. Awaiting message...
 ```
 
-Then you can send a message using the `TopicPublisher` again using a single argument to specify the Solace message router host address. If successful, the output for the producer will look like the following:
+Then you can send a message using the `TopicPublisher` with the same arguments. If successful, the output for the producer will look like the following:
 
 ```
-$ ./build/staged/bin/topicPublisher <HOST>
+$ ./build/staged/bin/topicPublisher <host:port> <message-vpn> <client-username> <client-password>
 Topic Publisher initializing...
 Connected. About to send message 'Hello world!' to topic 'tutorial/topic'...
 Message sent. Exiting.
