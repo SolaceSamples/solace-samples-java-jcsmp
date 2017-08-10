@@ -19,7 +19,7 @@ This tutorial assumes the following:
     *   Connectivity information for a Solace message-VPN
     *   Enabled client username and password
 
-One simple way to get access to Solace messaging quickly is to create a messaging service in DataGo [as outlined here]({{ site.links-datago-setup}}){:target="_top"}. This service will meet the configuration requirements. You can find other ways to get access to Solace messaging on the [home page]({{ site.baseurl }}/) of these tutorials.
+One simple way to get access to Solace messaging quickly is to create a messaging service in DataGo [as outlined here]({{ site.links-datago-setup}}){:target="_top"}. You can find other ways to get access to Solace messaging on the [home page]({{ site.baseurl }}/) of these tutorials.
 
 ## Goals
 
@@ -63,7 +63,7 @@ In order to send or receive messages to a Solace message router, you need to kno
 ### Notes
 
 * Finding the connectivity information:
-    * **For DataGo**, this messaging connectivity information is found in the service details in the connectivity tab.
+    * **For DataGo**, this messaging connectivity information is found in the service details in the connectivity tab. You will need the SMF URI as host string in this tutorial.
     * **For a Solace VMR**, you can use the default message-vpn which has authentication disabled by default. You simply need to know the host address.
     * **For Solace message router appliances**, you will need the host address of the message-backbone along with the required message-vpn details.
 
