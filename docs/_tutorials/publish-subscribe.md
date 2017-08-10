@@ -220,7 +220,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ### Getting the Source
 
-This tutorial is available in GitHub.  So simply clone the GitHub repository containing the Solace samples.
+This tutorial is available in GitHub.  To get started, clone the GitHub repository containing the Solace samples.
 
 ```
 git clone {{ site.repository }}
