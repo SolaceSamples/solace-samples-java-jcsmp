@@ -3,8 +3,12 @@ layout: tutorials
 title: Publish/Subscribe
 summary: Learn to publish and subscribe to messages.
 icon: publish-subscribe.png
+links:
+    - label: TopicPublisher.java
+      link: /blob/master/src/main/java/com/solace/samples/TopicPublisher.java
+    - label: TopicSubscriber.java
+      link: /blob/master/src/main/java/com/solace/samples/TopicSubscriber.java
 ---
-
 
 This tutorial will introduce you to the fundamentals of the Solace API by connecting a client, adding a topic subscription and sending a message matching this topic subscription. This forms the basis for any publish / subscribe message exchange illustrated here:
 
@@ -28,9 +32,9 @@ The goal of this tutorial is to demonstrate the most basic messaging interaction
 1.  How to build and send a message on a topic
 2.  How to subscribe to a topic and receive a message
 
-## Solace message router properties
+## Get Solace Messaging
 
-In order to send or receive messages to a Solace message router, you need to know a few details of how to connect to the Solace message router. Specifically you need to know the following:
+This tutorial requires access Solace messaging and requires that you know several connectivity properties about your Solace messaging. Specifically you need to know the following:
 
 <table>
   <tr>
@@ -41,7 +45,7 @@ In order to send or receive messages to a Solace message router, you need to kno
   <tr>
     <td>Host</td>
     <td>String</td>
-    <td>This is the address clients use when connecting to the Solace messaging to send and receive messages. (See Notes below)</td>
+    <td>This is the address clients use when connecting to the Solace messaging to send and receive messages. (Format: <code>DNS_NAME:Port</code> or <code>IP:Port</code>)</td>
   </tr>
   <tr>
     <td>Message VPN</td>
@@ -60,18 +64,26 @@ In order to send or receive messages to a Solace message router, you need to kno
   </tr>
 </table>
 
-### Notes
+There are several ways you can get access to Solace Messaging and find these required properties.
 
-* Finding the connectivity information:
-    * **For DataGo**, this messaging connectivity information is found in the service details in the connectivity tab. You will need the SMF URI as host string in this tutorial.
-    * **For a Solace VMR**, you can use the default message-vpn which has authentication disabled by default. You simply need to know the host address.
-    * **For Solace message router appliances**, you will need the host address of the message-backbone along with the required message-vpn details.
+### Option 1: Use DataGo
 
-* Host String format:
-    * `DNS_NAME:Port` or `IP:Port`
+* Follow [these instructions]({{ site.links-datago-setup }}){:target="_top"} to quickly spin up a cloud-based Solace messaging service for your applications.
+* The messaging connectivity information is found in the service details in the connectivity tab. You will need the SMF URI as host string in this tutorial.  
+    ![]({{ site.baseurl }}/images/connectivity-info.png)
 
-* Client Username / Password on the Solace VMR
-    * In some cases, like the Solace VMR default message VPN, authentication is disabled by default. In this scenario, these fields are still required by the samples but can be any value.
+### Option 2: Start a Solace VMR
+
+For instructions on how to start the Solace VMR in leading Clouds, Container Platforms or Hypervisors see the "[Set up a VMR]({{ site.docs-vmr-setup }}){:target="_top"}" tutorials which outline where to download and and how to install the software.
+
+Note: By default, the Solace VMR "default" message VPN has authentication disabled. In this scenario, the client-username and client-password fields are still required by the samples but can be any value.
+
+### Option 3: Get access to a Solace appliance
+
+* Contact your Solace appliance administrators and obtain the following:
+    * A Solace Message-VPN where you can produce and consume direct and persistent messages
+    * The host name or IP address of the Solace appliance hosting your Message-VPN
+    * A username and password to access the Solace appliance
 
 ## Obtaining the Solace API
 
@@ -215,8 +227,10 @@ At this point the producer has sent a message to the Solace message router and y
 
 The full source code for this example is available in [GitHub]({{ site.repository }}){:target="_blank"}. If you combine the example source code shown above results in the following source:
 
-*   [TopicPublisher.java]({{ site.repository }}/blob/master/src/main/java/com/solace/samples/TopicPublisher.java){:target="_blank"}
-*   [TopicSubscriber.java]({{ site.repository }}/blob/master/src/main/java/com/solace/samples/TopicSubscriber.java){:target="_blank"}
+{% for item in page.links %}
+* [{{ item.label }}]({{ site.repository }}{{ item.link }}){:target="_blank"}
+{% endfor %}
+
 
 ### Getting the Source
 
