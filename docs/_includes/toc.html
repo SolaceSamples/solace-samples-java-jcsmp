@@ -1,5 +1,5 @@
 
-<div class="unit one-fifth">
+<div class="unit one-fourth">
     <aside >
         {% for section in site.data.tutorials %}
         <div class="grid" >
@@ -7,9 +7,12 @@
                 <div class="forkme-banner-toc">
                     <p>
                         <img class="fork-img"  src="{{ "/images/common/hosted-in-github.png" alt="hosted-in-github" | prepend: site.baseurl }}" width="150" height="76" /><br />
+                        {% for item in page.links %}
                         <span>
-                            <img class="fork-icon" class="forkme-icon"  src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>&nbsp;&nbsp;<a href="{{ site.repository }}" target="_blank" >View source</a> <br />
+                            <img class="fork-icon" class="forkme-icon"  src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>&nbsp;&nbsp;<a href="{{ site.repository }}{{ item.link }}" target="_blank" >{{ item.label }}</a> <br />
                         </span>
+                        {% endfor %}
+
                     </p>
                     <p>
                         <img class="fork-icon" src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="{{ site.repository }}/blob/master/docs/{{ page.path }}" target="_blank">Improve this page</a>
@@ -20,6 +23,7 @@
                 </div>
             </div>
         </div>
+
         <div >
             <ul class="navlist" style="padding-top:10px;">
                 <li >
