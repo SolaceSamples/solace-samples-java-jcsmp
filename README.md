@@ -1,12 +1,26 @@
 [![Build Status](https://travis-ci.org/SolaceSamples/solace-samples-java.svg?branch=master)](https://travis-ci.org/SolaceSamples/solace-samples-java)
 
 # Getting Started Examples
-## Solace Messaging API for Java (JCSMP)
+## Solace Java API (JCSMP)
 
-These tutorials will get you up to speed and sending messages with Solace technology as quickly as possible. There are two ways you can get started:
+These tutorials will get you to up to speed and quickly sending messages with Solace technology.
 
-- If your company has Solace message routers deployed, contact your middleware team to obtain the host name or IP address of a Solace message router to test against, a username and password to access it, and a VPN in which you can produce and consume messages.
-- If you do not have access to a Solace message router, you will need to go through the “[Set up a VMR](http://docs.solace.com/Solace-VMR-Set-Up/Setting-Up-VMRs.htm)” tutorial to download and install the software.
+Before you begin, you need access to Solace Messaging. Here are a few options of how you can get access:
+
+### Option 1: Use DataGo
+
+* Follow these instructions to quickly spin up a cloud based Solace messaging service for your applications.
+
+### Option 2: Start a Solace VMR
+
+* For instructions on how to start the Solace VMR in leading Clouds, Container Platforms or Hypervisors see the "Set up a VMR" tutorials which outline where to download and and how to install the software.
+
+### Option 3: Get access to a Solace appliance
+
+* Contact your Solace appliance administrators and obtain the following:
+    * A Solace Message-VPN where you can produce and consume direct and persistent messages
+    * The host name or IP address of the Solace appliance hosting your Message-VPN
+    * A username and password to access the Solace appliance
 
 ## Contents
 
@@ -14,11 +28,11 @@ This repository contains code and matching tutorial walk throughs for five diffe
 
 See the individual tutorials for details:
 
-- [Publish/Subscribe](https://solacesamples.github.io/solace-samples-java/publish-subscribe): Learn how to set up pub/sub messaging on a Solace VMR.
-- [Persistence](https://solacesamples.github.io/solace-samples-java/persistence-with-queues): Learn how to set up persistence for guaranteed delivery.
-- [Request/Reply](https://solacesamples.github.io/solace-samples-java/request-reply): Learn how to set up request/reply messaging.
-- [Confirmed Delivery](https://solacesamples.github.io/solace-samples-java/confirmed-delivery): Learn how to confirm that your messages are received by a Solace message router.
-- [Topic to Queue Mapping](https://solacesamples.github.io/solace-samples-java/topic-to-queue-mapping): Learn how to map existing topics to Solace queues.
+* [Publish/Subscribe](https://solacesamples.github.io/solace-samples-java/publish-subscribe): Learn how to set up pub/sub messaging on a Solace VMR.
+* [Persistence](https://solacesamples.github.io/solace-samples-java/persistence-with-queues): Learn how to set up persistence for guaranteed delivery.
+* [Request/Reply](https://solacesamples.github.io/solace-samples-java/request-reply): Learn how to set up request/reply messaging.
+* [Confirmed Delivery](https://solacesamples.github.io/solace-samples-java/confirmed-delivery): Learn how to confirm that your messages are received by a Solace message router.
+* [Topic to Queue Mapping](https://solacesamples.github.io/solace-samples-java/topic-to-queue-mapping): Learn how to map existing topics to Solace queues.
 
 ## Prerequisites
 
@@ -35,7 +49,7 @@ Just clone and build. For example:
 
 To try individual samples, build the project from source and then run samples like the following:
 
-    ./build/staged/bin/topicPublisher <msg_backbone_ip:port>
+    ./build/staged/bin/topicPublisher <host:port> <message-vpn> <client-username> <client-password>
 
 The individual tutorials linked above provide full details which can walk you through the samples, what they do, and how to correctly run them to explore Solace messaging.
 

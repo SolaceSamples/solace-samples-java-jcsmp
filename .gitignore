@@ -14,3 +14,6 @@ _site
 .DS_Store
 docs/_site
 .idea
+*.iml
+*.ipr
+*.iws
