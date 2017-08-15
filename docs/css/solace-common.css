@@ -107,7 +107,6 @@ p {
 }
 
 .tutorial {
-  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,9 +114,33 @@ p {
   margin-top: 50px;
 }
 
-.tutorial h4 {
-  font-size: 20px;
-  color: rgba(0, 0, 0, 0.8);
+.learn .card-image img {
+  width: 80% !important;
+  height: 80%;
+  margin: auto;
+  padding: 40px;
+}
+
+.card-title {
+  font-weight: 500 !important;
+  z-index: 2;
+}
+
+.card-image::before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+h4 {
+  font-size: 20px !important;
+  color: rgba(0, 0, 0, 0.8) !important;
 }
 
 .tutorial .link {

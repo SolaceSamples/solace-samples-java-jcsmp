@@ -33,31 +33,36 @@ layout: default
 				</div>
 			</div>
 			<div class="tutorials row">
-				<div class="col s12">
-					<div class="white row z-depth-1">
-						<div class="col s12 m6 l4">
-							<div class="tutorial">
-								<div class="tutorial-image">
-								</div>
-								<h4>Use DataGo</h4>
-								<div class="link">Start tutorial</div>
-							</div>
+				<div class="col s12 m6 l4">
+					<div class="card">
+						<div class="card-image">
+							<img src="{{ "/images/cloud.jpg" | prepend: site.baseurl }}"/>
+							<span class="card-title">Use DataGo</span>
 						</div>
-						<div class="col s12 m6 l4">
-							<div class="tutorial">
-								<div class="tutorial-image">
-								</div>
-								<h4>Start a Solace VMR</h4>
-								<div class="link">Start tutorial</div>
-							</div>
+						<div class="card-action">
+							<a href="#">Start tutorial</a>
 						</div>
-						<div class="col s12 m6 l4">
-							<div class="tutorial">
-								<div class="tutorial-image">
-								</div>
-								<h4>Get access to a Solace appliance</h4>
-								<div class="link">Start tutorial</div>
-							</div>
+					</div>
+				</div>
+				<div class="col s12 m6 l4">
+					<div class="card">
+						<div class="card-image">
+							<img src="{{ "/images/vmr.jpg" | prepend: site.baseurl }}"/>
+							<span class="card-title">Start a Solace VMR</span>
+						</div>
+						<div class="card-action">
+							<a href="#">Start tutorial</a>
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m6 l4">
+					<div class="card">
+						<div class="card-image">
+							<img src="{{ "/images/appliance.jpg" | prepend: site.baseurl }}"/>
+							<span class="card-title">Solace appliance</span>
+						</div>
+						<div class="card-action">
+							<a href="#">Start tutorial</a>
 						</div>
 					</div>
 				</div>
@@ -66,35 +71,30 @@ layout: default
 				<div class="col s12">
 					<h2>Learn Solace APIs</h2>
 				</div>
-				<div class="tutorials row">
-					<div class="col s12">
-						{% assign count = 0 %}
-						{% for section in site.data.tutorials %}
-							{% for item in section.tutorials %}
-								{% assign item_url = item | prepend:"/" | append:"/" %}
-								{% assign p = site.tutorials | where:"url", item_url | first %}
-								{% assign loopindex = forloop.index | modulo: 2 %}
-								{% assign count = count | plus: 1 %}
-								{% if count == 1 or count == 4%}
-								<div class="row white z-depth-1">
-								{% endif %}
-									<div class="col s12 m6 l4">
-										<div class="tutorial">
-											<div class="tutorial-image">
-												<img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}"/>
-											</div>
-											<h4>{{ p.title }}</h4>
-											<p>{{ p.summary }}</p>
-											<div class="link">Start tutorial</div>
-										</div>
-									</div>
-								{% if count == 3 %}
+			</div>
+			<div class="tutorials learn row">
+				{% assign count = 0 %}
+				{% for section in site.data.tutorials %}
+					{% for item in section.tutorials %}
+						{% assign item_url = item | prepend:"/" | append:"/" %}
+						{% assign p = site.tutorials | where:"url", item_url | first %}
+						{% assign loopindex = forloop.index | modulo: 2 %}
+						<div class="col s12 m6 l4">
+							<div class="card">
+								<div class="card-image">
+									<img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}"/>
+									<span class="card-title black-text">{{ p.title }}</span>
 								</div>
-								{% endif %}
-							{% endfor %}
-						{% endfor %}
-					</div>
-				</div>
+								<div class="card-content">
+									<p>{{ p.summary }}</p>
+								</div>
+								<div class="card-action">
+									<a href="#">Start tutorial</a>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				{% endfor %}
 			</div>
 		</div>
 	</div>
