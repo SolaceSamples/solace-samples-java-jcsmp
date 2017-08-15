@@ -32,39 +32,113 @@
 }
 
 h1 {
-  font-size: 34px;
+  font-size: 36px;
+  color: rgba(0, 0, 0, 1);
+}
+
+h2 {
+  font-size: 28px;
+  color: rgba(0, 0, 0, 0.8);
 }
 
 p {
-  color: #212121;
+  color: rgba(0, 0, 0, 0.5);
   -webkit-font-smoothing: antialiased;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
   margin: 0 0 .5em;
 }
 
-.tutorial .card-image {
-  border-right: 1px solid rgba(160,160,160,0.2);
-  padding: 40px;
+.container {
+  max-width: 600px;
 }
 
-.card.tutorial {
-  height: 240px;
+.title {
+  margin-top: 50px;
 }
 
-.card.tutorial, .card.tutorial .card-content, .card.tutorial .card-image {
+.title .col {
   position: relative;
+  margin-right: 180px;
 }
 
-.tutorial .click {
+.title .col .github {
   position: absolute;
-  top: 0;
-  bottom: 0;
   right: 0;
-  left: 0;
-  z-index: 1;
+  top: 20px;
+  width: 180px;
 }
 
+.github img {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  opacity: 0.5;
+  margin-left: -12px;
+}
+
+.github-link img {
+  margin-right: 2px;
+  margin-left: 5px;
+}
+
+.github-link a {
+  line-height: 20px;
+    height: 20px;
+    vertical-align: top;
+}
+
+.tutorials > .col > .row > .col {
+  height: 300px;
+}
+
+.tutorials > .col > .row .col:not(:first-child) {
+  border-left: 1px solid #CCC;
+}
+
+.tutorial-image {
+  width: 100px;
+  height: 100px;
+  background: green;
+}
+
+.tutorial-image img {
+  width: 100%;
+  height: 100%;
+}
+
+.tutorial {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.tutorial h4 {
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.tutorial .link {
+  display: none;
+}
+
+.tutorial:hover {
+  cursor: pointer;
+}
+
+.tutorial:hover .link {
+  display: block;
+}
+
+.title {
+  border-bottom: 1px solid #CCC;
+}
+
+.body {
+  background: #f0f4f8;
+}
 
 /* Github
 =================================================*/

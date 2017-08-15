@@ -1,59 +1,101 @@
 ---
 layout: default
 ---
-<header>
-  <nav class="top-nav blue">
-    <div class="container">
-      <div class="nav-wrapper"><a class="page-title">{{ site.title }}</a></div>
-    </div>
-  </nav>
-</header>
-<section class="container">
-  <div class="row">
-    <div class="col s12">
-      <h1>Learn about the {{ site.title }}</h1>
-
-      <p>These tutorials get you up to speed sending and receiving messages with Solace technology.</p>
-
-<!--   <h2 class="blue-text">Get Solace Messaging</h2>
-      <p>See the tutorials for more details if needed.</p>
-      <h5 class="intro">Option 1: <a class="intro" href="{{ site.links-datago-setup }}" target="_top">Use DataGo</a></h5>
-
-      <h5 class="intro">Option 2: <a class="intro" href="{{ site.docs-vmr-setup }}" target="_top">Start a Solace VMR</a></h5>
-
-      <h5 class="intro">Option 3: Get access to a Solace appliance</h5>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col s12">
-      <h2 class="blue-text">Select a tutorial</h2-->
-    </div>
-  </div>
-  <div class="row">
-		{% for section in site.data.tutorials %}
-        	{% for item in section.tutorials %}
-          		{% assign item_url = item | prepend:"/" | append:"/" %}
-          		{% assign p = site.tutorials | where:"url", item_url | first %}
-          		{% assign loopindex = forloop.index | modulo: 2 %}
-          		<div class="col l6 m12 s12">
-              		<div href="{{ site.baseurl }}{{ p.url }}" class="card horizontal tutorial">
-						<div class="card-image">
-							<a class="click" href="{{ site.baseurl }}{{ p.url }}"></a>
-							<img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}"/>
+<section>
+	<div class="title">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<h1>{{ site.title }}</h1>
+					<p>These tutorials get you up to speed sending and receiving messages with Solace technology.</p>
+					<div class="github">
+						<div>
+							<img src="{{ "/images/common/hosted-in-github.png" alt="hosted-in-github" | prepend: site.baseurl }}"  width="150" height="57"></img>
 						</div>
-						<div class="card-stacked">
-							<div class="card-content">
-								<a class="click" href="{{ site.baseurl }}{{ p.url }}"></a>
-								<h5 class="blue-text">{{ p.title }}</h5>
-								<p>{{ p.summary }}</p>
-							</div>
-							<div class="card-action">
-								<a href="{{ site.repository }}{{ item.link }}">View on GitHub</a>
+						<div class="github-link">
+							<img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>
+							<a href="{{ site.repository }}" target="_blank">View</a>
+						</div>
+						<div class="github-link">
+							<img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>
+							<a>Clone or Download</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="body">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<h2>Get Solace Messaging</h2>
+				</div>
+			</div>
+			<div class="tutorials row">
+				<div class="col s12">
+					<div class="white row z-depth-1">
+						<div class="col s12 m6 l4">
+							<div class="tutorial">
+								<div class="tutorial-image">
+								</div>
+								<h4>Use DataGo</h4>
+								<div class="link">Start tutorial</div>
 							</div>
 						</div>
-	            	</div>
-    	      </div>
-        	{% endfor %}
-      	{% endfor %}
-  	</div>
+						<div class="col s12 m6 l4">
+							<div class="tutorial">
+								<div class="tutorial-image">
+								</div>
+								<h4>Start a Solace VMR</h4>
+								<div class="link">Start tutorial</div>
+							</div>
+						</div>
+						<div class="col s12 m6 l4">
+							<div class="tutorial">
+								<div class="tutorial-image">
+								</div>
+								<h4>Get access to a Solace appliance</h4>
+								<div class="link">Start tutorial</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12">
+					<h2>Learn Solace APIs</h2>
+				</div>
+				<div class="tutorials row">
+					<div class="col s12">
+						{% assign count = 0 %}
+						{% for section in site.data.tutorials %}
+							{% for item in section.tutorials %}
+								{% assign item_url = item | prepend:"/" | append:"/" %}
+								{% assign p = site.tutorials | where:"url", item_url | first %}
+								{% assign loopindex = forloop.index | modulo: 2 %}
+								{% assign count = count | plus: 1 %}
+								{% if count == 1 or count == 4%}
+								<div class="row white z-depth-1">
+								{% endif %}
+									<div class="col s12 m6 l4">
+										<div class="tutorial">
+											<div class="tutorial-image">
+												<img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}"/>
+											</div>
+											<h4>{{ p.title }}</h4>
+											<p>{{ p.summary }}</p>
+											<div class="link">Start tutorial</div>
+										</div>
+									</div>
+								{% if count == 3 %}
+								</div>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
