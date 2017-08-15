@@ -24,14 +24,6 @@
         -webkit-box-sizing: border-box;
         box-sizing: border-box; }
 
-body {
-        background:#F8F8F8;
-	font: 15px/1.65em Helvetica, Arial, sans-serif;
-	color: #444;
-	-webkit-text-size-adjust: 100%;
- }
-
- 
 .content-box {
 	border:1px #c9c9c9 solid;
 	border-radius:5px;
@@ -39,36 +31,40 @@ body {
 	background-color:#ffffff;
 }
 
+h1 {
+  font-size: 34px;
+}
 
-/* #Typography
-================================================== */
+p {
+  color: #212121;
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  line-height: 24px;
+  margin: 0 0 .5em;
+}
 
-	/*default*/
-	h1, h2, h3, h4, h5, h6 {
-		font-weight: 300;
-    color: #333;
-  }
-	#top h1 a, #top h2 a, #top h3 a, #top h4 a, #top h5 a, #top h6 a { font-weight: inherit; text-decoration: none; color: inherit; }
-	#top h1 strong, #top h2 strong, #top h3 strong, #top h4 strong, #top h5 strong, #top h6 strong { color: inherit; }
-	h1 { font-size: 34px; line-height: 1.1em; margin-bottom: 14px;}
-	h2 { font-size: 28px; line-height: 1.1em; margin-bottom: 10px; margin-top:36px; padding-top:12px; border-top:solid 2px #c9c9c9;}
-	h3 { width:90%; font-size: 18px; line-height: 1.1em; margin-bottom: 8px; margin-top:30px; padding-top:12px; border-top:solid 1px #dfdfdf;}
-	h4 { font-size: 14px; line-height: 1.1em; margin-bottom: 4px; } /*21*/
+.tutorial .card-image {
+  border-right: 1px solid rgba(160,160,160,0.2);
+  padding: 40px;
+}
 
-	p { margin: 0.85em 0; }
-	p img { margin: 0; }
+.card.tutorial .card-content h5{
+  margin-top: -40px;
+}
 
-	em { font-style: italic; }
-	strong, b{ font-weight: bold;  }
-	small { font-size: 80%; }
+.card.tutorial, .card.tutorial .card-content, .card.tutorial .card-image {
+  position: relative;
+}
 
-	hr { border: solid #ddd; border-width: 1px 0 0; clear: both; margin: 10px 0 30px; height: 0; }
+.tutorial .click {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+}
 
- /* Button
-================================================== */
- .button {width:150px; padding:10px; background:#005dab; text-align:center; border:1px solid #013a6a; border-radius:4px;}
- .button:hover {background:#013a6a;}
- a.button-text {text-decoration:none; color:#fff;}
 
 /* Github
 =================================================*/

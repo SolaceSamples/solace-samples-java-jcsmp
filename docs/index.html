@@ -1,33 +1,57 @@
 ---
 layout: default
 ---
-<section>
-  {% include intro.html %}
+<header>
+  <nav class="top-nav blue">
+    <div class="container">
+      <div class="nav-wrapper"><a class="page-title">{{ site.title }}</a></div>
+    </div>
+  </nav>
+</header>
+<section class="container">
+  <div class="row">
+    <div class="col s12">
+      <h1>Learn about the {{ site.title }}</h1>
 
-  {% for section in site.data.tutorials %}
-    <!-- For now assume no need for section titles -->
-    {% for item in section.tutorials %}
-      {% assign item_url = item | prepend:"/" | append:"/" %}
-      {% assign p = site.tutorials | where:"url", item_url | first %}
-      {% assign loopindex = forloop.index | modulo: 2 %}
-      {% if loopindex == 1 or forloop.first %}
-        <div class="grid">
-      {% endif %}
-          <div class="unit half" style='padding:10px;'>
-              <div class="grid" style='border-width:1px; border-color:#d3d3d3; border-style:solid; padding:10px; background-color:#ffffff; border-radius:5px;'>
-                  <h3 class="nolineheading">{{ p.title }}</h3>
-                  <div class='unit half'  style='font-size:14px;'  itemprop="text" >
-                      <p>{{ p.summary }}</p>
-                      <a href="{{ site.baseurl }}{{ p.url }}" class="button-text"><div class="button">Start Tutorial</div></a>
-                  </div>
-                  <div class="unit half">
-                      <img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}" width="150" style="float:right"/>
-                  </div>
-              </div>
-          </div>
-      {% if loopindex != 1 or forloop.last %}
-        </div>
-      {% endif %}
-    {% endfor %}
-  {% endfor %}
+      <p>These tutorials get you up to speed sending and receiving messages with Solace technology.</p>
+
+<!--   <h2 class="blue-text">Get Solace Messaging</h2>
+      <p>See the tutorials for more details if needed.</p>
+      <h5 class="intro">Option 1: <a class="intro" href="{{ site.links-datago-setup }}" target="_top">Use DataGo</a></h5>
+
+      <h5 class="intro">Option 2: <a class="intro" href="{{ site.docs-vmr-setup }}" target="_top">Start a Solace VMR</a></h5>
+
+      <h5 class="intro">Option 3: Get access to a Solace appliance</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <h2 class="blue-text">Select a tutorial</h2-->
+    </div>
+  </div>
+  <div class="row">
+		{% for section in site.data.tutorials %}
+        	{% for item in section.tutorials %}
+          		{% assign item_url = item | prepend:"/" | append:"/" %}
+          		{% assign p = site.tutorials | where:"url", item_url | first %}
+          		{% assign loopindex = forloop.index | modulo: 2 %}
+          		<div class="col l3 m12 s12">
+              		<div href="{{ site.baseurl }}{{ p.url }}" class="card tutorial">
+						<div class="card-image">
+							<a class="click" href="{{ site.baseurl }}{{ p.url }}"></a>
+							<img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}"/>
+						</div>
+							<div class="card-content">
+								<a class="click" href="{{ site.baseurl }}{{ p.url }}"></a>
+								<h5 class="blue-text">{{ p.title }}</h5>
+								<p>{{ p.summary }}</p>
+							</div>
+							<div class="card-action">
+								<a href="{{ site.repository }}{{ item.link }}">Start tutorial</a>
+							</div>
+	            	</div>
+    	      </div>
+        	{% endfor %}
+      	{% endfor %}
+  	</div>
 </section>
