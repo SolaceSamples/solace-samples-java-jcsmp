@@ -35,20 +35,22 @@ layout: default
           		{% assign item_url = item | prepend:"/" | append:"/" %}
           		{% assign p = site.tutorials | where:"url", item_url | first %}
           		{% assign loopindex = forloop.index | modulo: 2 %}
-          		<div class="col l3 m12 s12">
-              		<div href="{{ site.baseurl }}{{ p.url }}" class="card tutorial">
+          		<div class="col l6 m12 s12">
+              		<div href="{{ site.baseurl }}{{ p.url }}" class="card horizontal tutorial">
 						<div class="card-image">
 							<a class="click" href="{{ site.baseurl }}{{ p.url }}"></a>
 							<img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}"/>
 						</div>
+						<div class="card-stacked">
 							<div class="card-content">
 								<a class="click" href="{{ site.baseurl }}{{ p.url }}"></a>
 								<h5 class="blue-text">{{ p.title }}</h5>
 								<p>{{ p.summary }}</p>
 							</div>
 							<div class="card-action">
-								<a href="{{ site.repository }}{{ item.link }}">Start tutorial</a>
+								<a href="{{ site.repository }}{{ item.link }}">View on GitHub</a>
 							</div>
+						</div>
 	            	</div>
     	      </div>
         	{% endfor %}

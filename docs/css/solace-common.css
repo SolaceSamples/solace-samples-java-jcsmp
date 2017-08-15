@@ -48,8 +48,8 @@ p {
   padding: 40px;
 }
 
-.card.tutorial .card-content h5{
-  margin-top: -40px;
+.card.tutorial {
+  height: 240px;
 }
 
 .card.tutorial, .card.tutorial .card-content, .card.tutorial .card-image {
