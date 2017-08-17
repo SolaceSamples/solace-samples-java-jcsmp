@@ -306,8 +306,8 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 First start the `QueueProducer` to send a message to the queue. Then you can use the `QueueConsumer` sample to receive the messages from the queue.
 
 ```
-$ ./build/staged/bin/queueProducer <host:port> <message-vpn> <client-username> <client-password>
-$ ./build/staged/bin/queueConsumer <host:port> <message-vpn> <client-username> <client-password>
+$ ./build/staged/bin/queueProducer <host:port> <client-username> <client-password> <message-vpn> 
+$ ./build/staged/bin/queueConsumer <host:port> <client-username> <client-password> <message-vpn> 
 ```
 
 You have now successfully connected a client, sent persistent messages to a queue and received them from a consumer flow.

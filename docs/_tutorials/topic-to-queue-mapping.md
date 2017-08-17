@@ -232,7 +232,7 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 Run the example from the command line as follows.
 
 ```
-$ ./build/staged/bin/topicToQueueMapping <HOST>
+$ ./build/staged/bin/topicToQueueMapping <host:port> <client-username> <client-password> <message-vpn> 
 ```
 
 You have now added a topic subscription to a queue and successfully published persistent messages to the topic and had them arrive on your Queue endpoint.
