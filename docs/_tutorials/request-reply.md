@@ -2,7 +2,7 @@
 layout: tutorials
 title: Request/Reply
 summary: Learn how to set up request/reply messaging.
-icon: request-reply.png
+icon: I_dev_R+R.svg
 links:
     - label: BasicRequestor.java
       link: /blob/master/src/main/java/com/solace/samples/BasicRequestor.java
@@ -12,8 +12,6 @@ links:
 
 
 This tutorial outlines both roles in the request-response message exchange pattern. It will show you how to act as the client by creating a request, sending it and waiting for the response. It will also show you how to act as the server by receiving incoming requests, creating a reply and sending it back to the client. It builds on the basic concepts introduced in [publish/subscribe tutorial]({{ site.baseurl }}/publish-subscribe).
-
-![]({{ site.baseurl }}/images/request-reply.png)
 
 ## Assumptions
 

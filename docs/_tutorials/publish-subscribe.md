@@ -2,7 +2,7 @@
 layout: tutorials
 title: Publish/Subscribe
 summary: Learn to publish and subscribe to messages.
-icon: publish-subscribe.png
+icon: I_dev_P+S.svg
 links:
     - label: TopicPublisher.java
       link: /blob/master/src/main/java/com/solace/samples/TopicPublisher.java
@@ -10,9 +10,7 @@ links:
       link: /blob/master/src/main/java/com/solace/samples/TopicSubscriber.java
 ---
 
-This tutorial will introduce you to the fundamentals of the Solace API by connecting a client, adding a topic subscription and sending a message matching this topic subscription. This forms the basis for any publish / subscribe message exchange illustrated here:
-
-![]({{ site.baseurl }}/images/publish-subscribe.png)
+This tutorial will introduce you to the fundamentals of the Solace API by connecting a client, adding a topic subscription and sending a message matching this topic subscription. This forms the basis for any publish / subscribe message exchange.
 
 ## Assumptions
 

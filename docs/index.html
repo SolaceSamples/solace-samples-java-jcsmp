@@ -1,101 +1,115 @@
 ---
 layout: default
 ---
-<section>
-	<div class="title">
-		<div class="container">
-			<div class="row">
-				<div class="col s12">
-					<h1>{{ site.title }}</h1>
-					<p>These tutorials get you up to speed sending and receiving messages with Solace technology.</p>
-					<div class="github">
-						<div>
-							<img src="{{ "/images/common/hosted-in-github.png" alt="hosted-in-github" | prepend: site.baseurl }}"  width="150" height="57"></img>
-						</div>
-						<div class="github-link">
-							<img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>
-							<a href="{{ site.repository }}" target="_blank">View</a>
-						</div>
-						<div class="github-link">
-							<img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>
-							<a>Clone or Download</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="body">
-		<div class="container">
-			<div class="row">
-				<div class="col s12">
-					<h2>Get Solace Messaging</h2>
-				</div>
-			</div>
-			<div class="tutorials row">
-				<div class="col s12 m6 l4">
-					<div class="card">
-						<div class="card-image">
-							<img src="{{ "/images/cloud.jpg" | prepend: site.baseurl }}"/>
-							<span class="card-title">Use DataGo</span>
-						</div>
-						<div class="card-action">
-							<a href="#">Start tutorial</a>
-						</div>
-					</div>
-				</div>
-				<div class="col s12 m6 l4">
-					<div class="card">
-						<div class="card-image">
-							<img src="{{ "/images/vmr.jpg" | prepend: site.baseurl }}"/>
-							<span class="card-title">Start a Solace VMR</span>
-						</div>
-						<div class="card-action">
-							<a href="#">Start tutorial</a>
-						</div>
-					</div>
-				</div>
-				<div class="col s12 m6 l4">
-					<div class="card">
-						<div class="card-image">
-							<img src="{{ "/images/appliance.jpg" | prepend: site.baseurl }}"/>
-							<span class="card-title">Solace appliance</span>
-						</div>
-						<div class="card-action">
-							<a href="#">Start tutorial</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col s12">
-					<h2>Learn Solace APIs</h2>
-				</div>
-			</div>
-			<div class="tutorials learn row">
-				{% assign count = 0 %}
-				{% for section in site.data.tutorials %}
-					{% for item in section.tutorials %}
-						{% assign item_url = item | prepend:"/" | append:"/" %}
-						{% assign p = site.tutorials | where:"url", item_url | first %}
-						{% assign loopindex = forloop.index | modulo: 2 %}
-						<div class="col s12 m6 l4">
-							<div class="card">
-								<div class="card-image">
-									<img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}"/>
-									<span class="card-title black-text">{{ p.title }}</span>
-								</div>
-								<div class="card-content">
-									<p>{{ p.summary }}</p>
-								</div>
-								<div class="card-action">
-									<a href="#">Start tutorial</a>
-								</div>
-							</div>
-						</div>
-					{% endfor %}
-				{% endfor %}
-			</div>
-		</div>
-	</div>
+<section class="index">
+    <div class="title">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 left">
+                    <h1>{{ site.title }}</h1>
+                    <p>These tutorials get you up to speed sending and receiving messages with Solace technology.</p>
+                    <div class="github">
+                        <div>
+                            <img src="{{ "/images/common/hosted-in-github.png" | prepend: site.baseurl }}" alt="hosted-in-github" width="150" height="57"></img>
+                        </div>
+                        <div class="github-link">
+                            <img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>
+                            <a href="{{ site.repository }}" target="_blank">View</a>
+                        </div>
+                        <div class="github-link">
+                            <img src="{{ "/images/common/checkout-icon.png" | prepend: site.baseurl }}"/>
+                            <a id="github-clone" data-clipboard-text="{{ site.repository }}">Copy repository URL</a>
+                            <script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.4.0/clipboard.min.js"></script>
+                            <script>
+                                (function () {
+                                    new Clipboard('#github-clone');
+                                })();
+                            </script>
+                        </div>
+                        <div class="github-link">
+                            <img src="{{ "/images/common/download-icon.png" | prepend: site.baseurl }}"/>
+                            <a href="{{ site.repository }}/archive/master.zip">Download ZIP</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <h2>Get Solace Messaging</h2>
+                </div>
+            </div>
+            <div class="tutorials setup row">
+                <div class="col s12 m6 l4">
+                    <div class="card">
+                        <a href="{{ site.links-datago-setup }}" target="_top"></a>
+                        <div class="card-image blue-gradient">
+                            <img src="{{ "/images/I_dev_datago.svg" | prepend: site.baseurl }}"/>
+                            <span class="card-title">DataGo</span>
+                        </div>
+                        <div class="card-action">
+                            <a href="{{ site.links-datago-setup }}" target="_top">Start tutorial</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card">
+                        <a href="{{ site.docs-vmr-setup }}" target="_top"></a>
+                        <div class="card-image orange-gradient">
+                            <img src="{{ "/images/I_dev_VMR.svg" | prepend: site.baseurl }}"/>
+                            <span class="card-title">VMR</span>
+                        </div>
+                        <div class="card-action">
+                            <a href="{{ site.docs-vmr-setup }}" target="_top">Start tutorial</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card">
+                        <a href="https://solace.com/products/message-routers" target="_top"></a>
+                        <div class="card-image green-gradient">
+                            <img src="{{ "/images/I_dev_appliance.svg" | prepend: site.baseurl }}"/>
+                            <span class="card-title">Appliance</span>
+                        </div>
+                        <div class="card-action">
+                            <a  href="https://solace.com/products/message-routers" target="_top">Get details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <h2>Learn Solace APIs</h2>
+                </div>
+            </div>
+            <div class="tutorials learn row">
+                {% assign count = 0 %}
+                {% for section in site.data.tutorials %}
+                    {% for item in section.tutorials %}
+                        {% assign item_url = item | prepend:"/" | append:"/" %}
+                        {% assign p = site.tutorials | where:"url", item_url | first %}
+                        {% assign loopindex = forloop.index | modulo: 2 %}
+                        <div class="col s12 m6 l4">
+                            <div class="card">
+                                <a href="{{ site.baseurl }}{{ p.url }}"></a>
+                                <div class="card-image">
+                                    <img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}"/>
+                                    <span class="card-title">{{ p.title }}</span>
+                                </div>
+                                <div class="card-content">
+                                    <div class="tutorial-description">{{ p.summary }}</div>
+                                </div>
+                                <div class="card-action">
+                                    <a href="{{ site.baseurl }}{{ p.url }}">Start tutorial</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </section>
