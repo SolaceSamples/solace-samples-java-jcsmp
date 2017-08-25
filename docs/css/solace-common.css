@@ -1,499 +1,558 @@
-/* #Reset & Basics (Inspired by E. Meyers)
-================================================== */
-	html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-		margin: 0;
-		padding: 0;
-		border: 0;
-		font-size: 100%;
-		font: inherit;
-		vertical-align: baseline; }
-	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-		display: block; }
-
-	body {
-		line-height: 1em; }
-	.special-quote {
-		quotes: none; }
-	.special-quote:before, .special-quote:after {
-		content: '';
-		content: none; }
-	table {
-		border-collapse: collapse;
-		border-spacing: 0; }
-    * { -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box; }
-
+/*******************************************************************************
+* General Styles
+*/ 
 body {
-        background:#F8F8F8;
-	font: 13px/1.65em "Open Sans", Helvetica, Arial, sans-serif;
-	color: #444;
-	-webkit-text-size-adjust: 100%;
- }
+    min-width: 400px;
+    background: #f0f4f8;
+    font-family: sans-serif;
+}
 
-.content-box {
-	border:1px #c9c9c9 solid;
-	border-radius:5px;
-	padding:30px;
-	background-color:#ffffff;
+h1 {
+    font-size: 36px;
+    color: rgba(0, 0, 0, 1);
+}
+
+h2 {
+    font-size: 28px;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+h4 {
+    font-size: 20px !important;
+    color: rgba(0, 0, 0, 0.8) !important;
+}
+
+p {
+    color: rgba(0, 0, 0, 0.8);
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 .5em;
+}
+
+.blue-gradient {
+    background: linear-gradient(#2288DD, #17B0E0);
+}
+
+.green-gradient {
+    background: linear-gradient(#165aa4, #4182be);
+}
+
+.orange-gradient {
+    background: linear-gradient(#f2631f, #FF6500);
+}
+
+.container {
+    width: 80%;
+}
+
+.index .container {
+    max-width: 993px;
+}
+
+img {
+    max-width: 100%;
+}
+
+@media only screen and (max-width : 700px) {
+    .index .container {
+        width: 98%;
+    }
 }
 
 
-/* #Typography
-================================================== */
-
-	/*default*/
-	h1, h2, h3, h4, h5, h6 {
-		font-weight: 600; }
-	#top h1 a, #top h2 a, #top h3 a, #top h4 a, #top h5 a, #top h6 a { font-weight: inherit; text-decoration: none; color: inherit; }
-	#top h1 strong, #top h2 strong, #top h3 strong, #top h4 strong, #top h5 strong, #top h6 strong { color: inherit; }
-	h1 { font-size: 34px; line-height: 1.1em; margin-bottom: 14px;}
-	h2 { font-size: 28px; line-height: 1.1em; margin-bottom: 10px; margin-top:36px; padding-top:12px; border-top:solid 2px #c9c9c9;}
-	h3 { width:90%; font-size: 18px; line-height: 1.1em; margin-bottom: 8px; margin-top:30px; padding-top:12px; border-top:solid 1px #dfdfdf;}
-	h4 { font-size: 14px; line-height: 1.1em; margin-bottom: 4px; } /*21*/
-
-	p { margin: 0.85em 0; }
-	p img { margin: 0; }
-
-	em { font-style: italic; }
-	strong, b{ font-weight: bold;  }
-	small { font-size: 80%; }
-
-	hr { border: solid #ddd; border-width: 1px 0 0; clear: both; margin: 10px 0 30px; height: 0; }
-
- /* Button
-================================================== */
- .button {width:150px; padding:10px; background:#005dab; text-align:center; border:1px solid #013a6a; border-radius:4px;}
- .button:hover {background:#013a6a;}
- a.button-text {text-decoration:none; color:#fff;}
-
-/* Github
-=================================================*/
-.grid{
-    position:relative;
+/*******************************************************************************
+* Index title bar
+*/ 
+.index .title {
+    padding-top: 50px;
+    background: #FFF;
+    border-bottom: 1px solid #CCC;
 }
-#forkme-container{   
-    padding: 15px 15px 25px 15px;
-    margin: 0 auto;
+
+.index .title .left {
+    width: 100%;
+    position: relative;
+    padding-right: 180px;
 }
-#forkme-container-toc{
-    padding: 15px;
-    margin: 10px 0px 0px -15px;
-}
-.forkme-banner{
+
+.index .title .col .github {
     position: absolute;
-    display: block;
-    top: 15px;
-    right:10px;   
-    padding: 10px 12px;
-    border: 1px solid #013a6a;
-    border-radius: 5px;
-    text-decoration: none;
-    border-width:1px; 
-    border-color:#005eab; 
-    border-style:solid;
-    font-weight: 500;
-    background-color:#dee6ed; 
-    width: 22%;  
-    vertical-align: baseline;
-    overflow:hidden;
-    clear:both;
-    z-index:10;
+    right: 0;
+    top: 10px;
+    width: 180px;
 }
 
-.forkme-banner-toc {
-    float:left;
-    display:inline-block;
-    top: 15px;
-    right:10px;   
-    padding: 10px 15px 10px 15px;
-    border: 1px solid #013a6a;
-    border-radius: 5px;
-    text-decoration: none;
-    border-width:1px; 
-    border-color:#005eab; 
-    border-style:solid;
-    font-weight: 500;
-    color: #3d3d3d;
-    background-color:#dee6ed; 
-    width: 100%;  
-    overflow:hidden;
-    clear:both;
-    z-index:10;
-}
-@media screen and (max-width: 650px) {
-  .forkme-banner {display:none;}
-}    
-a{
-    color:#005dab;
-    border-bottom: #bbb;
-    border-width: 0px 0px 0px 0px;
-    border-style: none none dotted none; 
-}
-/* Adds mouse hover effect to the hylerlinked text in the Github banner
-================================================*/
-.forkme-banner a:link {
-    text-decoration: none !important;
-    
-}
-.forkme-banner a:hover {
-    color: #F36F23; 
-    border-style: none;    
-}
-.forkme-banner-toc a:link {
-    text-decoration: none !important;
-    
-}
-.forkme-banner-toc a:hover {
-    color: #F36F23; 
-    border-style: none;    
+/*******************************************************************************
+* Tutorial layout
+*/ 
+
+@media only screen and (max-width : 993px) {
+    .docs .container {
+        width: 98%;
+    }
 }
 
-.forkme-banner-text{
-    position:relative;
-    right: 10px;
-    width: 78%;    
-    padding: 10px 10px 0px 0px;
-    clear:both;
-}
-div.view-sample{
-    padding-top: 5px;
-}
-
-#post-shortlink{
-    float: left; margin-top:12px;  width: 190px; height: 36px;
-}
-
-div.download-zip{
-    float: left; max-width: 100%; display:inline-block; padding-top: 5px; padding-bottom: 10px;
-}
-.download-zip img{
-    vertical-align:-15%;
-}
-img.fork-img{
-    max-width: 100%; 
-    height: auto;
-    text-align: center;
-    display: block;
-   margin-left: auto;
-   margin-right: auto;
-}
-.fork-icon, .view-sample img{
-    vertical-align:-15%;
-}
-input:focus{
-    outline: none;
-    border-color: #e1e1e1; 
-    background-color: #d4d4d4;
-    color: #3d3d3d;
-    box-shadow: 0px 2px 10px #d4d4d4;
-}
-
-/* Github banner clipboard 
-===================*/
-
-input[type="text"]{
-    margin-top:5px;  
-    border-color: #d4d4d4; 
-    padding: 8px 6px; 
-    border-radius: 1px; 
-    border: 1px solid #e1e1e1; 
-    background-color: #d4d4d4;
-    box-sizing: border-box;
-    letter-spacing: normal;
-    word-spacing: normal;
-    text-transform: none;
-    text-indent: 0px;
-    text-shadow: none;
-    text-align: start;
-    cursor: auto;
-    -webkit-appearance: none; 
+.heading img {
+    float: left;
+    background: #9FB0BF;
+    border-radius: 14px;
+    margin-right: 30px;
     margin-bottom: 10px;
-    text-rendering: auto;
+    width: 140px;
+    height: 140px;
+}
+
+.article-container {
+    position: relative;
+    padding-right: 245px;
+}
+
+@media only screen and (max-width : 760px) {
+    .article-container {
+        padding-right: 0;
+    }
+}
+
+article {
+    background: white;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    padding: 30px;
+    color: rgba(0, 0, 0, 0.65);
+    min-width: 400px;
+}
+
+article ul li {
+    list-style-type: square;
+}
+
+article h2 {
+    color: rgba(0, 0, 0, 1);
+    font-size: 28px;
+    margin: 16px 0;
+}
+
+article h3 {
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 24px;
+    margin: 16px 0;
+}
+
+aside {
+    position: absolute;
+    right: 0;
+    top: 60px;
+    width: 245px;
+    padding-left: 28px;
+}
+
+aside select {
     display: block;
-}
-.btn{
-    margin-top:11px;  
-    cursor: pointer; 
-    float: left;  
-    height: 36px !important; 
-    width: 34px !important; 
-}
-
-.btn:hover {box-shadow: 0 0 2px 1px rgba(61, 61, 61, 0.5);}
-
-.btn:active {
-  background-color: #d4d4d4;
-  box-shadow: 0 1px #666;
-  transform: translateY(2px);
-}
-
-/* Github samples download button
-================================================*/
-.btn-download {
-    display: block;
-    background:#005dab ;
-    width: 225px; 
+    border-radius: 0;
+    border: 1px solid #CCC;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.65);
     height: 35px;
-    border-radius: 3px;
-    border: 1px solid #013a6a !important;
-    -webkit-border-radius: 1;
-    -moz-border-radius: 1;
-    color: #ffffff !important;
-    padding:  5px;
-    text-align: center;
-    text-decoration: none; 
-    margin-left: 0px;
-    margin-top: 5px;
-}   
-
-.btn-download:hover {
-    background-color: #013a6a; 
-    border-style: none;    
 }
- /* Table
-================================================== */
+
+aside .nav {
+    padding: 10px 0;
+    margin: 20px 0;
+    border-top: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
+}
+
+@media only screen and (max-width : 760px) {
+    aside {
+        position: relative;
+        margin-bottom: 50px;
+        margin-top: -30px;
+    }
+
+    aside .nav {
+        margin-top: 0;
+        padding-top: 0;
+    }
+}
+
+/*******************************************************************************
+* Github component
+*/ 
+.github-link {
+    margin-bottom: 7px;
+}
+
+.github-link img {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.github-link a {
+    line-height: 18px;
+    height: 18px;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+/*******************************************************************************
+* Card layout
+*/ 
+.tutorials > .col > .row > .col {
+    height: 300px;
+}
+
+.tutorials > .col > .row .col:not(:first-child) {
+    border-left: 1px solid #CCC;
+}
+
+.tutorials.setup .card-image img {
+    height: 200px; 
+    padding-bottom: 50px;
+}
+
+.tutorials.learn .card-image {
+    background: #9FB0BF;
+}
+
+.tutorials .tutorial-description {
+    height: 42px;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.tutorials.learn .card-image img {
+    width: 200px !important;
+    height: 200px;
+    margin: auto;
+    padding-bottom: 60px;
+}
+
+.tutorials .card {
+    position: relative;
+}
+
+.tutorials .card-title {
+    font-weight: 500 !important;
+    z-index: 2;
+}
+
+.tutorials .card > a {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/*******************************************************************************
+* Sidebar Nav
+*/ 
+h4.navheading {
+    text-transform: uppercase;
+    padding: 0 0 10px 20px;
+    margin-left: -28px;
+    display: inline-block;
+    border-bottom: 1px #c9c9c9 solid;
+    font-size: 16px;
+}
+
+h4.navheading a {
+    color: rgba(0, 0, 0, 0.8);
+    text-decoration: none;
+}
+
+ul.navlist {
+    list-style: none;
+    font-size: 16px;
+    margin: 0;
+}
+
+li.navlink a {
+    color:rgba(0, 0, 0, 0.65);
+    text-decoration:none;
+    line-height: 30px;
+}
+
+li.navlink a:hover {
+    font-weight:700;
+}
+
+li.navlink_current {
+    line-height: 30px;
+    list-style-image: url('../images/common/indicator-arrow.png') !important;
+    margin-left: -8px;
+    padding-left: 8px;
+}
+li.navlink_current a {
+    text-decoration:none;
+    color:rgba(0, 0, 0, 0.8);
+    font-weight: 700;
+}
+
+/*******************************************************************************
+* Table
+*/ 
 table {
-	width: 100%;
-	padding: 0;
-	margin: 0 0 20px 0;
-	font-size: 13px;
+    width: 100%;
+    padding: 0;
+    margin: 0 0 20px 0;
+    font-size: 13px;
 }
 
 table caption {
-	padding: 0 0 5px 0;
-	width: auto;
-	font-style:italic;
-	text-align: right;
-	font-size: 12px;
+    padding: 0 0 5px 0;
+    width: auto;
+    font-style:italic;
+    text-align: right;
+    font-size: 12px;
 }
 
 th {
-	font-weight:bold;
-	text-align: left;
-	padding: 9px 12px;
-	border-style: solid;
-	border-width: 1px;
-	border-left:none;
-	border-top:none;
+    font-weight:bold;
+    text-align: left;
+    padding: 9px 12px;
+    border-style: solid;
+    border-width: 1px;
+    border-left:none;
+    border-top:none;
 }
 
 td {
-	font-size: 13px;
-	padding: 9px 12px;
-	border-style: solid;
-	border-width: 1px;
-	border-left:none;
-	border-top:none;
+    font-size: 13px;
+    padding: 9px 12px;
+    border-style: solid;
+    border-width: 1px;
+    border-left:none;
+    border-top:none;
 }
 
 tr th:first-child, tr td:first-child{
-	border-left-style: solid;
-	border-left-width: 1px;
+    border-left-style: solid;
+    border-left-width: 1px;
 }
 
 tr:first-child th, tr:first-child td{
-	border-top-style: solid;
-	border-top-width: 1px;
+    border-top-style: solid;
+    border-top-width: 1px;
 }
 
 #top th.nobg {
-	background: none;
-	border-top: 0;
+    background: none;
+    border-top: 0;
 }
 
-/* Lists
-================================================== */
-	ul, ol {margin-bottom: 20px;  }
-	ul {margin-left: 30px;}
-	ol {list-style: decimal; margin-left: 30px; }
-	ul ul, ul ol,
-	ol ol, ol ul {margin: 4px 0 5px 30px;  }
-	ul ul li, ul ol li,
-	ol ol li, ol ul li {margin-bottom: 6px; }
+/*******************************************************************************
+* Lists
+*/ 
+ul li { margin-bottom: 6px; }
+ul, ol {margin-bottom: 20px;    }
+ul {margin-left: 30px;}
+ol {list-style: decimal; margin-left: 30px; }
+ul ul, ul ol,
+ol ol, ol ul {margin: 4px 0 5px 30px; }
+ul ul li, ul ol li,
+ol ol li, ol ul li {margin-bottom: 6px; }
 
-/* Sidebar Nav
-================================================== */
-h4.navheading {
-	text-transform: uppercase;
-    padding: 0 0 10px 20px;
-    margin-left: -20px;
-    display: inline-block;
-    border-bottom: 1px #c9c9c9 solid;
-}
-
-h4.navheading a {color:#003b74; text-decoration: none;}
-ul.navlist {list-style: none; margin-left: 0px;}
-li.navlink a {color:#003b74; text-decoration:none;}
-li.navlink a:hover {font-weight:700;}
-li.navlink_current {list-style-image: url('../images/common/indicator-arrow.png') !important;}
-li.navlink_current a {color:#003b74; text-decoration:none; font-weight:700;}
-
-/* Landing Page Headings
-================================================== */
+/*******************************************************************************
+* Landing pages
+*/ 
 h2.nolineheading { margin-top:0; padding-top:0; border-top:none; }
 h3.nolineheading { margin-top:0; padding-top:0; border-top:none;}
 
+h2.intro { 
+    color: #013a6a;
+    font-weight:500;
+    margin-bottom: 20px;
+}
 
-/**
- * Code formatting
- */
-pre,
-code {
-  font-size: 12px;
-  font-family: Monaco, "Andale Mono", "Courier New", Courier, monospace;
-  border: 1px solid #e8e8e8;
-  border-radius: 3px;
-  background-color: #eef; }
+h3.intro {
+    border-top:none;
+    margin-bottom: 10px;
+    margin-top:0; 
+}
+
+div.intro { 
+    color: #666;
+    padding-top: 10px;
+    font-size: 120%;
+}
+
+a.intro {
+    text-decoration:none; 
+    border-style: none; 
+    color:#005dab;
+}
+
+a.intro:hover {
+    text-decoration:none; 
+    color: #F36F23;
+}
+
+
+/*******************************************************************************
+* Code formatting
+*/ 
+pre, code {
+    font-size: 12px;
+    font-family: Monaco, "Andale Mono", "Courier New", Courier, monospace;
+    border: 1px solid #e8e8e8;
+    border-radius: 3px;
+    background-color: #eef;
+}
 
 code {
-  padding: 1px 5px; }
+    padding: 1px 5px;
+}
 
 pre {
-  padding: 8px 12px;
-  overflow-x: auto; }
-  pre > code {
+    padding: 8px 12px;
+    overflow-x: auto;
+}
+
+pre > code {
     border: 0;
     padding-right: 0;
-    padding-left: 0; }
+    padding-left: 0;
+}
 
-/**
- * Syntax highlighting styles
- */
+/*******************************************************************************
+* Syntax highlighting styles
+*/ 
 .highlight {
-  background: #fff; }
-  .highlighter-rouge .highlight {
+background: #fff; }
+.highlighter-rouge .highlight {
     background: #eef; }
-  .highlight .c {
+.highlight .c {
     color: #998;
     font-style: italic; }
-  .highlight .err {
+.highlight .err {
     color: #a61717;
     background-color: #e3d2d2; }
-  .highlight .k {
+.highlight .k {
     font-weight: bold; }
-  .highlight .o {
+.highlight .o {
     font-weight: bold; }
-  .highlight .cm {
+.highlight .cm {
     color: #998;
     font-style: italic; }
-  .highlight .cp {
+.highlight .cp {
     color: #999;
     font-weight: bold; }
-  .highlight .c1 {
+.highlight .c1 {
     color: #998;
     font-style: italic; }
-  .highlight .cs {
+.highlight .cs {
     color: #999;
     font-weight: bold;
     font-style: italic; }
-  .highlight .gd {
+.highlight .gd {
     color: #000;
     background-color: #fdd; }
-  .highlight .gd .x {
+.highlight .gd .x {
     color: #000;
     background-color: #faa; }
-  .highlight .ge {
+.highlight .ge {
     font-style: italic; }
-  .highlight .gr {
+.highlight .gr {
     color: #a00; }
-  .highlight .gh {
+.highlight .gh {
     color: #999; }
-  .highlight .gi {
+.highlight .gi {
     color: #000;
     background-color: #dfd; }
-  .highlight .gi .x {
+.highlight .gi .x {
     color: #000;
     background-color: #afa; }
-  .highlight .go {
+.highlight .go {
     color: #888; }
-  .highlight .gp {
+.highlight .gp {
     color: #555; }
-  .highlight .gs {
+.highlight .gs {
     font-weight: bold; }
-  .highlight .gu {
+.highlight .gu {
     color: #aaa; }
-  .highlight .gt {
+.highlight .gt {
     color: #a00; }
-  .highlight .kc {
+.highlight .kc {
     font-weight: bold; }
-  .highlight .kd {
+.highlight .kd {
     font-weight: bold; }
-  .highlight .kp {
+.highlight .kp {
     font-weight: bold; }
-  .highlight .kr {
+.highlight .kr {
     font-weight: bold; }
-  .highlight .kt {
+.highlight .kt {
     color: #458;
     font-weight: bold; }
-  .highlight .m {
+.highlight .m {
     color: #099; }
-  .highlight .s {
+.highlight .s {
     color: #d14; }
-  .highlight .na {
+.highlight .na {
     color: #008080; }
-  .highlight .nb {
+.highlight .nb {
     color: #0086B3; }
-  .highlight .nc {
+.highlight .nc {
     color: #458;
     font-weight: bold; }
-  .highlight .no {
+.highlight .no {
     color: #008080; }
-  .highlight .ni {
+.highlight .ni {
     color: #800080; }
-  .highlight .ne {
+.highlight .ne {
     color: #900;
     font-weight: bold; }
-  .highlight .nf {
+.highlight .nf {
     color: #900;
     font-weight: bold; }
-  .highlight .nn {
+.highlight .nn {
     color: #555; }
-  .highlight .nt {
+.highlight .nt {
     color: #000080; }
-  .highlight .nv {
+.highlight .nv {
     color: #008080; }
-  .highlight .ow {
+.highlight .ow {
     font-weight: bold; }
-  .highlight .w {
+.highlight .w {
     color: #bbb; }
-  .highlight .mf {
+.highlight .mf {
     color: #099; }
-  .highlight .mh {
+.highlight .mh {
     color: #099; }
-  .highlight .mi {
+.highlight .mi {
     color: #099; }
-  .highlight .mo {
+.highlight .mo {
     color: #099; }
-  .highlight .sb {
+.highlight .sb {
     color: #d14; }
-  .highlight .sc {
+.highlight .sc {
     color: #d14; }
-  .highlight .sd {
+.highlight .sd {
     color: #d14; }
-  .highlight .s2 {
+.highlight .s2 {
     color: #d14; }
-  .highlight .se {
+.highlight .se {
     color: #d14; }
-  .highlight .sh {
+.highlight .sh {
     color: #d14; }
-  .highlight .si {
+.highlight .si {
     color: #d14; }
-  .highlight .sx {
+.highlight .sx {
     color: #d14; }
-  .highlight .sr {
+.highlight .sr {
     color: #009926; }
-  .highlight .s1 {
+.highlight .s1 {
     color: #d14; }
-  .highlight .ss {
+.highlight .ss {
     color: #990073; }
-  .highlight .bp {
+.highlight .bp {
     color: #999; }
-  .highlight .vc {
+.highlight .vc {
     color: #008080; }
-  .highlight .vg {
+.highlight .vg {
     color: #008080; }
-  .highlight .vi {
+.highlight .vi {
     color: #008080; }
-  .highlight .il {
+.highlight .il {
     color: #099; }

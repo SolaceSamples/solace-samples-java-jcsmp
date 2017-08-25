@@ -1,14 +1,14 @@
 ---
 layout: tutorials
 title: Topic to Queue Mapping
-summary: Learn how to map existing topics to Solace queues.
-icon: topic-to-queue-mapping.png
+summary: Learn how to map topics to Solace queues.
+icon: I_dev_topic2q.svg
+links:
+    - label: TopicToQueueMapping.java
+      link: /blob/master/src/main/java/com/solace/samples/TopicToQueueMapping.java
 ---
 
-
 This tutorial builds on the basic concepts introduced in [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues) tutorial and will show you how to make use of one of Solace’s advanced queueing features called “Topic to Queue Mapping.”
-
-![]({{ site.baseurl }}/images/topic-to-queue-mapping.png)
 
 In addition to spooling messages published directly to the queue, it is possible to add one or more topic subscriptions to a durable queue so that messages published to those topics are also delivered to and spooled by the queue. This is a powerful feature that enables queues to participate equally in point to point and publish / subscribe messaging models. More details about the [“Topic to Queue Mapping” feature here]({{ site.docs-topic-queue }}){:target="_top"}.
 
@@ -23,15 +23,13 @@ If you have a durable queue named `Q`, it will receive messages published direct
 This tutorial assumes the following:
 
 *   You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-*   You have access to a running Solace message router with the following configuration:
-    *   Enabled message VPN configured for guaranteed messaging support.
-    *   Enabled client username.
-    *   Client-profile enabled with guaranteed messaging permissions.
 *   You understand the basics introduced in [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues)
+*   You have access to Solace messaging with the following configuration details:
+    *   Connectivity information for a Solace message-VPN configured for guaranteed messaging support
+    *   Enabled client username and password
+    *   Client-profile enabled with guaranteed messaging permissions.
 
-Note that one simple way to get access to a Solace message router is to start a Solace VMR load [as outlined here]({{ site.docs-vmr-setup }}){:target="_top"}. By default the Solace VMR will with the “default” message VPN configured and ready for guaranteed messaging. Going forward, this tutorial assumes that you are using the Solace VMR. If you are using a different Solace message router configuration adapt the tutorial appropriately to match your configuration.
-
-The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
+One simple way to get access to Solace messaging quickly is to create a messaging service in DataGo [as outlined here]({{ site.links-datago-setup}}){:target="_top"}. You can find other ways to get access to Solace messaging on the [home page]({{ site.baseurl }}/) of these tutorials.
 
 ## Goals
 
@@ -39,6 +37,59 @@ The goal of this tutorial is to understand the following:
 
 1.  How to add topic subscriptions to a queue
 2.  How to interrogate the Solace message router to confirm capabilities.
+
+## Get Solace Messaging
+
+This tutorial requires access Solace messaging and requires that you know several connectivity properties about your Solace messaging. Specifically you need to know the following:
+
+<table>
+  <tr>
+    <th>Resource</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Host</td>
+    <td>String</td>
+    <td>This is the address clients use when connecting to the Solace messaging to send and receive messages. (Format: <code>DNS_NAME:Port</code> or <code>IP:Port</code>)</td>
+  </tr>
+  <tr>
+    <td>Message VPN</td>
+    <td>String</td>
+    <td>The Solace message router Message VPN that this client should connect to. </td>
+  </tr>
+  <tr>
+    <td>Client Username</td>
+    <td>String</td>
+    <td>The client username. (See Notes below)</td>
+  </tr>
+  <tr>
+    <td>Client Password</td>
+    <td>String</td>
+    <td>The client password. (See Notes below)</td>
+  </tr>
+</table>
+
+There are several ways you can get access to Solace Messaging and find these required properties.
+
+### Option 1: Use DataGo
+
+* Follow [these instructions]({{ site.links-datago-setup }}){:target="_top"} to quickly spin up a cloud-based Solace messaging service for your applications.
+* The messaging connectivity information is found in the service details in the connectivity tab. You will use the SMF URI as host string in this tutorial.
+    ![]({{ site.baseurl }}/images/connectivity-info.png)
+
+### Option 2: Start a Solace VMR
+
+For instructions on how to start the Solace VMR in leading Clouds, Container Platforms or Hypervisors see the "[Set up a VMR]({{ site.docs-vmr-setup }}){:target="_top"}" tutorials which outline where to download and and how to install the software.
+
+Note: By default, the Solace VMR "default" message VPN has authentication disabled. In this scenario, the client-username and client-password fields are still required by the samples but can be any value.
+
+### Option 3: Get access to a Solace appliance
+
+* Contact your Solace appliance administrators and obtain the following:
+    * A Solace Message-VPN where you can produce and consume direct and persistent messages
+    * The host name or IP address of the Solace appliance hosting your Message-VPN
+    * A username and password to access the Solace appliance
 
 ## Obtaining the Solace API
 
@@ -63,12 +114,6 @@ compile("com.solacesystems:sol-jcsmp:10.+")
 ### Get the API: Using the Solace Developer Portal
 
 The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
-
-## Trying it yourself
-
-This tutorial is available in [GitHub]({{ site.repository }}){:target="_blank"} along with the other [Solace Developer Getting Started Examples]({{ site.links-get-started }}){:target="_top"}.
-
-At the end, this tutorial walks through downloading and running the sample from source.
 
 ## Connection setup
 
@@ -155,12 +200,13 @@ try {
 
 The full source code for this example is available in [GitHub]({{ site.repository }}){:target="_blank"}. If you combine the example source code shown above results in the following source:
 
-*   [TopicToQueueMapping.java]({{ site.repository }}/blob/master/src/main/java/com/solace/samples/TopicToQueueMapping.java){:target="_blank"}
-
+{% for item in page.links %}
+* [{{ item.label }}]({{ site.repository }}{{ item.link }}){:target="_blank"}
+{% endfor %}
 
 ### Getting the Source
 
-Clone the GitHub repository containing the Solace samples.
+This tutorial is available in GitHub.  To get started, clone the GitHub repository containing the Solace samples.
 
 ```
 git clone {{ site.repository }}
@@ -168,6 +214,8 @@ cd {{ site.baseurl | remove: '/'}}
 ```
 
 ### Building
+
+The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
 
 Building these examples is simple.  You can simply build the project using Gradle.
 
@@ -182,7 +230,7 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 Run the example from the command line as follows.
 
 ```
-$ ./build/staged/bin/topicToQueueMapping <HOST>
+$ ./build/staged/bin/topicToQueueMapping <host:port> <client-username> <client-password> <message-vpn> 
 ```
 
 You have now added a topic subscription to a queue and successfully published persistent messages to the topic and had them arrive on your Queue endpoint.

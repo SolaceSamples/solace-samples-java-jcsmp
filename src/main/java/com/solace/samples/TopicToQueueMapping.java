@@ -44,6 +44,7 @@ public class TopicToQueueMapping  {
     final CountDownLatch latch = new CountDownLatch(count); // used for
 
     class SimplePrintingMessageListener implements XMLMessageListener {
+        @Override
         public void onReceive(BytesXMLMessage msg) {
             if (msg instanceof TextMessage) {
                 System.out.printf("TextMessage received: '%s'%n", ((TextMessage) msg).getText());
@@ -56,6 +57,7 @@ public class TopicToQueueMapping  {
             latch.countDown(); // unblock main thread
         }
 
+        @Override
         public void onException(JCSMPException e) {
             System.out.printf("Consumer received exception: %s%n", e);
             latch.countDown(); // unblock main thread
@@ -66,10 +68,11 @@ public class TopicToQueueMapping  {
 
         System.out.println("TopicToQueueMapping initializing...");
         final JCSMPProperties properties = new JCSMPProperties();
-        properties.setProperty(JCSMPProperties.HOST, args[0]); // msg-backbone ip:port
-        properties.setProperty(JCSMPProperties.VPN_NAME, "default"); // message-vpn
-        properties.setProperty(JCSMPProperties.USERNAME, "clientUsername"); // client-username (assumes no password)
-
+        properties.setProperty(JCSMPProperties.HOST, args[0]);     // host:port
+        properties.setProperty(JCSMPProperties.USERNAME, args[1]); // client-username
+        properties.setProperty(JCSMPProperties.PASSWORD, args[2]); // client-password
+        properties.setProperty(JCSMPProperties.VPN_NAME, args[3]); // message-vpn
+        
         // Make sure that the session is tolerant of the subscription already existing on the queue.
         properties.setProperty(JCSMPProperties.IGNORE_DUPLICATE_SUBSCRIPTION_ERROR, true);
 
@@ -111,9 +114,12 @@ public class TopicToQueueMapping  {
         /** Anonymous inner-class for handling publishing events */
         final XMLMessageProducer prod = session.getMessageProducer(
                 new JCSMPStreamingPublishEventHandler() {
+                    @Override
                     public void responseReceived(String messageID) {
                         System.out.printf("Producer received response for msg ID #%s%n",messageID);
                     }
+
+                    @Override
                     public void handleError(String messageID, JCSMPException e, long timestamp) {
                         System.out.printf("Producer received error for msg ID %s @ %s - %s%n",
                                 messageID,timestamp,e);
@@ -152,16 +158,11 @@ public class TopicToQueueMapping  {
         session.closeSession();
     }
 
-
-
-
-
-
     public static void main(String... args) throws JCSMPException {
 
-        // Check command line arguments
-        if (args.length < 1) {
-            System.out.println("Usage: TopicToQueueMapping <msg_backbone_ip:port>");
+        if (args.length != 4) {
+            System.out.println("Usage: TopicToQueueMapping <host:port> <client-username> <client-password> <message-vpn> ");
+            System.out.println();
             System.exit(-1);
         }
 

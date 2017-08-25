@@ -2,26 +2,27 @@
 layout: tutorials
 title: Request/Reply
 summary: Learn how to set up request/reply messaging.
-icon: request-reply.png
+icon: I_dev_R+R.svg
+links:
+    - label: BasicRequestor.java
+      link: /blob/master/src/main/java/com/solace/samples/BasicRequestor.java
+    - label: BasicReplier.java
+      link: /blob/master/src/main/java/com/solace/samples/BasicReplier.java
 ---
 
 
 This tutorial outlines both roles in the request-response message exchange pattern. It will show you how to act as the client by creating a request, sending it and waiting for the response. It will also show you how to act as the server by receiving incoming requests, creating a reply and sending it back to the client. It builds on the basic concepts introduced in [publish/subscribe tutorial]({{ site.baseurl }}/publish-subscribe).
-
-![]({{ site.baseurl }}/images/request-reply.png)
 
 ## Assumptions
 
 This tutorial assumes the following:
 
 *   You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-*   You have access to a running Solace message router with the following configuration:
-    *   Enabled message VPN
-    *   Enabled client username
+*   You have access to Solace messaging with the following configuration details:
+    *   Connectivity information for a Solace message-VPN
+    *   Enabled client username and password
 
-One simple way to get access to a Solace message router is to start a Solace VMR load [as outlined here]({{ site.docs-vmr-setup }}){:target="_top"}. By default the Solace VMR will run with the “default” message VPN configured and ready for messaging. Going forward, this tutorial assumes that you are using the Solace VMR. If you are using a different Solace message router configuration, adapt the instructions to match your configuration.
-
-The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
+One simple way to get access to Solace messaging quickly is to create a messaging service in DataGo [as outlined here]({{ site.links-datago-setup}}){:target="_top"}. You can find other ways to get access to Solace messaging on the [home page]({{ site.baseurl }}/) of these tutorials.
 
 ## Goals
 
@@ -49,6 +50,59 @@ For request-reply messaging to be successful it must be possible for the request
 
 For direct messages however, this is simplified through the use of the `Requestor` object as shown in this sample.
 
+## Get Solace Messaging
+
+This tutorial requires access Solace messaging and requires that you know several connectivity properties about your Solace messaging. Specifically you need to know the following:
+
+<table>
+  <tr>
+    <th>Resource</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Host</td>
+    <td>String</td>
+    <td>This is the address clients use when connecting to the Solace messaging to send and receive messages. (Format: <code>DNS_NAME:Port</code> or <code>IP:Port</code>)</td>
+  </tr>
+  <tr>
+    <td>Message VPN</td>
+    <td>String</td>
+    <td>The Solace message router Message VPN that this client should connect to. </td>
+  </tr>
+  <tr>
+    <td>Client Username</td>
+    <td>String</td>
+    <td>The client username. (See Notes below)</td>
+  </tr>
+  <tr>
+    <td>Client Password</td>
+    <td>String</td>
+    <td>The client password. (See Notes below)</td>
+  </tr>
+</table>
+
+There are several ways you can get access to Solace Messaging and find these required properties.
+
+### Option 1: Use DataGo
+
+* Follow [these instructions]({{ site.links-datago-setup }}){:target="_top"} to quickly spin up a cloud-based Solace messaging service for your applications.
+* The messaging connectivity information is found in the service details in the connectivity tab. You will use the SMF URI as host string in this tutorial.
+    ![]({{ site.baseurl }}/images/connectivity-info.png)
+
+### Option 2: Start a Solace VMR
+
+For instructions on how to start the Solace VMR in leading Clouds, Container Platforms or Hypervisors see the "[Set up a VMR]({{ site.docs-vmr-setup }}){:target="_top"}" tutorials which outline where to download and and how to install the software.
+
+Note: By default, the Solace VMR "default" message VPN has authentication disabled. In this scenario, the client-username and client-password fields are still required by the samples but can be any value.
+
+### Option 3: Get access to a Solace appliance
+
+* Contact your Solace appliance administrators and obtain the following:
+    * A Solace Message-VPN where you can produce and consume direct and persistent messages
+    * The host name or IP address of the Solace appliance hosting your Message-VPN
+    * A username and password to access the Solace appliance
+
 ## Obtaining the Solace API
 
 This tutorial depends on you having the Solace Messaging API for Java (JCSMP). Here are a few easy ways to get the Java API. The instructions in the [Building](#building) section assume you're using Gradle and pulling the jars from maven central. If your environment differs then adjust the build instructions appropriately.
@@ -65,19 +119,13 @@ compile("com.solacesystems:sol-jcsmp:10.+")
 <dependency>
   <groupId>com.solacesystems</groupId>
   <artifactId>sol-jcsmp</artifactId>
-  <version>10.+</version>
+  <version>[10,)</version>
 </dependency>
 ```
 
 ### Get the API: Using the Solace Developer Portal
 
 The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
-
-## Trying it yourself
-
-This tutorial is available in [GitHub]({{ site.repository }}){:target="_blank"} along with the other [Solace Developer Getting Started Examples]({{ site.links-get-started }}){:target="_top"}.
-
-At the end, this tutorial walks through downloading and running the sample from source.
 
 ## Connecting a session to the message router
 
@@ -93,9 +141,14 @@ For convenience, we will use the `Requestor` object that is created from the `Se
 
 ```java
 XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
+    
+    @Override
     public void responseReceived(String messageID) {
         System.out.println("Producer received response for msg: " + messageID);
-    } public void handleError(String messageID, JCSMPException e, long timestamp) {
+    }
+    
+    @Override
+    public void handleError(String messageID, JCSMPException e, long timestamp) {
         System.out.printf("Producer received error for msg: %s@%s - %s%n",
             messageID,timestamp,e);
     }
@@ -135,12 +188,13 @@ Now it is time to receive the request and generate an appropriate reply.
 Just as with previous tutorials, you still need to connect a session and subscribe to the topics that requests are sent on. However, in order to send replies back to the requestor, you will also need a `Producer`. The following is an example of the most basic producer.
 
 ```java
-/* Anonymous inner-class for handling publishing events */
 final XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
+    @Override
     public void responseReceived(String messageID) {
         System.out.println("Producer received response for msg: " + messageID);
     }
 
+    @Override
     public void handleError(String messageID, JCSMPException e, long timestamp) {
         System.out.printf("Producer received error for msg: %s@%s - %s%n", messageID, timestamp, e);
     }
@@ -150,6 +204,7 @@ final XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamin
 Then you simply have to modify the `onReceive()` method of the `XMLMessageConsumer` to inspect incoming messages and generate appropriate replies. For example, the following code will send a response to all messages that have a reply-to field. This makes use of the `XMLMessageProducer` convenience method `sendReply()`. This method will properly copy the correlation-ID from the request to the reply and send the reply message to the reply-to destination found in the request message.
 
 ```java
+@Override
 public void onReceive(BytesXMLMessage request) {
 
     if (request.getReplyTo() != null) {
@@ -193,12 +248,14 @@ try {
 
 The full source code for this example is available in [GitHub]({{ site.repository }}){:target="_blank"}. If you combine the example source code shown above results in the following source:
 
-*   [BasicRequestor.java]({{ site.repository }}/blob/master/src/main/java/com/solace/samples/BasicRequestor.java){:target="_blank"}
-*   [BasicReplier.java]({{ site.repository }}/blob/master/src/main/java/com/solace/samples/BasicReplier.java){:target="_blank"}
+{% for item in page.links %}
+* [{{ item.label }}]({{ site.repository }}{{ item.link }}){:target="_blank"}
+{% endfor %}
+
 
 ### Getting the Source
 
-Clone the GitHub repository containing the Solace samples.
+This tutorial is available in GitHub.  To get started, clone the GitHub repository containing the Solace samples.
 
 ```
 git clone {{ site.repository }}
@@ -206,6 +263,8 @@ cd {{ site.baseurl | remove: '/'}}
 ```
 
 ### Building
+
+The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
 
 Building these examples is simple.  You can simply build the project using Gradle.
 
@@ -220,8 +279,8 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 First start the `BasicReplier` so that it is up and listening for requests. Then you can use the `BasicRequestor` sample to send requests and receive replies.
 
 ```
-$ ./build/staged/bin/basicReplier <HOST>
-$ ./build/staged/bin/basicRequestor <HOST>
+$ ./build/staged/bin/basicReplier <host:port> <client-username> <client-password> <message-vpn> 
+$ ./build/staged/bin/basicRequestor <host:port> <client-username> <client-password> <message-vpn> 
 ```
 
 With that you now know how to successfully implement the request-reply message exchange pattern using Direct messages.
