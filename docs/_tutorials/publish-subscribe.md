@@ -67,7 +67,7 @@ There are several ways you can get access to Solace Messaging and find these req
 ### Option 1: Use DataGo
 
 * Follow [these instructions]({{ site.links-datago-setup }}){:target="_top"} to quickly spin up a cloud-based Solace messaging service for your applications.
-* The messaging connectivity information is found in the service details in the connectivity tab. You will need the SMF URI as host string in this tutorial.  
+* The messaging connectivity information is found in the service details in the connectivity tab. You will use the SMF URI as host string in this tutorial.
     ![]({{ site.baseurl }}/images/connectivity-info.png)
 
 ### Option 2: Start a Solace VMR
@@ -116,9 +116,9 @@ In the Solace messaging API for Java (JCSMP), Solace sessions are created from t
 ```java
 final JCSMPProperties properties = new JCSMPProperties();
 properties.setProperty(JCSMPProperties.HOST, args[0]);     
-properties.setProperty(JCSMPProperties.VPN_NAME, args[1]); 
-properties.setProperty(JCSMPProperties.USERNAME, args[2]); 
-properties.setProperty(JCSMPProperties.PASSWORD, args[3]); 
+properties.setProperty(JCSMPProperties.USERNAME, args[1]); 
+properties.setProperty(JCSMPProperties.PASSWORD, args[2]); 
+properties.setProperty(JCSMPProperties.VPN_NAME, args[3]); 
 final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
 
 session.connect();
@@ -264,7 +264,7 @@ Connected. Awaiting message...
 Then you can send a message using the `TopicPublisher` with the same arguments. If successful, the output for the producer will look like the following:
 
 ```
-$ ./build/staged/bin/topicPublisher <host:port> <message-vpn> <client-username> <client-password>
+$ ./build/staged/bin/topicPublisher <host:port> <client-username> <client-password> <message-vpn> 
 Topic Publisher initializing...
 Connected. About to send message 'Hello world!' to topic 'tutorial/topic'...
 Message sent. Exiting.

@@ -75,7 +75,7 @@ There are several ways you can get access to Solace Messaging and find these req
 ### Option 1: Use DataGo
 
 * Follow [these instructions]({{ site.links-datago-setup }}){:target="_top"} to quickly spin up a cloud-based Solace messaging service for your applications.
-* The messaging connectivity information is found in the service details in the connectivity tab. You will need the SMF URI as host string in this tutorial.  
+* The messaging connectivity information is found in the service details in the connectivity tab. You will use the SMF URI as host string in this tutorial.
     ![]({{ site.baseurl }}/images/connectivity-info.png)
 
 ### Option 2: Start a Solace VMR
@@ -230,7 +230,7 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 Run the example from the command line as follows.
 
 ```
-$ ./build/staged/bin/topicToQueueMapping <HOST>
+$ ./build/staged/bin/topicToQueueMapping <host:port> <client-username> <client-password> <message-vpn> 
 ```
 
 You have now added a topic subscription to a queue and successfully published persistent messages to the topic and had them arrive on your Queue endpoint.

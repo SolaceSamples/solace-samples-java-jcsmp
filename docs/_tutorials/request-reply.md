@@ -87,7 +87,7 @@ There are several ways you can get access to Solace Messaging and find these req
 ### Option 1: Use DataGo
 
 * Follow [these instructions]({{ site.links-datago-setup }}){:target="_top"} to quickly spin up a cloud-based Solace messaging service for your applications.
-* The messaging connectivity information is found in the service details in the connectivity tab. You will need the SMF URI as host string in this tutorial.  
+* The messaging connectivity information is found in the service details in the connectivity tab. You will use the SMF URI as host string in this tutorial.
     ![]({{ site.baseurl }}/images/connectivity-info.png)
 
 ### Option 2: Start a Solace VMR
@@ -279,8 +279,8 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 First start the `BasicReplier` so that it is up and listening for requests. Then you can use the `BasicRequestor` sample to send requests and receive replies.
 
 ```
-$ ./build/staged/bin/basicReplier <host:port> <message-vpn> <client-username> <client-password>
-$ ./build/staged/bin/basicRequestor <host:port> <message-vpn> <client-username> <client-password>
+$ ./build/staged/bin/basicReplier <host:port> <client-username> <client-password> <message-vpn> 
+$ ./build/staged/bin/basicRequestor <host:port> <client-username> <client-password> <message-vpn> 
 ```
 
 With that you now know how to successfully implement the request-reply message exchange pattern using Direct messages.
