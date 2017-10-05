@@ -1,48 +1,13 @@
-<div class="grid" >
-    <div id="forkme-container" >
-        <div class="forkme-banner">
-            <p>
-                <img class="fork-img"  src="{{ "/images/common/hosted-in-github.png" alt="hosted-in-github" | prepend: site.baseurl }}"  width="200" height="76" /><br />
-                <img class="fork-icon" src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>&nbsp;&nbsp;
-                <a href="{{ site.repository }}" target="_blank" >View samples on GitHub</a> 
-                <br />
-            </p>                   
-            <div class="view-sample" >
-                <img  src="{{ "/images/common/checkout-icon.png" | prepend: site.baseurl }}"/>&nbsp;&nbsp;Get the code using Git or SVN: <input onClick="this.setSelectionRange(0, this.value.length)" id="post-shortlink"   type="text" value="{{ site.repository }}">
-                <button id="copy-button" class="btn" style=" background-image: url('{{ site.baseurl }}/images/common/copy-snippet-icon_30.png');" data-clipboard-target="#post-shortlink"></button>
-                <script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.4.0/clipboard.min.js"></script>
-                <script>                           
-                            (function(){
-                                new Clipboard('#copy-button');
-                            })();
-                </script>
-            </div>
-            <div class="download-zip">
-                   <img  src="{{ "/images/common/download-icon.png" | prepend: site.baseurl }}"/>&nbsp;&nbsp; <a href="{{ site.repository }}/archive/master.zip">Download ZIP</a>
-            </div>
-        </div> 
-        <div class="forkme-banner-text">   
-                 <div >
-                    <h1>Getting Started Samples</h1>           
-                    <h2 class="nolineheading">{{ site.title }}</h2>    
-                        <!-- Introduce the samples with some text. Below is an example. -->
-                        <p>These tutorials will get you to up to speed in sending messages with Solace technology. There are two ways you can get started:</p>
-                        <ol >
-                            <li><strong class="">If your company has Solace message routers deployed</strong>, contact your middleware team to obtain the following:
-                                <ul>
-                                    <li>A host name or IP address of a Solace router</li>
-                                    <li>A username and password to access the router</li>
-                                    <li>A VPN in which you can produce and consume messages</li>
-                                </ul>
-                            </li>
-                            <li><strong>If you do not have access to a Solace message router</strong>, see "<a href="{{ site.docs-vmr-setup }}" target="_top" style="text-decoration:none; border-style: none;    "  onmouseover="this.style.textDecoration='none'; this.style.color='#F36F23';" 
-    onmouseout="this.style.textDecoration='none';this.style.color='#005dab';" >Set up a VMR</a>" to download and install the software.</li>
-                        </ol> 
-                </div>
-          </div>
-    </div>
+<div>
+  <ol>
+      <li><strong class="">If your company has Solace message routers deployed</strong>, contact your middleware team to obtain the following:
+          <ul>
+              <li>A host name or IP address of a Solace router</li>
+              <li>A username and password to access the router</li>
+              <li>A VPN in which you can produce and consume messages</li>
+          </ul>
+      </li>
+      <li><strong>If you do not have access to a Solace message router</strong>, see "<a href="{{ site.docs-vmr-setup }}" target="_top" style="text-decoration:none; border-style: none;    "  onmouseover="this.style.textDecoration='none'; this.style.color='#F36F23';"
+  onmouseout="this.style.textDecoration='none';this.style.color='#005dab';" >Set up a VMR</a>" to download and install the software.</li>
+  </ol>
 </div>
-    
-    
-
-

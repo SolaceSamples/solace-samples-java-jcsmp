@@ -7,9 +7,8 @@ icon: tutorial-1-icon.png
 
 You would describe your tutorial in markdown like these. See other samples for full examples.
 
-Here is an example image:
+Here is an example image
 
-![Sample Image Text]({{ site.baseurl }}/images/tutorial-1-icon.png)
 
 ## A Section
 
@@ -36,4 +35,3 @@ endpointProps.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
 // Actually provision it, and do not fail if it already exists
 session.provision(queue, endpointProps, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
 ~~~
-

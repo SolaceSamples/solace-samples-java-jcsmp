@@ -1,69 +1,64 @@
 
-<div class="unit one-fifth">
-    <aside >
-        {% for section in site.data.tutorials %}
-        <div class="grid" >
-            <div id="forkme-container-toc" >
-                <div class="forkme-banner-toc">
-                    <p>
-                        <img class="fork-img"  src="{{ "/images/common/hosted-in-github.png" alt="hosted-in-github" | prepend: site.baseurl }}" width="150" height="76" /><br />
-                        <span>
-                            <img class="fork-icon" class="forkme-icon"  src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>&nbsp;&nbsp;<a href="{{ site.repository }}" target="_blank" >View source</a> <br />
-                        </span>
-                    </p>
-                    <p>
-                        <img class="fork-icon" src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="{{ site.repository }}/blob/master/docs/{{ page.path }}" target="_blank">Improve this page</a>
-                    </p>
-                    <p>
-                        <img class="fork-icon" src="{{ "/images/common/issue-icon.png" | prepend: site.baseurl }}" />&nbsp;&nbsp;<a href="{{ site.repository }}/issues/new" target="_blank">Raise an issue</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div >
-            <ul class="navlist" style="padding-top:10px;">
-                <li >
-                    <form name="jump" class="center">
-                        <select name="menu" onchange="top.window.location = this.value" style="width: 165px; margin-top: 7px;">
-                            <option value="#" selected>Pick Another API</option>
-                            <optgroup label="Solace APIs">
-                                <option value="http://dev.solace.com//get-started/c-tutorials/">C</option>
-                                <option value="http://dev.solace.com//get-started/dotnet-tutorials/">C#/.NET</option>
-                                <option value="http://dev.solace.com//get-started/java-tutorials/">Java</option>
-                                <option value="http://dev.solace.com//get-started/javascript-tutorials/">JavaScript</option>
-                                <option value="http://dev.solace.com//get-started/node-js-tutorials/">Node.js</option>
-                            </optgroup>
-                            <optgroup label="Open APIs & Protocols">
-                                <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-11/">AMQP - JMS 1.1 </option>
-                                <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-2/">AMQP - JMS 2.0</option>
-                                <option value="http://dev.solace.com/get-started/amqp-tutorials-node-js/">AMQP - Node.js</option>
-                                <option value="http://dev.solace.com//get-started/mqtt-tutorials/">MQTT - Eclipse Paho Java</option>
-                                <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-11/">JMS 1.1 - Apache Qpid </option>
-                                <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-2/">JMS 2.0 - Apache Qpid</option>
-                                <option value="http://dev.solace.com//get-started/jms-tutorials/">JMS 1.1 - Solace </option>
-                                <option value="http://dev.solace.com//get-started/openmama-tutorials/">OpenMAMA</option>
-                                <option value="http://dev.solace.com//get-started/rest-tutorials/">REST Messaging</option>
-                            </optgroup>
-                            <optgroup label="Other Environments">
-                                <option value="http://dev.solace.com//get-started/pcf-tutorials/">Pivotal Cloud Foundry</option>
-                            </optgroup>
-
-                        </select>
-                    </form>
-                </li>
-            </ul>
-        </div>
-        <div>
-            <h4 class="navheading"><a href="{{ site.baseurl }}/">{{ section.title }}</a></h4>
-            <ul class="navlist">
-                {% for item in section.tutorials %}
-                {% assign item_url = item | prepend:"/" | append:"/" %}
-                {% assign p = site.tutorials | where:"url", item_url | first %}
-                <li class="navlink{% if item_url == page.url %}_current{% endif %}"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
-                {% endfor %}
-            </ul>
-
+{% for section in site.data.tutorials %}
+    <div>
+        <h4 class="navheading"><a href="{{ site.baseurl }}/">{{ section.title }}</a></h4>
+        <ul class="navlist">
+            {% for item in section.tutorials %} {% assign item_url = item | prepend:"/" | append:"/" %} {% assign p = site.tutorials
+            | where:"url", item_url | first %}
+            <li class="navlink{% if item_url == page.url %}_current{% endif %}"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
             {% endfor %}
-        </div>
-    </aside>
+        </ul>
+    </div>
+{% endfor %}
+<div class="nav">
+    <select name="menu" onchange="top.window.location = this.value">
+        <option value="#" selected>Pick Another API</option>
+        <optgroup label="Solace APIs">
+            <option value="http://dev.solace.com//get-started/c-tutorials/">C</option>
+            <option value="http://dev.solace.com//get-started/dotnet-tutorials/">C#/.NET</option>
+            <option value="http://dev.solace.com//get-started/java-tutorials/">Java</option>
+            <option value="http://dev.solace.com//get-started/javascript-tutorials/">JavaScript</option>
+            <option value="http://dev.solace.com//get-started/node-js-tutorials/">Node.js</option>
+        </optgroup>
+        <optgroup label="Open APIs & Protocols">
+            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-11/">AMQP - JMS 1.1 </option>
+            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-2/">AMQP - JMS 2.0</option>
+            <option value="http://dev.solace.com/get-started/amqp-tutorials-node-js/">AMQP - Node.js</option>
+            <option value="http://dev.solace.com//get-started/mqtt-tutorials/">MQTT - Eclipse Paho Java</option>
+            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-11/">JMS 1.1 - Apache Qpid </option>
+            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-2/">JMS 2.0 - Apache Qpid</option>
+            <option value="http://dev.solace.com//get-started/jms-tutorials/">JMS 1.1 - Solace </option>
+            <option value="http://dev.solace.com//get-started/openmama-tutorials/">OpenMAMA</option>
+            <option value="http://dev.solace.com//get-started/rest-tutorials/">REST Messaging</option>
+        </optgroup>
+        <optgroup label="Other Environments">
+            <option value="http://dev.solace.com//get-started/pcf-tutorials/">Pivotal Cloud Foundry</option>
+        </optgroup>
+    </select>
 </div>
+<div class="github">
+    <div>
+        <img class="grey-image" src="{{ "/images/common/hosted-in-github.png" | prepend: site.baseurl }}" alt="hosted-in-github"
+            width="150" height="57"></img>
+    </div>
+    {% for item in page.links %}
+    <div class="github-link">
+        <img class="fork-icon" src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>
+        <a href="{{ site.repository }}{{ item.link }}" target="_blank">{{ item.label }}</a> <br />
+    </div>
+    {% endfor %}
+    <div class="github-link">
+        <img src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}"/>
+        <a href="{{ site.repository }}/blob/master/docs/{{ page.path }}" target="_blank">Improve this page</a>
+    </div>
+    <div class="github-link">
+        <img src="{{ "/images/common/issue-icon.png" | prepend: site.baseurl }}"/>
+        <a href="{{ site.repository }}/issues/new" target="_blank">Raise an issue</a>
+    </div>
+</div>
+<script>
+  function scrollFunction() {
+      document.querySelector("aside").style.top = this.window.scrollY + 60 + "px";
+  }
+  window.onscroll = scrollFunction;
+</script>
