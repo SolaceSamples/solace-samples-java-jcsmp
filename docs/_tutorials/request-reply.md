@@ -2,7 +2,7 @@
 layout: tutorials
 title: Request/Reply
 summary: Learn how to set up request/reply messaging.
-icon: request-reply.png
+icon: I_dev_R+R.svg
 ---
 
 
@@ -71,7 +71,7 @@ compile("com.solacesystems:sol-jcsmp:10.+")
 
 ### Get the API: Using the Solace Developer Portal
 
-The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
+The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples.
 
 ## Trying it yourself
 
