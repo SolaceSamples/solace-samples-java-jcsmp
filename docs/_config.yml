@@ -1,7 +1,7 @@
 # Site settings
-title: Solace Messaging API for Java (JCSMP)
+title: Solace Java API (JCSMP)
 summary: These tutorials get you up to speed sending and receiving messages with Solace technology.
-baseurl: "/solace-samples-java" # the subpath of your site, e.g. /solace-samples-java
+baseurl: "/solace-samples-java"
 repository: https://github.com/SolaceSamples/solace-samples-java
 
 # Also see _includes/intro.html to customize the description which gets included in index.html.
@@ -17,6 +17,7 @@ docs-api-ref: http://docs.solace.com/API-Developer-Online-Ref-Documentation/java
 docs-gm-rr: http://docs.solace.com/Solace-Messaging-APIs/Request-Reply-Messaging.htm
 docs-topic-queue: http://docs.solace.com/Features/Core-Concepts.htm#topic-queue-mapping
 docs-client-profile: http://docs.solace.com/Features/Core-Concepts.htm#client-profile
+links-solaceCloud-setup: http://datago.io/tutorials
 
 #----------------------------------------------------
 # Generally don't modify items below this point

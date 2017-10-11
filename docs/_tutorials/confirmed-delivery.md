@@ -1,27 +1,29 @@
 ---
 layout: tutorials
 title: Confirmed Delivery
-summary: Learn how to confirm that your messages are received by a Solace message router.
+summary: Learn how to confirm your messages are delivered to Solace messaging.
 icon: I_dev_confirm.svg
+links:
+    - label: ConfirmedPublish.java
+      link: /blob/master/src/main/java/com/solace/samples/ConfirmedPublish.java
 ---
 
-This tutorial builds on the basic concepts introduced in [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues) tutorial and will show you how to properly process publisher acknowledgements. Once an acknowledgement for a message has been received and processed, you have confirmed your persistent messages have been properly accepted by the Solace message router and therefore can be guaranteed of no message loss.
 
-![confirmed-delivery]({{ site.baseurl }}/images/confirmed-delivery.png)
+This tutorial builds on the basic concepts introduced in [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues) tutorial and will show you how to properly process publisher acknowledgements. Once an acknowledgement for a message has been received and processed, you have confirmed your persistent messages have been properly accepted by the Solace message router and therefore can be guaranteed of no message loss.
 
 ## Assumptions
 
 This tutorial assumes the following:
 
 *   You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-*   You have access to a running Solace message router with the following configuration:
-    *   Enabled message VPN configured for guaranteed messaging support.
-    *   Enabled client username.
+*   You have access to Solace messaging with the following configuration details:
+    *   Connectivity information for a Solace message-VPN configured for guaranteed messaging support
+    *   Enabled client username and password
     *   Client-profile enabled with guaranteed messaging permissions.
 
-Note that one simple way to get access to a Solace message router is to start a Solace VMR load [as outlined here]({{ site.docs-vmr-setup }}){:target="_top"}. By default the Solace VMR will with the “default” message VPN configured and ready for guaranteed messaging. Going forward, this tutorial assumes that you are using the Solace VMR. If you are using a different Solace message router configuration adapt the tutorial appropriately to match your configuration.
-
-The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
+{% if jekyll.environment == 'solaceCloud' %}
+One simple way to get access to Solace messaging quickly is to create a messaging service in Solace Cloud [as outlined here]({{ site.links-solaceCloud-setup}}){:target="_top"}. You can find other ways to get access to Solace messaging on the [home page]({{ site.baseurl }}/) of these tutorials.
+{% endif %}  
 
 ## Goals
 
@@ -29,35 +31,14 @@ The goal of this tutorial is to understand the following:
 
 *  How to properly handle persistent message acknowledgements on message send.
 
-## Obtaining the Solace API
 
-This tutorial depends on you having the Solace Messaging API for Java (JCSMP). Here are a few easy ways to get the Java API. The instructions in the [Building](#building) section assume you're using Gradle and pulling the jars from maven central. If your environment differs then adjust the build instructions appropriately.
+{% if jekyll.environment == 'solaceCloud' %}
+  {% include solaceMessaging-cloud.md %}
+{% else %}
+    {% include solaceMessaging.md %}
+{% endif %}  
+{% include solaceApi.md %}
 
-### Get the API: Using Gradle
-
-```
-compile("com.solacesystems:sol-jcsmp:10.+")
-```
-
-### Get the API: Using Maven
-
-```
-<dependency>
-  <groupId>com.solacesystems</groupId>
-  <artifactId>sol-jcsmp</artifactId>
-  <version>10.+</version>
-</dependency>
-```
-
-### Get the API: Using the Solace Developer Portal
-
-The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples.
-
-## Trying it yourself
-
-This tutorial is available in [GitHub]({{ site.repository }}){:target="_blank"} along with the other [Solace Developer Getting Started Examples]({{ site.links-get-started }}){:target="_top"}.
-
-At the end, this tutorial walks through downloading and running the sample from source.
 
 ## Message Acknowledgement Correlation
 
@@ -96,8 +77,9 @@ First, connect to the Solace message router in exactly the same way as other tut
 ```java
 final JCSMPProperties properties = new JCSMPProperties();
 properties.setProperty(JCSMPProperties.HOST, args[0]);
-properties.setProperty(JCSMPProperties.VPN_NAME, "default");
-properties.setProperty(JCSMPProperties.USERNAME, "tutorialUser");
+properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]);
+properties.setProperty(JCSMPProperties.PASSWORD, args[2]);
+properties.setProperty(JCSMPProperties.VPN_NAME,  args[1].split("@")[1]);
 final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
 session.connect();
 ```
@@ -176,11 +158,15 @@ class PubCallback implements JCSMPStreamingPublishCorrelatingEventHandler {
 
 The full source code for this example is available in [GitHub]({{ site.repository }}){:target="_blank"}. If you combine the example source code shown above results in the following source:
 
-*   [ConfirmedPublish.java]({{ site.repository }}/blob/master/src/main/java/com/solace/samples/ConfirmedPublish.java){:target="_blank"}
+<ul>
+{% for item in page.links %}
+<li><a href="{{ site.repository }}{{ item.link }}" target="_blank">{{ item.label }}</a></li>
+{% endfor %}
+</ul>
 
 ### Getting the Source
 
-Clone the GitHub repository containing the Solace samples.
+This tutorial is available in GitHub.  To get started, clone the GitHub repository containing the Solace samples.
 
 ```
 git clone {{ site.repository }}
@@ -188,6 +174,8 @@ cd {{ site.baseurl | remove: '/'}}
 ```
 
 ### Building
+
+The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
 
 Building these examples is simple.  You can simply build the project using Gradle.
 
@@ -202,7 +190,7 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 Run the example from the command line as follows.
 
 ```
-$ ./build/staged/bin/confirmedPublish <HOST>
+$ ./build/staged/bin/confirmedPublish <host:port> <client-username@message-vpn> <client-password>
 ```
 
 You have now successfully sent persistent messages to a Solace router and confirmed its receipt by correlating the acknowledgement.
