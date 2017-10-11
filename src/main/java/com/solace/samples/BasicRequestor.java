@@ -37,17 +37,30 @@ public class BasicRequestor {
 
     public static void main(String... args) throws JCSMPException {
         // Check command line arguments
-        if (args.length < 1) {
-            System.out.println("Usage: BasicRequestor <msg_backbone_ip:port>");
+        if (args.length != 3 || args[1].split("@").length != 2) {
+            System.out.println("Usage: BasicRequestor <host:port> <client-username@message-vpn> <client-password>");
+            System.out.println();
             System.exit(-1);
         }
+        if (args[1].split("@")[0].isEmpty()) {
+            System.out.println("No client-username entered");
+            System.out.println();
+            System.exit(-1);
+        }
+        if (args[1].split("@")[1].isEmpty()) {
+            System.out.println("No message-vpn entered");
+            System.out.println();
+            System.exit(-1);
+        }
+
         System.out.println("BasicRequestor initializing...");
 
         // Create a JCSMP Session
         final JCSMPProperties properties = new JCSMPProperties();
-        properties.setProperty(JCSMPProperties.HOST, args[0]);      // msg-backbone ip:port
-        properties.setProperty(JCSMPProperties.VPN_NAME, "default"); // message-vpn
-        properties.setProperty(JCSMPProperties.USERNAME, "clientUsername"); // client-username (assumes no password)
+        properties.setProperty(JCSMPProperties.HOST, args[0]);     // host:port
+        properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]); // client-username
+        properties.setProperty(JCSMPProperties.PASSWORD, args[2]); // client-password
+        properties.setProperty(JCSMPProperties.VPN_NAME,  args[1].split("@")[1]); // message-vpn
         final JCSMPSession session =  JCSMPFactory.onlyInstance().createSession(properties);
         session.connect();
 
@@ -57,9 +70,11 @@ public class BasicRequestor {
         /** Anonymous inner-class for handling publishing events */
         @SuppressWarnings("unused")
         XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
+            @Override
             public void responseReceived(String messageID) {
                 System.out.println("Producer received response for msg: " + messageID);
             }
+            @Override
             public void handleError(String messageID, JCSMPException e, long timestamp) {
                 System.out.printf("Producer received error for msg: %s@%s - %s%n",
                         messageID,timestamp,e);
