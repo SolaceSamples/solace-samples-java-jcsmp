@@ -37,8 +37,18 @@ public class QueueConsumer {
 
     public static void main(String... args) throws JCSMPException, InterruptedException {
         // Check command line arguments
-        if (args.length != 4) {
-            System.out.println("Usage: QueueConsumer <host:port> <client-username> <client-password> <message-vpn> ");
+        if (args.length != 3 || args[1].split("@").length != 2) {
+            System.out.println("Usage: QueueConsumer <host:port> <client-username@message-vpn> <client-password>");
+            System.out.println();
+            System.exit(-1);
+        }
+        if (args[1].split("@")[0].isEmpty()) {
+            System.out.println("No client-username entered");
+            System.out.println();
+            System.exit(-1);
+        }
+        if (args[1].split("@")[1].isEmpty()) {
+            System.out.println("No message-vpn entered");
             System.out.println();
             System.exit(-1);
         }
@@ -47,9 +57,9 @@ public class QueueConsumer {
         // Create a JCSMP Session
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);     // host:port
-        properties.setProperty(JCSMPProperties.USERNAME, args[1]); // client-username
+        properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]); // client-username
         properties.setProperty(JCSMPProperties.PASSWORD, args[2]); // client-password
-        properties.setProperty(JCSMPProperties.VPN_NAME, args[3]); // message-vpn
+        properties.setProperty(JCSMPProperties.VPN_NAME,  args[1].split("@")[1]); // message-vpn
         final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
         session.connect();
 
