@@ -191,7 +191,7 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 If you start the `TopicSubscriber`, with the required arguments of your Solace messaging, it will connect and wait for a message.
 
 ```
-$ ./build/staged/bin/topicSubscriber <host:port> <client-username@message-vpn> <client-password>
+$ ./build/staged/bin/topicSubscriber <host:port> <client-username>@<message-vpn> <client-password>
 TopicSubscriber initializing...
 Connected. Awaiting message...
 ```
@@ -199,7 +199,7 @@ Connected. Awaiting message...
 Then you can send a message using the `TopicPublisher` with the same arguments. If successful, the output for the producer will look like the following:
 
 ```
-$ ./build/staged/bin/topicPublisher <host:port> <client-username@message-vpn> <client-password>
+$ ./build/staged/bin/topicPublisher <host:port> <client-username>@<message-vpn> <client-password>
 Topic Publisher initializing...
 Connected. About to send message 'Hello world!' to topic 'tutorial/topic'...
 Message sent. Exiting.

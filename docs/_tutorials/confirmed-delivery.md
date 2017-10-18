@@ -190,7 +190,7 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 Run the example from the command line as follows.
 
 ```
-$ ./build/staged/bin/confirmedPublish <host:port> <client-username@message-vpn> <client-password>
+$ ./build/staged/bin/confirmedPublish <host:port> <client-username>@<message-vpn> <client-password>
 ```
 
 You have now successfully sent persistent messages to a Solace router and confirmed its receipt by correlating the acknowledgement.

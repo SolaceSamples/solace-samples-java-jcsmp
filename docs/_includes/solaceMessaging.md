@@ -31,7 +31,18 @@ This tutorial requires access Solace messaging and requires that you know severa
   </tr>
 </table>
 
-### Get access to a Solace appliance
+### Option 1: Start a Solace VMR
+
+* Follow [these instructions]({{ site.docs-vmr-setup }}){:target="_top"} to start the Solace VMR in leading Clouds, Container Platforms or Hypervisors. The tutorials outline where to download and and how to install the Solace VMR.
+* The messaging connectivity information are the following:
+    * Host: \<public_ip> (IP address assigned to the VMR in tutorial instructions)
+    * Message VPN: default
+    * Client Username: sampleUser (can be any value)
+    * Client Password: samplePassword (can be any value)
+
+    Note: By default, the Solace VMR "default" message VPN has authentication disabled.
+
+### Option 2: Get access to a Solace appliance
 
 * Contact your Solace appliance administrators and obtain the following:
     * A Solace Message-VPN where you can produce and consume direct and persistent messages
