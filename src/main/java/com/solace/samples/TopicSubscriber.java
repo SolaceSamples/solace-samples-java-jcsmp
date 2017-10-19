@@ -36,17 +36,31 @@ public class TopicSubscriber {
     public static void main(String... args) throws JCSMPException {
 
         // Check command line arguments
-        if (args.length < 1) {
-            System.out.println("Usage: TopicSubscriber <msg_backbone_ip:port>");
+        if (args.length != 3 || args[1].split("@").length != 2) {
+            System.out.println("Usage: TopicSubscriber <host:port> <client-username@message-vpn> <client-password>");
+            System.out.println();
             System.exit(-1);
         }
+        if (args[1].split("@")[0].isEmpty()) {
+            System.out.println("No client-username entered");
+            System.out.println();
+            System.exit(-1);
+        }
+        if (args[1].split("@")[1].isEmpty()) {
+            System.out.println("No message-vpn entered");
+            System.out.println();
+            System.exit(-1);
+        }
+
         System.out.println("TopicSubscriber initializing...");
         final JCSMPProperties properties = new JCSMPProperties();
-        properties.setProperty(JCSMPProperties.HOST, args[0]); // msg-backbone ip:port
-        properties.setProperty(JCSMPProperties.VPN_NAME, "default"); // message-vpn
-        properties.setProperty(JCSMPProperties.USERNAME, "helloWorldTutorial"); // client-username (assumes no password)
+        properties.setProperty(JCSMPProperties.HOST, args[0]);     // host:port
+        properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]); // client-username
+        properties.setProperty(JCSMPProperties.PASSWORD, args[2]); // client-password
+        properties.setProperty(JCSMPProperties.VPN_NAME,  args[1].split("@")[1]); // message-vpn
         final Topic topic = JCSMPFactory.onlyInstance().createTopic("tutorial/topic");
         final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
+
         session.connect();
 
         final CountDownLatch latch = new CountDownLatch(1); // used for
@@ -54,6 +68,7 @@ public class TopicSubscriber {
         /** Anonymous inner-class for MessageListener
          *  This demonstrates the async threaded message callback */
         final XMLMessageConsumer cons = session.getMessageConsumer(new XMLMessageListener() {
+            @Override
             public void onReceive(BytesXMLMessage msg) {
                 if (msg instanceof TextMessage) {
                     System.out.printf("TextMessage received: '%s'%n",
@@ -64,6 +79,8 @@ public class TopicSubscriber {
                 System.out.printf("Message Dump:%n%s%n",msg.dump());
                 latch.countDown();  // unblock main thread
             }
+
+            @Override
             public void onException(JCSMPException e) {
                 System.out.printf("Consumer received exception: %s%n",e);
                 latch.countDown();  // unblock main thread

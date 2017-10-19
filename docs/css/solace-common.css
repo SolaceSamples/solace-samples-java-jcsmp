@@ -117,7 +117,6 @@ img {
 article {
     background: white;
     border: 1px solid #CCC;
-    border-radius: 4px;
     padding: 30px;
     color: rgba(0, 0, 0, 0.8);
     min-width: 400px;
@@ -243,7 +242,7 @@ aside .nav {
 }
 
 .tutorials .card:hover {
-			top: 8px;
+			bottom: 3px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 
 }

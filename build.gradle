@@ -47,7 +47,7 @@ repositories {
 
 dependencies {
     // Solace Messaging API for Java Dependencies
-    compile("com.solacesystems:sol-jcsmp:10.+")
+    compile("com.solacesystems:sol-jcsmp:10.2.0")
 }
 
 task createAllStartScripts() << {
