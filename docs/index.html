@@ -2,6 +2,7 @@
 layout: default
 ---
 <section class="index">
+    {% if jekyll.environment != 'solaceCloud' %}
     <div class="title">
         <div class="container">
             <div class="row">
@@ -35,6 +36,7 @@ layout: default
             </div>
         </div>
     </div>
+    {% endif %}
     <div class="body">
         <div class="container">
             {% include intro.html %}
