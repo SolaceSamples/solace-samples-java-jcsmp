@@ -2,6 +2,7 @@
 layout: default
 ---
 <section class="index">
+   {% if jekyll.environment != 'solaceCloud' %}
     <div class="title">
         <div class="container">
             <div class="row">
@@ -35,11 +36,12 @@ layout: default
             </div>
         </div>
     </div>
+    {% endif %}
     <div class="body">
         <div class="container">
             {% if jekyll.environment != 'solaceCloud' %}
-              {% include intro.html %}
-            {% endif %}
+                {% include intro.html %}
+            {% endif %}    
             <div class="row">
                 <div class="col s12">
                     <h2>Get Coding with the API</h2>
