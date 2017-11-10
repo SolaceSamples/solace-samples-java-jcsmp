@@ -47,7 +47,7 @@ header nav li a {
 .github-solace-cloud {
     position: absolute;
     right: 50px;
-    top: 10px;
+    top: 30px;
     width: 180px;
 }
 
@@ -57,13 +57,13 @@ header nav li a {
 }
 
 .container .title-row {
-    margin-top: 10px;
-    margin-bottom: 60px;
+    padding-top: 20px;
+    padding-bottom: 70px;
     margin-right: -0.75rem;
 }
 
 .solace-cloud-space {
-    margin-top: 15px;
+    padding-top: 30px;
 }
 
 /*******************************************************************************
