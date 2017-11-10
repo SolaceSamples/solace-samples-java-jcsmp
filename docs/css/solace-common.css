@@ -120,6 +120,7 @@ article {
     padding: 30px;
     color: rgba(0, 0, 0, 0.8);
     min-width: 400px;
+    padding-top: 10px;
 }
 
 article ul li {
@@ -152,7 +153,7 @@ article p {
 aside {
     position: absolute;
     right: 0;
-    top: 60px;
+    top: 30px;
     width: 245px;
     padding-left: 28px;
 }
@@ -169,8 +170,8 @@ aside select {
 aside .nav {
     padding: 10px 0;
     margin: 20px 0;
-    border-top: 1px solid #DDD;
-    border-bottom: 1px solid #DDD;
+    /*border-top: 1px solid #DDD;*/
+    /*border-bottom: 1px solid #DDD;*/
 }
 
 @media only screen and (max-width : 760px) {
@@ -268,9 +269,9 @@ aside .nav {
 h4.navheading {
     text-transform: uppercase;
     padding: 0 0 10px 20px;
-    margin-left: -28px;
+    margin-left: -22px;
     display: inline-block;
-    border-bottom: 1px #c9c9c9 solid;
+    /*border-bottom: 1px #c9c9c9 solid;*/
     font-size: 16px;
 }
 
