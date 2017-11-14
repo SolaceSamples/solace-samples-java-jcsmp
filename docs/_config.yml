@@ -17,7 +17,7 @@ docs-api-ref: http://docs.solace.com/API-Developer-Online-Ref-Documentation/java
 docs-gm-rr: http://docs.solace.com/Solace-Messaging-APIs/Request-Reply-Messaging.htm
 docs-topic-queue: http://docs.solace.com/Features/Core-Concepts.htm#topic-queue-mapping
 docs-client-profile: http://docs.solace.com/Features/Core-Concepts.htm#client-profile
-links-solaceCloud-setup: http://datago.io/tutorials
+links-solaceCloud-setup: http://cloud.solace.com/create-messaging-service/
 
 #----------------------------------------------------
 # Generally don't modify items below this point
