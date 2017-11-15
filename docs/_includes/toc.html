@@ -14,26 +14,34 @@
     <select name="menu" onchange="top.window.location = this.value">
         <option value="#" selected>Pick Another API</option>
         <optgroup label="Solace APIs">
-            <option value="http://dev.solace.com//get-started/c-tutorials/">C</option>
-            <option value="http://dev.solace.com//get-started/dotnet-tutorials/">C#/.NET</option>
-            <option value="http://dev.solace.com//get-started/java-tutorials/">Java</option>
-            <option value="http://dev.solace.com//get-started/javascript-tutorials/">JavaScript</option>
-            <option value="http://dev.solace.com//get-started/node-js-tutorials/">Node.js</option>
+            {% if jekyll.environment == 'solaceCloud' %}
+                {% for item in site.solace-apis-cloud %}
+                    <option value="{{item.value}}">{{item.name}}</option>
+                {% endfor %}
+            {% else %}
+                {% for item in site.solace-apis-dev %}
+                    <option value="{{item.value}}">{{item.name}}</option>
+                {% endfor %}
+            {% endif %}
         </optgroup>
         <optgroup label="Open APIs & Protocols">
-            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-11/">AMQP - JMS 1.1 </option>
-            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-2/">AMQP - JMS 2.0</option>
-            <option value="http://dev.solace.com/get-started/amqp-tutorials-node-js/">AMQP - Node.js</option>
-            <option value="http://dev.solace.com//get-started/mqtt-tutorials/">MQTT - Eclipse Paho Java</option>
-            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-11/">JMS 1.1 - Apache Qpid </option>
-            <option value="http://dev.solace.com/get-started/amqp-tutorials-jms-2/">JMS 2.0 - Apache Qpid</option>
-            <option value="http://dev.solace.com//get-started/jms-tutorials/">JMS 1.1 - Solace </option>
-            <option value="http://dev.solace.com//get-started/openmama-tutorials/">OpenMAMA</option>
-            <option value="http://dev.solace.com//get-started/rest-tutorials/">REST Messaging</option>
+            {% if jekyll.environment == 'solaceCloud' %}
+                {% for item in site.open-apis-cloud %}
+                    <option value="{{item.value}}">{{item.name}}</option>
+                {% endfor %}
+            {% else %}
+                {% for item in site.open-apis-dev %}
+                    <option value="{{item.value}}">{{item.name}}</option>
+                {% endfor %}
+            {% endif %}
         </optgroup>
-        <optgroup label="Other Environments">
-            <option value="http://dev.solace.com//get-started/pcf-tutorials/">Pivotal Cloud Foundry</option>
-        </optgroup>
+        {% if jekyll.environment != 'solaceCloud' %}
+            <optgroup label="Other Environments">
+                {% for item in site.other-environments-dev %}
+                    <option value="{{item.value}}">{{item.name}}</option>
+                {% endfor %}
+            </optgroup>
+        {% endif %}
     </select>
 </div>
 <div class="github">
