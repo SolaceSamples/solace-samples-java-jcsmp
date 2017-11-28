@@ -1,7 +1,7 @@
 
 ## Get Solace Messaging
 
-This tutorial requires access Solace messaging and requires that you know several connectivity properties about your Solace messaging. Specifically you need to know the following:
+This tutorial requires access to Solace messaging and requires that you know several connectivity properties about your Solace messaging. Specifically you need to know the following:
 
 <table>
   <tr>

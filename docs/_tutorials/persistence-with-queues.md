@@ -68,7 +68,7 @@ Provisioning an endpoint through the API requires the “Guaranteed Endpoint Cre
 Provisioning the queue involves three steps.
 
 *   Obtaining a Java API Queue object representing the queue you wish to create.
-*   Setting the Queue properties that you wish for your queue. This examples permits consumption of messages and sets the queue type to exclusive. More details on queue permissions can be found in the [Java developer documentation]({{ site.docs-api-ref }}){:target="_top"}.
+*   Setting the Queue properties that you wish for your queue. This examples permits consumption of messages and sets the queue type to exclusive. More details on queue permissions can be found in the [Java developer documentation]({{ site.docs-api-ref }}){:target="_top"} under EndpointProperties.
 *   Provisioning the Queue on the Solace message router
 
 The following code shows you this for the queue named `Q/tutorial`.
