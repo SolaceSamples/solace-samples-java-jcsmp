@@ -53,7 +53,7 @@ The goal of this tutorial is to understand the following:
 
 ## Connection setup
 
-First, connect to the Solace message router in almost exactly the same way as other tutorials. The difference is highlighted in bold and explained below.
+First, connect to the Solace message router in almost exactly the same way as other tutorials. The difference is explained below.
 
 ```java
 final JCSMPProperties properties = new JCSMPProperties();
@@ -73,11 +73,11 @@ The only difference in the above is the duplicate subscription processing boolea
 
 ## Review: Receiving message from a queue
 
-The [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues) tutorial demonstrated how to publish and receive messages from a queue. In doing this it used a JCSMPSession, XMLMessageProducer, and Consumer and this sample will do so in the same way. This sample will also depend on the endpoint being provisioned by through the API as was done in the previous tutorial. For clarity, this code is not repeated in the discussion but is included in the full working sample available in the summary section.
+The [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues) tutorial demonstrated how to publish and receive messages from a queue. In doing this, it used a JCSMPSession, XMLMessageProducer, and Consumer and this sample will do so in the same way. This sample will also depend on the endpoint being provisioned by through the API as was done in the previous tutorial. For clarity, this code is not repeated in the discussion but is included in the full working sample available in the summary section.
 
 ## Confirming Message Router Capabilities
 
-One convenient feature provided by the Java API is the Session capabilities. When a JCSMPSession connect to a Solace message router, they exchange a set of capabilities to determine levels of support for various API features. This enables the Solace APIs to remain compatible with Solace message routers even as they are upgraded to new loads.
+One convenient feature provided by the Java API is the Session capabilities. When a JCSMPSession connects to a Solace message router, they exchange a set of capabilities to determine levels of support for various API features. This enables the Solace APIs to remain compatible with Solace message routers even as they are upgraded to new loads.
 
 Applications can also make use of these capabilities to programmatically check for required features when connecting. The following code is an example of how this is done for the capabilities required by this tutorial.
 
@@ -93,11 +93,11 @@ if (session.isCapable(CapabilityType.PUB_GUARANTEED) &&
 }
 ```
 
-In this case the tutorial requires permission to send and receive guaranteed messages, configure endpoints and manage queue subscriptions. If these capabilities are not available on the message router the tutorial will not proceed. If these capabilities are missing, you update the client-profile used by the client-username to enable them. See the [Solace documentation]({{ site.docs-client-profile}}){:target="_top"} for details.
+In this case, the tutorial requires permission to send and receive guaranteed messages, configure endpoints, and manage queue subscriptions. If these capabilities are not available on the message router, the tutorial will not proceed. If these capabilities are missing, you update the client-profile used by the client-username to enable them. See the [Solace documentation]({{ site.docs-client-profile}}){:target="_top"} for details.
 
 ## Adding a Subscription to a Queue
 
-In order to enable a queue to participate in publish/subscribe messaging, you need to add topic subscriptions to the queue to attract messages. You do this from the JCSMPSession using the addSubscription() method. The queue destination is passed as the first argument and then topic subscription to add and any flags. This example asks the API to block until the subscription is confirmed to be on the Solace message router. The subscription added in this tutorial is `Q/tutorial/topicToQueueMapping`.
+In order to enable a queue to participate in publish/subscribe messaging, you need to add topic subscriptions to the queue to attract messages. You do this from the JCSMPSession using the addSubscription() method. The queue destination is passed as the first argument and then topic subscription to add and any flags. This example asks the API to block until the subscription is confirmed to be on the Solace message router. The subscription added in this tutorial is `T/mapped/topic/sample`.
 
 ```java
 Queue queue = JCSMPFactory.onlyInstance().createQueue("Q/tutorial/topicToQueueMapping");

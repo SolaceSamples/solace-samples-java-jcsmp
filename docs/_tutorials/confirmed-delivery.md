@@ -91,7 +91,7 @@ session.connect();
 The [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues) tutorial demonstrated how to send persistent messages using code very similar to the following. The only difference below is the message text and the loop.
 
 ```java
-for (int i = 1; i &amp;lt;= count; i++) {
+for (int i = 1; i <= count; i++) {
     TextMessage msg =   JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
     msg.setDeliveryMode(DeliveryMode.PERSISTENT);
     String text = "Confirmed Publish Tutorial! Message ID: "+ i;
@@ -103,7 +103,7 @@ for (int i = 1; i &amp;lt;= count; i++) {
 Adding a message correlation object to allow an application to easily correlate acknowledgements is accomplished using the `TextMessage.setCorrelationKey()` method where you pass in the object you want returned to your application in the acknowledgement callback. So after augmenting the publish code from above, you’re left with the following:
 
 ```java
-for (int i = 1; i &amp;lt;= count; i++) {
+for (int i = 1; i <= count; i++) {
     TextMessage msg =     JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
     msg.setDeliveryMode(DeliveryMode.PERSISTENT);
     String text = "Confirmed Publish Tutorial! Message ID: "+ i;
