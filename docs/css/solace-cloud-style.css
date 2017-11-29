@@ -82,27 +82,27 @@ body#top {
 }
 
 @font-face {font-family: 'entypo-fontello'; font-weight: normal; font-style: normal;
-    src: url('http://cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.eot?v=3');
-    src: url('http://cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.eot?v=3#iefix') format('embedded-opentype'),
-    url('http://cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.woff?v=3') format('woff'),
-    url('http://cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.ttf?v=3') format('truetype'),
-    url('http://cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.svg?v=3#entypo-fontello') format('svg');
+    src: url('//cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.eot?v=3');
+    src: url('//cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.eot?v=3#iefix') format('embedded-opentype'),
+    url('//cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.woff?v=3') format('woff'),
+    url('//cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.ttf?v=3') format('truetype'),
+    url('//cloud.solace.com/wp-content/themes/enfold/config-templatebuilder/avia-template-builder/assets/fonts/entypo-fontello.svg?v=3#entypo-fontello') format('svg');
 } #top .avia-font-entypo-fontello, body .avia-font-entypo-fontello, html body [data-av_iconfont='entypo-fontello']:before{ font-family: 'entypo-fontello'; }
 
 @font-face {font-family: 'Flaticon'; font-weight: normal; font-style: normal;
-    src: url('http://cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.eot');
-    src: url('http://cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.eot?#iefix') format('embedded-opentype'),
-    url('http://cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.woff') format('woff'),
-    url('http://cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.ttf') format('truetype'),
-    url('http://cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.svg#Flaticon') format('svg');
+    src: url('//cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.eot');
+    src: url('//cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.eot?#iefix') format('embedded-opentype'),
+    url('//cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.woff') format('woff'),
+    url('//cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.ttf') format('truetype'),
+    url('//cloud.solace.com/wp-content/uploads/avia_fonts/Flaticon/Flaticon.svg#Flaticon') format('svg');
 } #top .avia-font-Flaticon, body .avia-font-Flaticon, html body [data-av_iconfont='Flaticon']:before{ font-family: 'Flaticon'; }
 
 @font-face {font-family: 'flaticon'; font-weight: normal; font-style: normal;
-    src: url('http://cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.eot');
-    src: url('http://cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.eot?#iefix') format('embedded-opentype'),
-    url('http://cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.woff') format('woff'),
-    url('http://cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.ttf') format('truetype'),
-    url('http://cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.svg#flaticon') format('svg');
+    src: url('//cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.eot');
+    src: url('//cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.eot?#iefix') format('embedded-opentype'),
+    url('//cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.woff') format('woff'),
+    url('//cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.ttf') format('truetype'),
+    url('//cloud.solace.com/wp-content/uploads/avia_fonts/flaticon/flaticon.svg#flaticon') format('svg');
 } #top .avia-font-flaticon, body .avia-font-flaticon, html body [data-av_iconfont='flaticon']:before{ font-family: 'flaticon'; }
 
 /*******************************************************************************
