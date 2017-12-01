@@ -15,6 +15,8 @@ solace-apis-dev:
     name: C#/.NET
   - value: http://dev.solace.com/get-started/java-tutorials/
     name: Java
+  - value: http://dev.solace.com/get-started/java-rto-tutorials/
+    name: Java RTO
   - value: http://dev.solace.com/get-started/javascript-tutorials/
     name: JavaScript
   - value: http://dev.solace.com/get-started/node-js-tutorials/
@@ -49,6 +51,8 @@ solace-apis-cloud:
     name: C#/.NET
   - value: http://cloud.solace.com/samples/solace-samples-java/
     name: Java
+  - value: http://cloud.solace.com/samples/solace-samples-javarto/
+    name: Java RTO
   - value: http://cloud.solace.com/samples/solace-samples-javascript/
     name: JavaScript
   - value: http://cloud.solace.com/samples/solace-samples-nodejs/

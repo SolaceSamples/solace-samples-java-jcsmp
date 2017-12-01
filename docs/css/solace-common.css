@@ -73,7 +73,7 @@ img {
 .index .title .left {
     width: 100%;
     position: relative;
-    padding-right: 180px;
+    padding-right: 190px;
 }
 
 .index .title .col .github {
@@ -217,13 +217,9 @@ aside .nav {
     border-left: 1px solid #CCC;
 }
 
-.tutorials.setup .card-image img {
-    height: 200px;
-    padding-bottom: 50px;
-}
-
 .tutorials.learn .card-image {
     background: #9FB0BF;
+    position: relative
 }
 
 .tutorials .tutorial-description {
@@ -232,26 +228,32 @@ aside .nav {
 }
 
 .tutorials.learn .card-image img {
-    width: 200px !important;
     height: 200px;
     margin: auto;
     padding-bottom: 60px;
+    width: 100%
 }
 
 .tutorials .card {
     position: relative;
+    margin: 0.5rem 0 1rem 0;
 }
 
 .tutorials .card:hover {
 			bottom: 3px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
-
 }
 
 
-.tutorials .card-title {
+.tutorials .card .card-title {
     font-weight: 500 !important;
     z-index: 2;
+    color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    font-size: 24px;
 }
 
 .tutorials .card > a {
@@ -261,6 +263,29 @@ aside .nav {
     right: 0;
     left: 0;
     z-index: 1000;
+}
+
+.tutorials .card .card-content {
+  padding: 20px;
+  border-radius: 0 0 2px 2px
+}
+
+.tutorials .card .card-action {
+  position: relative;
+  background-color: inherit;
+  border-top: 1px solid rgba(160,160,160,0.2);
+  padding: 20px
+}
+
+.tutorials .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
+  color: #ffab40;
+  margin-right: 20px;
+  transition: color .3s ease;
+  text-transform: uppercase
+}
+
+.tutorials .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
+  color: #ffd8a6
 }
 
 /*******************************************************************************
