@@ -18,6 +18,7 @@ docs-gm-rr: http://docs.solace.com/Solace-Messaging-APIs/Request-Reply-Messaging
 docs-topic-queue: http://docs.solace.com/Features/Core-Concepts.htm#topic-queue-mapping
 docs-client-profile: http://docs.solace.com/Features/Core-Concepts.htm#client-profile
 links-solaceCloud-setup: http://cloud.solace.com/create-messaging-service/
+docs-api-endpoints: https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/EndpointProperties.html
 solace-apis-dev:
   - value: http://dev.solace.com/get-started/c-tutorials/
     name: C
@@ -25,6 +26,8 @@ solace-apis-dev:
     name: C#/.NET
   - value: http://dev.solace.com/get-started/java-tutorials/
     name: Java
+  - value: http://dev.solace.com/get-started/java-rto-tutorials/
+    name: Java RTO
   - value: http://dev.solace.com/get-started/javascript-tutorials/
     name: JavaScript
   - value: http://dev.solace.com/get-started/node-js-tutorials/
@@ -59,6 +62,8 @@ solace-apis-cloud:
     name: C#/.NET
   - value: http://cloud.solace.com/samples/solace-samples-java/
     name: Java
+  - value: http://cloud.solace.com/samples/solace-samples-javarto/
+    name: Java RTO
   - value: http://cloud.solace.com/samples/solace-samples-javascript/
     name: JavaScript
   - value: http://cloud.solace.com/samples/solace-samples-nodejs/

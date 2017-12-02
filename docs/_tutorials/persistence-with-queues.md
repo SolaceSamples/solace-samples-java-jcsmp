@@ -68,7 +68,7 @@ Provisioning an endpoint through the API requires the “Guaranteed Endpoint Cre
 Provisioning the queue involves three steps.
 
 *   Obtaining a Java API Queue object representing the queue you wish to create.
-*   Setting the Queue properties that you wish for your queue. This examples permits consumption of messages and sets the queue type to exclusive. More details on queue permissions can be found in the [Java developer documentation]({{ site.docs-api-ref }}){:target="_top"} under EndpointProperties.
+*   Setting the Queue properties that you wish for your queue. This examples permits consumption of messages and sets the queue type to exclusive. More details on queue permissions can be found in the [Java developer documentation]({{ site.docs-api-endpoints }}){:target="_top"}.
 *   Provisioning the Queue on the Solace message router
 
 The following code shows you this for the queue named `Q/tutorial`.
@@ -87,7 +87,7 @@ endpointProps.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
 session.provision(queue, endpointProps, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
 ~~~
 
-The ignore already exists flags signals to the API that the application is tolerate of the queue already existing even if it’s properties are different than those specified in the endpoint properties.
+The ignore already exists flags signals to the API that the application is tolerate of the queue already existing.
 
 ## Sending a message to a queue
 
@@ -222,7 +222,7 @@ This tutorial is available in GitHub.  To get started, clone the GitHub reposito
 
 ```
 git clone {{ site.repository }}
-cd {{ site.baseurl | remove: '/'}}
+cd {{ site.repository | split: '/' | last}}
 ```
 
 ### Building

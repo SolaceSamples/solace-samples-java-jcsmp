@@ -173,7 +173,7 @@ This tutorial is available in GitHub.  To get started, clone the GitHub reposito
 
 ```
 git clone {{ site.repository }}
-cd {{ site.baseurl | remove: '/'}}
+cd {{ site.repository | split: '/' | last}}
 ```
 
 ### Building

@@ -6,7 +6,7 @@ This tutorial depends on you having the Solace Messaging API for Java (JCSMP). H
 ### Get the API: Using Gradle
 
 ```
-compile("com.solacesystems:sol-jcsmp:10.+")
+compile("com.solacesystems:sol-jcsmp:10.2.0")
 ```
 
 ### Get the API: Using Maven
