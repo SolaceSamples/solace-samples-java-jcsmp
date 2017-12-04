@@ -33,7 +33,7 @@ This tutorial requires access to Solace messaging and requires that you know sev
 
 ### Option 1: Start a Solace VMR
 
-* Follow [these instructions]({{ site.docs-vmr-setup }}){:target="_top"} to start the Solace VMR in leading Clouds, Container Platforms or Hypervisors. The tutorials outline where to download and and how to install the Solace VMR.
+* Follow [these instructions]({{ site.docs-vmr-setup }}){:target="_top"} to start the Solace VMR in leading Clouds, Container Platforms or Hypervisors. The tutorials outline where to download and how to install the Solace VMR.
 * The messaging connectivity information are the following:
     * Host: \<public_ip> (IP address assigned to the VMR in tutorial instructions)
     * Message VPN: default
