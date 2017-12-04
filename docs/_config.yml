@@ -7,80 +7,85 @@ repository: https://github.com/SolaceSamples/solace-samples-java
 # Also see _includes/intro.html to customize the description which gets included in index.html.
 
 # Links
-links-get-started: http://dev.solace.com/get-started/java-tutorials/
-links-downloads: http://dev.solace.com/downloads/
-links-community: http://dev.solace.com/community/
-docs-vmr-setup: http://docs.solace.com/Solace-VMR-Set-Up/Setting-Up-VMRs.htm
-docs-core-concepts: http://docs.solace.com/Features/Core-Concepts.htm
-docs-endpoints: http://docs.solace.com/Features/Core-Concepts.htm#endpoints
-docs-api-ref: http://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html
-docs-gm-rr: http://docs.solace.com/Solace-Messaging-APIs/Request-Reply-Messaging.htm
-docs-topic-queue: http://docs.solace.com/Features/Core-Concepts.htm#topic-queue-mapping
-docs-client-profile: http://docs.solace.com/Features/Core-Concepts.htm#client-profile
-links-solaceCloud-setup: http://cloud.solace.com/create-messaging-service/
+links-get-started: //dev.solace.com/get-started/java-tutorials/
+links-downloads: //dev.solace.com/downloads/
+links-community: //dev.solace.com/community/
+docs-vmr-setup: //docs.solace.com/Solace-VMR-Set-Up/Setting-Up-VMRs.htm
+docs-core-concepts: //docs.solace.com/Features/Core-Concepts.htm
+docs-endpoints: //docs.solace.com/Features/Core-Concepts.htm#endpoints
+docs-api-ref: //docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html
+docs-gm-rr: //docs.solace.com/Solace-Messaging-APIs/Request-Reply-Messaging.htm
+docs-topic-queue: //docs.solace.com/Features/Core-Concepts.htm#topic-queue-mapping
+docs-client-profile: //docs.solace.com/Features/Core-Concepts.htm#client-profile
+links-solaceCloud-setup: //cloud.solace.com/create-messaging-service/
+docs-api-endpoints: //docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/EndpointProperties.html
 solace-apis-dev:
-  - value: http://dev.solace.com/get-started/c-tutorials/
+  - value: //dev.solace.com/get-started/c-tutorials/
     name: C
-  - value: http://dev.solace.com/get-started/dotnet-tutorials/
+  - value: //dev.solace.com/get-started/dotnet-tutorials/
     name: C#/.NET
-  - value: http://dev.solace.com/get-started/java-tutorials/
+  - value: //dev.solace.com/get-started/java-tutorials/
     name: Java
-  - value: http://dev.solace.com/get-started/javascript-tutorials/
+  - value: //dev.solace.com/get-started/java-rto-tutorials/
+    name: Java RTO
+  - value: //dev.solace.com/get-started/javascript-tutorials/
     name: JavaScript
-  - value: http://dev.solace.com/get-started/node-js-tutorials/
+  - value: //dev.solace.com/get-started/node-js-tutorials/
     name: Node.js
 open-apis-dev:
-  - value: http://dev.solace.com/get-started/amqp-tutorials-jms-11/
+  - value: //dev.solace.com/get-started/amqp-tutorials-jms-11/
     name: AMQP - JMS 1.1
-  - value: http://dev.solace.com/get-started/amqp-tutorials-jms-2/
+  - value: //dev.solace.com/get-started/amqp-tutorials-jms-2/
     name: AMQP - JMS 2.0
-  - value: http://dev.solace.com/get-started/amqp-tutorials-node-js/
+  - value: //dev.solace.com/get-started/amqp-tutorials-node-js/
     name: AMQP - Node.js
-  - value: http://dev.solace.com/get-started/mqtt-tutorials/
+  - value: //dev.solace.com/get-started/mqtt-tutorials/
     name: MQTT - Eclipse Paho Java
-  - value: http://dev.solace.com/get-started/amqp-tutorials-jms-11/
+  - value: //dev.solace.com/get-started/amqp-tutorials-jms-11/
     name: JMS 1.1 - Apache Qpid
-  - value: http://dev.solace.com/get-started/amqp-tutorials-jms-2/
+  - value: //dev.solace.com/get-started/amqp-tutorials-jms-2/
     name: JMS 2.0 - Apache Qpid
-  - value: http://dev.solace.com/get-started/jms-tutorials/
+  - value: //dev.solace.com/get-started/jms-tutorials/
     name: JMS 1.1 - Solace
-  - value: http://dev.solace.com/get-started/openmama-tutorials/
+  - value: //dev.solace.com/get-started/openmama-tutorials/
     name: OpenMAMA
-  - value: http://dev.solace.com/get-started/rest-tutorials/
+  - value: //dev.solace.com/get-started/rest-tutorials/
     name: REST Messaging
 other-environments-dev:
-  - value: http://dev.solace.com/get-started/pcf-tutorials/
+  - value: //dev.solace.com/get-started/pcf-tutorials/
     name: Pivotal Cloud Foundry
 
 solace-apis-cloud:
-  - value: http://cloud.solace.com/samples/solace-samples-c/
+  - value: //cloud.solace.com/samples/solace-samples-c/
     name: C
-  - value: http://cloud.solace.com/samples/solace-samples-dotnet/
+  - value: //cloud.solace.com/samples/solace-samples-dotnet/
     name: C#/.NET
-  - value: http://cloud.solace.com/samples/solace-samples-java/
+  - value: //cloud.solace.com/samples/solace-samples-java/
     name: Java
-  - value: http://cloud.solace.com/samples/solace-samples-javascript/
+  - value: //cloud.solace.com/samples/solace-samples-javarto/
+    name: Java RTO
+  - value: //cloud.solace.com/samples/solace-samples-javascript/
     name: JavaScript
-  - value: http://cloud.solace.com/samples/solace-samples-nodejs/
+  - value: //cloud.solace.com/samples/solace-samples-nodejs/
     name: Node.js
 open-apis-cloud:
-  - value: http://cloud.solace.com/samples/solace-samples-amqp-qpid-jms1/
+  - value: //cloud.solace.com/samples/solace-samples-amqp-qpid-jms1/
     name: AMQP - JMS 1.1
-  - value: http://cloud.solace.com/samples/solace-samples-amqp-qpid-jms2/
+  - value: //cloud.solace.com/samples/solace-samples-amqp-qpid-jms2/
     name: AMQP - JMS 2.0
-  - value: http://cloud.solace.com/samples/solace-samples-amqp-nodejs/
+  - value: //cloud.solace.com/samples/solace-samples-amqp-nodejs/
     name: AMQP - Node.js
-  - value: http://cloud.solace.com/samples/solace-samples-mqtt/
+  - value: //cloud.solace.com/samples/solace-samples-mqtt/
     name: MQTT - Eclipse Paho Java
-  - value: http://cloud.solace.com/samples/solace-samples-amqp-qpid-jms1/
+  - value: //cloud.solace.com/samples/solace-samples-amqp-qpid-jms1/
     name: JMS 1.1 - Apache Qpid
-  - value: http://cloud.solace.com/samples/solace-samples-amqp-qpid-jms2/
+  - value: //cloud.solace.com/samples/solace-samples-amqp-qpid-jms2/
     name: JMS 2.0 - Apache Qpid
-  - value: http://cloud.solace.com/samples/solace-samples-jms/
+  - value: //cloud.solace.com/samples/solace-samples-jms/
     name: JMS 1.1 - Solace
-  - value: http://cloud.solace.com/samples/solace-samples-openmama/
+  - value: //cloud.solace.com/samples/solace-samples-openmama/
     name: OpenMAMA
-  - value: http://cloud.solace.com/samples/solace-samples-rest-messaging/
+  - value: //cloud.solace.com/samples/solace-samples-rest-messaging/
     name: REST Messaging
 
 #----------------------------------------------------
