@@ -4,6 +4,8 @@
   {% include head.html %}
   {% if jekyll.environment == 'solaceCloud' %}
     {% include solace-cloud-dependency.html %}
+  {% else %}
+    {% include dev-solace-dependency.html %}
   {% endif %}
 
   <body id="top" class="wrap wider">
@@ -11,12 +13,16 @@
     {% if jekyll.environment == 'solaceCloud' %}
       {% include solace-cloud-header-base.html %}
       {% include solace-cloud-header-sample.html %}
+    {% else %}
+      {% include dev-solace-header-base.html %}
     {% endif %}
 
     {{ content }}
 
     {% if jekyll.environment == 'solaceCloud' %}
       {% include solace-cloud-footer.html %}
+    {% else %}
+      {% include dev-solace-footer.html %}
     {% endif %}
   </body>
 </html>
