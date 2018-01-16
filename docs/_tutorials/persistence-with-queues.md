@@ -23,11 +23,8 @@ This tutorial assumes the following:
     *   Enabled client username and password
     *   Client-profile enabled with guaranteed messaging permissions.
 
-{% if jekyll.environment == 'solaceCloud' %}
 One simple way to get access to Solace messaging quickly is to create a messaging service in Solace Cloud [as outlined here]({{ site.links-solaceCloud-setup}}){:target="_top"}. You can find other ways to get access to Solace messaging below.
-{% else %}
-One simple way to get access to a Solace message router is to start a Solace VMR load [as outlined here]({{ site.docs-vmr-setup }}){:target="_top"}. By default the Solace VMR will with the “default” message VPN configured and ready for guaranteed messaging. Going forward, this tutorial assumes that you are using the Solace VMR. If you are using a different Solace message router configuration adapt the tutorial appropriately to match your configuration.
-{% endif %}
+
 
 ## Goals
 
@@ -38,11 +35,8 @@ The goal of this tutorial is to understand the following:
 3.  How to bind to this queue and receive a persistent message
 
 
-{% if jekyll.environment == 'solaceCloud' %}
-  {% include solaceMessaging-cloud.md %}
-{% else %}
-    {% include solaceMessaging.md %}
-{% endif %}  
+
+{% include solaceMessaging.md %}
 {% include solaceApi.md %}
 
 
