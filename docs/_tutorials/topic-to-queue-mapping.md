@@ -39,7 +39,7 @@ The goal of this tutorial is to understand the following:
 2.  How to interrogate the Solace message router to confirm capabilities.
 
 
-{% include solaceMessaging-cloud.md %}
+{% include solaceMessaging.md %}
 {% include solaceApi.md %}
 
 

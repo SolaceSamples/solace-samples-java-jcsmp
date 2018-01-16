@@ -30,7 +30,7 @@ The goal of this tutorial is to understand the following:
 *  How to properly handle persistent message acknowledgements on message send.
 
 
-{% include solaceMessaging-cloud.md %}
+{% include solaceMessaging.md %}
 {% include solaceApi.md %}
 
 

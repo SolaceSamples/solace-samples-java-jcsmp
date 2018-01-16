@@ -32,7 +32,7 @@ The goal of this tutorial is to demonstrate the most basic messaging interaction
 2.  How to subscribe to a topic and receive a message
 
 
-{% include solaceMessaging-cloud.md %}
+{% include solaceMessaging.md %}
 {% include solaceApi.md %}
 
 

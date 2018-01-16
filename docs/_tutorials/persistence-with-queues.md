@@ -36,7 +36,7 @@ The goal of this tutorial is to understand the following:
 
 
 
-{% include solaceMessaging-cloud.md %}
+{% include solaceMessaging.md %}
 {% include solaceApi.md %}
 
 

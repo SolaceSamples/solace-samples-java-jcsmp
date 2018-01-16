@@ -31,7 +31,20 @@ This tutorial requires access to Solace messaging and requires that you know sev
   </tr>
 </table>
 
-### Option 1: Start a Solace VMR
+There are several ways you can get access to Solace Messaging and find these required properties.
+
+### Option 1: Use Solace Cloud
+
+* Follow [these instructions]({{ site.links-solaceCloud-setup }}){:target="_top"} to quickly spin up a cloud-based Solace messaging service for your applications.
+* The messaging connectivity information is found in the service details in the connectivity tab (shown below). You will need:
+    * Host:Port (use the SMF URI)
+    * Message VPN
+    * Client Username
+    * Client Password
+
+![]({{ site.baseurl }}/images/connectivity-info.png)
+
+### Option 2: Start a Solace VMR
 
 * Follow [these instructions]({{ site.docs-vmr-setup }}){:target="_top"} to start the Solace VMR in leading Clouds, Container Platforms or Hypervisors. The tutorials outline where to download and how to install the Solace VMR.
 * The messaging connectivity information are the following:
@@ -42,7 +55,7 @@ This tutorial requires access to Solace messaging and requires that you know sev
 
     Note: By default, the Solace VMR "default" message VPN has authentication disabled.
 
-### Option 2: Get access to a Solace appliance
+### Option 3: Get access to a Solace appliance
 
 * Contact your Solace appliance administrators and obtain the following:
     * A Solace Message-VPN where you can produce and consume direct and persistent messages
