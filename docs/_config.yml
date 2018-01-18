@@ -19,6 +19,7 @@ docs-topic-queue: //docs.solace.com/Features/Core-Concepts.htm#topic-queue-mappi
 docs-client-profile: //docs.solace.com/Features/Core-Concepts.htm#client-profile
 links-solaceCloud-setup: //cloud.solace.com/create-messaging-service/
 docs-api-endpoints: //docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/EndpointProperties.html
+
 solace-apis-dev:
   - value: //dev.solace.com/get-started/c-tutorials/
     name: C

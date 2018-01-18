@@ -262,7 +262,30 @@ aside .nav {
     bottom: 0;
     right: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 1;
+}
+
+.tutorials .card .card-content {
+  padding: 20px;
+  border-radius: 0 0 2px 2px
+}
+
+.tutorials .card .card-action {
+  position: relative;
+  background-color: inherit;
+  border-top: 1px solid rgba(160,160,160,0.2);
+  padding: 20px
+}
+
+.tutorials .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
+  color: #ffab40;
+  margin-right: 20px;
+  transition: color .3s ease;
+  text-transform: uppercase
+}
+
+.tutorials .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
+  color: #ffd8a6
 }
 
 .tutorials .card .card-content {
