@@ -219,7 +219,13 @@ aside .nav {
 
 .tutorials.learn .card-image {
     background: #9FB0BF;
-    position: relative
+    position: relative;
+    height: 200px;
+}
+
+.tutorials.learn .card-image .image {
+    height: calc( 100% * 2/3);
+    position: relative;
 }
 
 .tutorials .tutorial-description {
@@ -228,10 +234,10 @@ aside .nav {
 }
 
 .tutorials.learn .card-image img {
-    height: 200px;
+    height: 100%;
     margin: auto;
-    padding-bottom: 60px;
-    width: 100%
+    width: 100%;
+    position: absolute;
 }
 
 .tutorials .card {
