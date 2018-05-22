@@ -7,8 +7,8 @@ repository: https://github.com/SolaceSamples/solace-samples-template
 # Also see _includes/intro.html to customize the description which gets included in index.html.
 
 # Links
-hostname: solacecloud.staging.wpengine.com
-dev-hostname: solacesystems2.staging.wpengine.com
+hostname: cloud.solace.com
+dev-hostname: dev.solace.com
 docs-vmr-setup: //docs.solace.com/Solace-VMR-Set-Up/Setting-Up-VMRs.htm
 solace-apis-dev:
   - value: //dev.solace.com/get-started/c-tutorials/

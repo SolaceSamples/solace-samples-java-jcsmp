@@ -31,34 +31,6 @@ header nav li a {
     padding-right: 0 !important;
 }
 
-.samples-template {
-    padding-top: 30px;
-    font-family: "Open Sans";
-    text-align: center;
-}
-
-.samples-template .main-title {
-    font-family: 'Open Sans', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-}
-
-.samples-template .button:hover {
-    background-color: transparent !important;
-}
-
-.samples-template h1 {
-    font-family: "Open Sans";
-    font-weight: 300;
-}
-
-.samples-template .button {
-    display: inline-block;
-    text-transform: uppercase;
-}
-
-.samples-template a {
-    color: #00ad93 !important;
-}
-
 #header_main_cloud {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
