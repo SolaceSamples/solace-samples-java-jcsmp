@@ -7,6 +7,8 @@ repository: https://github.com/SolaceSamples/solace-samples-java
 # Also see _includes/intro.html to customize the description which gets included in index.html.
 
 # Links
+hostname: cloud.solace.com
+dev-hostname: dev.solace.com
 links-get-started: //dev.solace.com/get-started/java-tutorials/
 links-downloads: //dev.solace.com/downloads/
 links-community: //dev.solace.com/community/

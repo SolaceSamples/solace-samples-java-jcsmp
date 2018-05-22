@@ -3,8 +3,8 @@
 */
 body {
     min-width: 400px;
-    background: #f0f4f8;
-    font-family: sans-serif;
+    background: white;
+    font-family: 'Open Sans', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 h1 {
@@ -30,6 +30,11 @@ p {
     margin: 0 0 .5em;
 }
 
+.container-tutorials {
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+}
+
 .blue-gradient {
     background: linear-gradient(#2288DD, #17B0E0);
 }
@@ -50,6 +55,10 @@ p {
     max-width: 993px;
 }
 
+.index .body {
+    background-color: #f5f5f5;
+}
+
 img {
     max-width: 100%;
 }
@@ -58,6 +67,58 @@ img {
     .index .container {
         width: 98%;
     }
+}
+
+.container .title-row {
+    padding-bottom: 0 !important;
+    margin-right: 0 !important;
+}
+
+.samples-title {
+    background: white;
+    padding-bottom: 30px;
+}
+
+.samples-title p {
+    margin: 0.85em 0;
+}
+
+.samples-template {
+    padding-top: 30px;
+    font-family: "Open Sans";
+    text-align: center;
+}
+
+.samples-template .main-title {
+    font-family: 'Open Sans', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+.samples-template .button:hover {
+    background-color: transparent !important;
+}
+
+.samples-template h1 {
+    font-family: "Open Sans";
+    font-weight: 300;
+}
+
+.samples-template .button {
+    display: inline-block;
+    text-transform: uppercase;
+    margin-right: 30px;
+}
+
+.samples-template .button:last-child {
+    margin-right: 0;
+}
+
+.samples-template a {
+    color: #00ad93 !important;
+}
+
+.samples-template .button {
+    padding: 9px 22px;
+    margin-right: 30px;
 }
 
 
@@ -116,7 +177,6 @@ img {
 
 article {
     background: white;
-    border: 1px solid #CCC;
     padding: 30px;
     color: rgba(0, 0, 0, 0.8);
     min-width: 400px;
@@ -218,8 +278,15 @@ aside .nav {
 }
 
 .tutorials.learn .card-image {
-    background: #9FB0BF;
-    position: relative
+    /*background: #00ad93;*/
+    background: linear-gradient(#00c895, #00ad93);
+    position: relative;
+    height: 200px;
+}
+
+.tutorials.learn .card-image .image {
+    height: calc( 100% * 2/3);
+    position: relative;
 }
 
 .tutorials .tutorial-description {
@@ -228,10 +295,10 @@ aside .nav {
 }
 
 .tutorials.learn .card-image img {
-    height: 200px;
+    height: 100%;
     margin: auto;
-    padding-bottom: 60px;
-    width: 100%
+    width: 100%;
+    position: absolute;
 }
 
 .tutorials .card {
@@ -288,29 +355,6 @@ aside .nav {
   color: #ffd8a6
 }
 
-.tutorials .card .card-content {
-  padding: 20px;
-  border-radius: 0 0 2px 2px
-}
-
-.tutorials .card .card-action {
-  position: relative;
-  background-color: inherit;
-  border-top: 1px solid rgba(160,160,160,0.2);
-  padding: 20px
-}
-
-.tutorials .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
-  color: #ffab40;
-  margin-right: 20px;
-  transition: color .3s ease;
-  text-transform: uppercase
-}
-
-.tutorials .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
-  color: #ffd8a6
-}
-
 /*******************************************************************************
 * Sidebar Nav
 */
@@ -326,6 +370,7 @@ h4.navheading {
 h4.navheading a {
     color: rgba(0, 0, 0, 0.8);
     text-decoration: none;
+    font-family: 'Open Sans', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
 ul.navlist {

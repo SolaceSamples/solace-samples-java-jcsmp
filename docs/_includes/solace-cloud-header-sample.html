@@ -1,34 +1,18 @@
-<div class='stretch_full container_wrap alternate_color light_bg_color title_container'>
-        <div class='container'>
-            <div class="title-row">
-                <div class="col s12 sample-left">
-                    <h1 class='main-title entry-title'>
-                    <a>{{ site.title }}</a></h1>
-                    <p>{{ site.summary }}</p>
-                </div>
-                <div class="github-solace-cloud">
-                    <div>
-                        <img src="{{ "/images/common/hosted-in-github.png" | prepend: site.baseurl }}" alt="hosted-in-github" width="150" height="57"></img>
+<div class='samples-title stretch_full'>
+    <div class='container container-header'>
+        <div class="title-row">
+            <div class="col s12 samples-template">
+                <h1 class='main-title entry-title'>{{ site.title }}</h1>
+                <p>{{ site.summary }}</p>
+                <div class="actions">
+                    <div class="button">
+                        <a href="{{ site.repository }}" target="_blank">View on GitHub</a>
                     </div>
-                    <div class="github-link">
-                        <img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"/>
-                        <a href="{{ site.repository }}" target="_blank">View samples</a>
-                    </div>
-                    <div class="github-link">
-                        <img src="{{ "/images/common/checkout-icon.png" | prepend: site.baseurl }}"/>
-                        <a id="github-clone" data-clipboard-text="{{ site.repository }}">Copy repository URL</a>
-                        <script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.4.0/clipboard.min.js"></script>
-                        <script>
-                            (function () {
-                                new Clipboard('#github-clone');
-                            })();
-                        </script>
-                    </div>
-                    <div class="github-link">
-                        <img src="{{ "/images/common/download-icon.png" | prepend: site.baseurl }}"/>
-                        <a href="{{ site.repository }}/archive/master.zip">Download ZIP</a>
+                    <div class="button secondary">
+                        <a href="{{site.repository}}/archive/master.zip">Download Source</a>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>

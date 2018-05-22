@@ -12,8 +12,8 @@ div#wrap_all {
 }
 
 #top header .container {
-    height: 80px;
-    line-height: 80px;
+    height: 120px;
+    line-height: 120px;
 }
 
 header nav .list-wrapper {
@@ -22,8 +22,8 @@ header nav .list-wrapper {
 }
 
 header nav li a {
-    height: 80px !important;
-    line-height: 80px !important;
+    height: 120px !important;
+    line-height: 120px !important;
     font-family:'Open Sans', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -31,6 +31,9 @@ header nav li a {
     padding-right: 0 !important;
 }
 
+#header_main_cloud {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
 
 /*.container {*/
     /*padding-left: 0 !important;*/
@@ -44,6 +47,14 @@ header nav li a {
 /*******************************************************************************
 * Solace cloud sample title
 */
+.container-header {
+    background-color: white;
+}
+
+.main-title a{
+    color: #474747 !important;
+}
+
 .github-solace-cloud {
     position: absolute;
     right: 50px;
@@ -53,12 +64,12 @@ header nav li a {
 
 .container .title-row .sample-left {
     position: relative;
-    padding-right: 180px;
+    text-align: center;
 }
 
 .container .title-row {
     padding-top: 20px;
-    padding-bottom: 70px;
+    padding-bottom: 40px;
     margin-right: -0.75rem;
 }
 

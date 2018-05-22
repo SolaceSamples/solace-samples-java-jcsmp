@@ -30,11 +30,6 @@ h1, h2, h3, h4, h5, h6, #top .title_container .main-title, tr.pricing-row td, #t
     line-height: 72px;
 }
 
-.container {
-  padding-right: 0;
-  padding-left: 0;
-}
-
 #header .container, #footer .container {
   position: relative;
   width: 100%;
