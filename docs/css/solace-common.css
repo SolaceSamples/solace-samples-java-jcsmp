@@ -4,7 +4,7 @@
 body {
     min-width: 400px;
     background: #f0f4f8;
-    font-family: sans-serif;
+    font-family: 'Open Sans', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 h1 {
@@ -28,6 +28,12 @@ p {
     font-size: 16px;
     line-height: 24px;
     margin: 0 0 .5em;
+}
+
+.container-tutorials {
+    background-color: #f5f5f5;
+    padding-top: 50px !important;
+    padding-bottom: 30px !important;
 }
 
 .blue-gradient {
@@ -117,6 +123,7 @@ img {
 article {
     background: white;
     border: 1px solid #CCC;
+    border-top: none;
     padding: 30px;
     color: rgba(0, 0, 0, 0.8);
     min-width: 400px;
@@ -218,7 +225,8 @@ aside .nav {
 }
 
 .tutorials.learn .card-image {
-    background: #9FB0BF;
+    /*background: #00ad93;*/
+    background: linear-gradient(#00c895, #00ad93);
     position: relative;
     height: 200px;
 }
@@ -309,6 +317,7 @@ h4.navheading {
 h4.navheading a {
     color: rgba(0, 0, 0, 0.8);
     text-decoration: none;
+    font-family: 'Open Sans', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
 ul.navlist {
