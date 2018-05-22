@@ -8,13 +8,8 @@ layout: default
       {% include dev-solace-header-sample.html %}
     {% endif %}
     <div class="body">
-        <div class="container">
-            <div class="row solace-cloud-space">
-                <div class="col s12">
-                    <h2>Get Coding with the API</h2>
-                </div>
-            </div>
-            <div class="tutorials learn row">
+        <div class="container container-tutorials">
+            <div class="tutorials learn row" style="margin-bottom:0;">
                 {% assign count = 0 %}
                 {% for section in site.data.tutorials %}
                     {% for item in section.tutorials %}
@@ -25,8 +20,10 @@ layout: default
                             <div class="card">
                                 <a href="{{ site.baseurl }}{{ p.url }}"></a>
                                 <div class="card-image">
-                                    <img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}"/>
-                                    <span class="card-title">{{ p.title }}</span>
+                                    <div class="image">
+                                      <img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}" style="height:{{ p.icon-height }}; width:{{ p.icon-width }};"/>
+                                    </div>
+                                    <div class="card-title">{{ p.title }}</div>
                                 </div>
                                 <div class="card-content">
                                     <div class="tutorial-description">{{ p.summary }}</div>
