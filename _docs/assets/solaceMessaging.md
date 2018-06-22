@@ -42,7 +42,7 @@ There are several ways you can get access to Solace Messaging and find these req
     * Client Username
     * Client Password
 
-![]({{ site.baseurl }}/images/connectivity-info.png)
+![]({{ site.baseurl }}/assets/images/connectivity-info.png)
 
 ### Option 2: Start a Solace VMR
 

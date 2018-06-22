@@ -14,7 +14,7 @@ In addition to spooling messages published directly to the queue, it is possible
 
 The following diagram illustrates this feature.
 
-<img src="{{ site.baseurl }}/images/topic-to-queue-mapping-detail.png" width="500" height="206" />
+<img src="{{ site.baseurl }}/assets/images/topic-to-queue-mapping-detail.png" width="500" height="206" />
 
 If you have a durable queue named `Q`, it will receive messages published directly to the queue destination named `Q`. However, it is also possible to add subscriptions to this queue in the form of topics. This example adds topics `A` and `B`. Once these subscriptions are added, the queue will start receiving messages published to the topic destinations `A` and `B`. When you combine this with the wildcard support provided by Solace topics this opens up a number of interesting use cases.
 
@@ -39,8 +39,8 @@ The goal of this tutorial is to understand the following:
 2.  How to interrogate the Solace message router to confirm capabilities.
 
 
-{% include solaceMessaging.md %}
-{% include solaceApi.md %}
+{% include_relative assets/solaceMessaging.md %}
+{% include_relative assets/solaceApi.md %}
 
 
 ## Connection setup
