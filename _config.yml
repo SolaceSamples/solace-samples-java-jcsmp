@@ -1,0 +1,5 @@
+# Site settings
+title: Solace Java API (JCSMP)
+summary: These tutorials get you up to speed sending and receiving messages with Solace technology.
+baseurl: "/solace-samples-java"
+repository: https://github.com/SolaceSamples/solace-samples-java

@@ -36,14 +36,14 @@ The goal of this tutorial is to understand the following:
 
 
 
-{% include solaceMessaging.md %}
-{% include solaceApi.md %}
+{% include_relative assets/solaceMessaging.md %}
+{% include_relative assets/solaceApi.md %}
 
 
 ## Provisioning a Queue through the API
 
 <div style="float: right">
-  <img src="{{ site.baseurl }}/images/message-router-queue.png"/>
+  <img src="{{ site.baseurl }}/assets/images/message-router-queue.png"/>
 </div>
 
 The first requirement for guaranteed messaging using a Solace message router is to provision a guaranteed message endpoint. For this tutorial we will use a point-to-point queue. To learn more about different guaranteed message endpoints see [here]({{ site.docs-endpoints }}){:target="_top"}.
@@ -57,7 +57,7 @@ Using the Solace APIs to provision an endpoint can be a convenient way of gettin
 
 Provisioning an endpoint through the API requires the “Guaranteed Endpoint Create” permission in the client-profile. You can confirm this is enabled by looking at the client profile in SolAdmin. If it is correctly set you will see the following:
 
-![]({{ site.baseurl }}/images/persistence-tutoral-image-3.png)
+![]({{ site.baseurl }}/assets/images/persistence-tutoral-image-3.png)
 
 Provisioning the queue involves three steps.
 
@@ -87,7 +87,7 @@ The ignore already exists flags signals to the API that the application is toler
 
 Now it is time to send a message to the queue.
 
-![]({{ site.baseurl }}/images/sending-message-to-queue-300x160.png)
+![]({{ site.baseurl }}/assets/images/sending-message-to-queue-300x160.png)
 
 There is really no difference in the actual calls to the JCSMP message producer when sending a persistent message as compared to a direct message shown in the publish/subscribe tutorial. The difference in the persistent message is that the Solace message router will acknowledge the message once it is successfully stored on the message router.
 
@@ -128,7 +128,7 @@ At this point the producer has sent a message to the Solace message router and i
 
 Now it is time to receive the messages sent to your queue.
 
-![]({{ site.baseurl }}/images/receiving-message-from-queue-300x160.png)
+![]({{ site.baseurl }}/assets/images/receiving-message-from-queue-300x160.png)
 
 You still need to connect a session just as you did with the publisher. With a connected session, you then need to bind to the Solace message router queue with a flow receiver. Flow receivers allow applications to receive messages from a Solace guaranteed message flow. Flows encapsulate all of the acknowledgement behavior required for guaranteed messaging. Conveniently flow receivers have the same interface as message consumers but flows also require some additional properties on creation.
 

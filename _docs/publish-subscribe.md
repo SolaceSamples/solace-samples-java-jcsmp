@@ -32,8 +32,8 @@ The goal of this tutorial is to demonstrate the most basic messaging interaction
 2.  How to subscribe to a topic and receive a message
 
 
-{% include solaceMessaging.md %}
-{% include solaceApi.md %}
+{% include_relative assets/solaceMessaging.md %}
+{% include_relative assets/solaceApi.md %}
 
 
 ## Connecting to the Solace message router
@@ -61,7 +61,7 @@ This tutorial uses “Direct” messages which are at most once delivery message
 
 With a session connected in the previous step, the next step is to create a message consumer. Message consumers enable the asynchronous receipt of messages through callbacks. These callbacks are defined in JCSMP by the XMLMessageListener interface.
 
-![]({{ site.baseurl }}/images/pub-sub-receiving-message-300x134.png)
+![]({{ site.baseurl }}/assets/images/pub-sub-receiving-message-300x134.png)
 
 ```java
 final CountDownLatch latch = new CountDownLatch(1);
@@ -112,7 +112,7 @@ try {
 
 Now it is time to send a message to the waiting consumer.
 
-![]({{ site.baseurl }}/images/pub-sub-sending-message-300x134.png)
+![]({{ site.baseurl }}/assets/images/pub-sub-sending-message-300x134.png)
 
 ### Establishing the publisher flow
 
