@@ -91,7 +91,7 @@ Now it is time to send a message to the queue.
 
 There is really no difference in the actual calls to the JCSMP message producer when sending a persistent message as compared to a direct message shown in the publish/subscribe tutorial. The difference in the persistent message is that the Solace message router will acknowledge the message once it is successfully stored on the message router.
 
-This is still handled by the message producer event handler and again producers can implement either the `JCSMPStreamingPublishEventHandler` or the `JCSMPStreamingPublishCorrelatingEventHandler`. The `JCSMPStreamingPublishEventHandler` is the simplest and is sufficient for basic message persistence. The tutorial on handling acknowledgements will get into more advanced acknowledgement handling with proper correlation.
+This is still handled by the message producer event handler and again producers can implement either the `JCSMPStreamingPublishEventHandler` or the `JCSMPStreamingPublishCorrelatingEventHandler`. The `JCSMPStreamingPublishEventHandler` is the simplest and is sufficient for demonstrating basic message persistence. The [tutorial]({{ site.baseurl }}/confirmed-delivery) on handling acknowledgements will get into more advanced acknowledgement handling with proper correlation.
 
 So the message producer creation code can remain the same as shown here:
 
@@ -119,10 +119,12 @@ msg.setDeliveryMode(DeliveryMode.PERSISTENT);
 String text = "Persistent Queue Tutorial! " +
         DateFormat.getDateTimeInstance().format(new Date());
 msg.setText(text);
+// Delivery not yet confirmed. See ConfirmedPublish.java
 prod.send(msg, queue);
 ```
 
-At this point the producer has sent a message to the Solace message router and it will be waiting for your consumer on the queue.
+At this point the producer has sent a message to the Solace message router and if all goes well it will be waiting for your consumer on the queue.
+The [Confirmed Delivery tutorial]({{ site.baseurl }}/confirmed-delivery) shows how to make sure it gets there.
 
 ## Receiving a message from a queue
 
@@ -209,6 +211,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 {% endfor %}
 </ul>
 
+Learn how to verify all messages arrive to the Solace message router in our next tutorial, [Confirmed Delivery.]({{ site.baseurl }}/confirmed-delivery)
 
 ### Getting the Source
 
