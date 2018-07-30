@@ -100,6 +100,7 @@ public class QueueProducer {
 
         // Send message directly to the queue
         prod.send(msg, queue);
+	// Delivery not yet confirmed. See ConfirmedPublish.java
         System.out.println("Message sent. Exiting.");
 
         // Close session
