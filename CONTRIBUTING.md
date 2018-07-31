@@ -5,7 +5,8 @@ We'd love for you to contribute and welcome your help. Here are some guidelines 
 - [Issues and Bugs](#issue)
 - [Submitting a fix](#submitting)
 - [Feature Requests](#features)
-- [Questions](#questions) 
+- [Add a feature](#addFeature)
+- [Questions](#questions)
 
 ## <a name="issue"></a> Did you find a issue?
 
@@ -53,7 +54,7 @@ git commit -a -m "Your Commit Message"
 
 Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
 
-#### Step 4: Rebase (if possible) 
+#### Step 4: Rebase (if possible)
 
 Assuming you have not yet pushed your branch to origin, use `git rebase` (not `git merge`) to synchronize your work with the main
 repository.
@@ -81,7 +82,7 @@ git push origin my-fix-branch
 
 #### Step 6: Pull Request
 
-In GitHub, send a pull request to `solace-samples-template:master`. 
+In GitHub, send a pull request to `solace-samples-template:master`.
 
 When fixing an existing issue, use the [commit message keywords](https://help.github.com/articles/closing-issues-via-commit-messages/) to close the associated GitHub issue.
 
@@ -94,6 +95,21 @@ That's it! Thank you for your contribution!
 ## <a name="features"></a> **Do you have an ideas for a new feature or a change to an existing one?**
 
 * Open a GitHub [enhancement request issue](https://github.com/SolaceSamples/solace-samples-java/issues/new) and describe the new functionality.
+
+## <a name="addFeature"></a> **Steps to add a new feature**
+
+* Add your feature source file under src/main/java/com/solace/samples/features/newFeature.java
+* Update the build.gradle file by appending your source file name to the list of scripts  
+
+        def scripts = [ 'topicPublisher':'com.solace.samples.TopicPublisher',  
+                        'topicSubscriber':'com.solace.samples.TopicSubscriber',  
+                        'newFeature':'com.solace.samples.features.newFeature')  
+* Add your feature markdown file under \_docs/feature\_newFeature.md
+* Update the \_docs/tutorials.yml to include the new feature by appending your feature name to the features list
+
+        features:  
+        - feature-1  
+        - feature_newFeature  
 
 ##  <a name="questions"></a> Do you have questions about the source code?
 
