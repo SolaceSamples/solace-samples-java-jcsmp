@@ -113,7 +113,7 @@ XMLMessageProducer prod = session.getMessageProducer(new JCSMPStreamingPublishEv
 To send a message, you must still create a message. The main difference from sending a direct message is that you must set the message delivery mode to persistent. When you send the message you also update the call to send to include your queue object as the destination.
 
 ```java
-final Topic topic = JCSMPFactory.onlyInstance().createTopic("tutorial/topic");
+final Queue queue = JCSMPFactory.onlyInstance().createQueue("Q/tutorial");
 TextMessage msg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
 msg.setDeliveryMode(DeliveryMode.PERSISTENT);
 String text = "Persistent Queue Tutorial! " +
