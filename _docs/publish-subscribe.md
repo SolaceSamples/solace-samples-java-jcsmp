@@ -16,8 +16,8 @@ This tutorial will introduce you to the fundamentals of the Solace API by connec
 
 This tutorial assumes the following:
 
-*   You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-*   You have access to Solace messaging with the following configuration details:
+*   You are familiar with Solace PubSub+ [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
+*   You have access to Solace PubSub+ with the following configuration details:
     *   Connectivity information for a Solace message-VPN
     *   Enabled client username and password
 
