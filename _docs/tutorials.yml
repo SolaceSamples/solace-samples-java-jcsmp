@@ -7,3 +7,4 @@
   - topic-to-queue-mapping
 
   features:
+  - feature_active-flow-indication
