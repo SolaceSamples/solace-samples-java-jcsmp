@@ -8,3 +8,7 @@
 
   features:
   - feature_active-flow-indication
+  - feature_browsing-queues
+  - feature_message-selectors
+  - feature_ttl-and-dmq
+  - feature_transactions
