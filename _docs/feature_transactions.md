@@ -1,54 +1,78 @@
 ---
 layout: features
 title: Transactions
-summary: Learn to use consumer active flow indication with exclusive queues.
+summary: Learn how to group messagingoperations into an atomic transaction.
 links:
     - label: Transactions.java
       link: /blob/master/src/main/java/com/solace/samples/features/Transactions.java
 ---
 
-This feature introduction shows how multiple consumers can bind to an exclusive queue, but only one client at a time can actively receive messages.
-
-The example code builds on the Subscriber in the [publish/subscribe]({{ site.baseurl }}/publish-subscribe) messaging pattern.
+This sample demonstrates how to acknowledge the receipt of a message and send a new message in a single atomic transaction.
 
 ## Feature Overview
 
-If a queue has an exclusive access type, multiple clients can bind to the queue, but only one client at a time can actively receive messages from it. Therefore, when a client creates a Flow and binds to an exclusive queue, the flow might not be active for the client if other clients are bound to the queue.
+Transacted Sessions enable client applications to group multiple message send and/or receive operations together in single, atomic units known as local transactions. Each transacted Session can support a single series of transactions.
 
-If the Active Flow Indication Flow property is enabled, a Flow active event is returned to the client when its bound flow becomes the active flow. The client also receives a Flow inactive event whenever it loses an active flow (for example, if the flow disconnects).
+Messages that are published and received in a transaction are staged on the message broker. To complete all of the message send and receive operations in a transaction, the transaction must be committed. Alternatively, a transaction can also be rolled back so that all of its publish and receive operations are canceled. Once a transaction is completed, another transaction automatically begins.
 
-Using the Active Flow Indication, a client application can learn if it is the primary or backup consumer of an exclusive queue. This can be useful in clustered applications to help establish roles and function properly in active / standby consumption models.
+This feature can be used to guarantee that a message is not removed from the message broker until a reply message has been sent.
 
 ## Prerequisite
 
-This sample requires that the queue "tutorial/queue" exists on the message router and is configured to be "exclusive".  Ensure the queue is enabled for both Incoming and Outgoing messages and set the Permission to at least 'Consume'.
+The [Client Profile](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} must be configured to [allow transacted sessions](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm#Allow-Trans-Sess){:target="_blank"}.
+
+NOTE:  This is the default configuration in PubSub+ Cloud messaging services.
 
 ## Code
 
-The following code shows how message consumers can bind to an exclusive queue and handle the Consumer active/inactive event. The key aspect is to successfully set the `activeIndicationEnabled` field to true when creating the message consumer and to put appropriate event handling login in place for both the `solace.MessageConsumerEventName.ACTIVE` and `solace.MessageConsumerEventName.INACTIVE`. In this case, the sample simply logs the event.
+The following code shows how to acknowledge the receipt of a message and send a reply message in a single atomic transaction, guaranteeing that the original message is not acknowledged until the reply message is received by the message broker.
+
+First, create a transacted session.
 
 ```java
-sample.createConsumer = function (session, messageConsumerName) {
-        // Create a message consumer
-        const messageConsumer = sample.session.createMessageConsumer({
-            queueDescriptor: { name: sample.queueName, type: solace.QueueType.QUEUE },
-            acknowledgeMode: solace.MessageConsumerAcknowledgeMode.CLIENT,
-            activeIndicationEnabled: true,
-        });
-        ...
-        messageConsumer.on(solace.MessageConsumerEventName.ACTIVE, function () {
-            sample.log('=== ' + messageConsumerName + ': received ACTIVE event - Ready to receive messages');
-        });
-        messageConsumer.on(solace.MessageConsumerEventName.INACTIVE, function () {
-            sample.log('=== ' + messageConsumerName + ': received INACTIVE event');
-        });
-        ...
-        return messageConsumer;
-    }
-                    
+protected JCSMPSession session = null;
+...
+public TransactedSession txSession;
+...
+txSession = session.createTransactedSession();
 ```
 
-When running the full sample, first start this sample and then run the [confirmed-delivery]({{ site.baseurl }}/confirmed-delivery) sample to send 10 messages.
+Next, create a producer and consumer with the transacted session.
+
+```java
+public XMLMessageProducer producer;
+public FlowReceiver receiver;
+...
+ProducerFlowProperties prodFlowProps = new ProducerFlowProperties();
+prodFlowProps.setWindowSize(100);
+producer = txSession.createProducer(prodFlowProps, this);
+
+ConsumerFlowProperties consFlowProps = new ConsumerFlowProperties();
+consFlowProps.setEndpoint(queue);
+consFlowProps.setStartState(true);
+EndpointProperties endpointProps = new EndpointProperties();
+endpointProps.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
+receiver = txSession.createFlow(this, consFlowProps, endpointProps);
+```
+
+Now when receiving a message, send a message with the transacted session and commit the transaction.
+
+Committing the transaction automatically acknowledges receipt of the message that was received on the transacted session.
+
+```java
+public void onReceive(BytesXMLMessage message) {
+    ...
+    BytesXMLMessage reply = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);
+    reply.setDeliveryMode(DeliveryMode.PERSISTENT);
+    reply.setSenderId("Replier");
+    producer.send(reply, message.getReplyTo());
+
+    // this commit will acknowledge the received message and
+    // deliver the sent message.
+    txSession.commit();
+    ...
+}
+```
 
 ## Learn More
 
@@ -56,7 +80,7 @@ When running the full sample, first start this sample and then run the [confirme
 {% for item in page.links %}
 <li>Related Source Code: <a href="{{ site.repository }}{{ item.link }}" target="_blank">{{ item.label }}</a></li>
 {% endfor %}
-<li><a href="{{ site.docs-active-flow-indication }}" target="_blank">Solace Feature Documentation</a></li>
+<li><a href="https://docs.solace.com/Solace-JMS-API/Using-Transacted-Sessions.htm?Highlight=Transactions" target="_blank">Solace Feature Documentation</a></li>
 </ul>
 
 
