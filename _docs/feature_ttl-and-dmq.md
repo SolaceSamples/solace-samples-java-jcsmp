@@ -10,7 +10,10 @@ This sample demonstrates how to send a message with Time to Live (TTL) enabled a
 ## Feature Overview
 
 To ensure that stale messages are not consumed, you can set a Time‑To-Live (TTL) value (in milliseconds) for each Guaranteed message published by a producer.
+
 If destination queues or topic endpoints are configured to respect message TTLs, when received messages’ TTLs have passed, they are either discarded by the endpoint, or, if the messages are eligible for a Dead Message Queue (DMQ), they are moved to a DMQ provisioned on the message broker.
+
+This feature is very useful in real-time applications where receiving a stale message could cause harm or waste valuable real-time processing resources.
 
 ## Prerequisite
 
@@ -24,11 +27,24 @@ NOTE:  This is the default configuration in PubSub+ Cloud messaging services.
 
 ## Code
 
-Set Time to Live (TTL) on a message and make it eligible for the Dead Message Queue (DMQ).
+This code example creates a Dead Message Queue (DMQ), sends some messages with a Time to Live (TTL) and shows how messages with the TTL will expire and then get sent the DMQ.
 
-In this case we are creating five messages on a Queue where two messages have a three second TTL and one of those messages is eligible for the DMQ.  Then we wait for five seconds.
+First, create the Dead Message Queue (DMQ).
 
-NOTE:  There is no code required to define which Queue is the DMQ.  A Queue with the name #DEAD_MSG_QUEUE was created earlier in the sample and the Message Broker uses this Queue by default as the DMQ because of the name #DEAD_MSG_QUEUE. 
+NOTE:  The Message Broker uses this Queue as the DMQ by default because it has the name #DEAD_MSG_QUEUE. 
+
+```java
+private static String DMQ_NAME = "#DEAD_MSG_QUEUE";
+private Queue deadMsgQ = null;
+...
+EndpointProperties dmq_provision = new EndpointProperties();
+dmq_provision.setPermission(EndpointProperties.PERMISSION_DELETE);
+dmq_provision.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
+deadMsgQ = JCSMPFactory.onlyInstance().createQueue(DMQ_NAME);
+session.provision(deadMsgQ,dmq_provision,JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
+```
+
+Then create five messages on a regular Queue where two messages have a three second TTL and one of those messages is eligible for the DMQ.  Wait for five seconds.
 
 ```java
 BytesXMLMessage m = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);
@@ -52,9 +68,7 @@ for (int i = 1; i <= 5; i++) {
 Thread.sleep(5000);  // Wait five seconds for the TTL to expire
 ```
 
-Consume messages on the Queue.
-
-Only the messages without a TTL will still be on the Queue.  In this case three messages are still on the Queue after waiting five seconds.
+Now consume messages on the regular Queue.  Only the messages without a TTL will still be on the Queue.  In this case there are three three of them after waiting five seconds.
 
 ```java
 rx_msg_count = 0;
@@ -66,9 +80,9 @@ Thread.sleep(2000);  // Wait to receive the messages
 cons.close();
 ```
 
-Consume messages on the Dead Message Queue (DMQ).
+Lastly, consume messages on the Dead Message Queue (DMQ).
 
-In this case, one message is on the DMQ which is the message with a TTL of three seconds which was eligible for the DMQ.  The other message that expired which was not eligible for the DMQ is no longer spooled on the message broker.
+In this case, one message is on the DMQ which is the message with a TTL of three seconds that was eligible for the DMQ.  The other message that expired that was not eligible for the DMQ is no longer spooled on the message broker.
 
 ```java
 ConsumerFlowProperties dmq_props = new ConsumerFlowProperties();

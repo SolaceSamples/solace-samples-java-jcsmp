@@ -11,6 +11,8 @@ This sample shows how to use a Browser to look at the Queue's contents.
 
 Client applications using the Java and .NET APIs can use the Browser interface to look at Guaranteed messages spooled for a Queue in the order of oldest to newest without consuming them.  The Browser can also be used to remove messages from the Queue.
 
+A Browser could be used by an application to pre-screen messages by detecting message content that could cause fatal conditions and removing the messages before they are processed.
+
 ## Prerequisite
 
 These [Client Profile Configuration](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} properties must be configured as follows:
