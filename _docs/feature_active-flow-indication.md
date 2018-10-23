@@ -3,52 +3,79 @@ layout: features
 title: Active Consumer Indication
 summary: Learn to use consumer active flow indication with exclusive queues.
 links:
-    - label: ActiveConsumerIndication
-      link: /blob/master/src/features/ActiveConsumerIndication
 ---
 
-This feature introduction shows how multiple consumers can bind to an exclusive queue, but only one client at a time can actively receive messages.
-
-The example code builds on the Subscriber in the [publish/subscribe]({{ site.baseurl }}/publish-subscribe) messaging pattern.
+This sample shows how to request active flow indication for an endpoint (like a Queue) when creating a flow and how to handle active flow indication events.
 
 ## Feature Overview
 
-If a queue has an exclusive access type, multiple clients can bind to the queue, but only one client at a time can actively receive messages from it. Therefore, when a client creates a Flow and binds to an exclusive queue, the flow might not be active for the client if other clients are bound to the queue.
+If a queue has an exclusive access type (refer to Defining Endpoint Properties), multiple clients can bind to the queue, but only one client at a time can actively receive messages from it. Therefore, when a client creates a Flow and binds to an exclusive queue, the flow might not be active for the client if other clients are bound to the queue.
 
 If the Active Flow Indication Flow property is enabled, a Flow active event is returned to the client when its bound flow becomes the active flow. The client also receives a Flow inactive event whenever it loses an active flow (for example, if the flow disconnects).
 
-Using the Active Flow Indication, a client application can learn if it is the primary or backup consumer of an exclusive queue. This can be useful in clustered applications to help establish roles and function properly in active / standby consumption models.
+Consider using Active Flow Indication as a way to manage failover from a primary to a backup consumer application when the primary consumer fails.  In this case the backup consumer can use the Active Flow Indication event to run any setup required in order for it to act as the primary consumer.  Active Flow Indication could also be used as a way to detect and respond to a Primary consumer failure which could auto-recover the consumer when it stops receiving messages.
 
 ## Prerequisite
 
-This sample requires that the queue "tutorial/queue" exists on the message router and is configured to be "exclusive".  Ensure the queue is enabled for both Incoming and Outgoing messages and set the Permission to at least 'Consume'.
+These [Client Profile Configuration](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} properties must be configured as follows:
+
+[ENDPOINT_MANAGEMENT](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/CapabilityType.html#ENDPOINT_MANAGEMENT){:target="_blank"} property must be set to "true".
+
+[ACTIVE_FLOW_INDICATION](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/CapabilityType.html#ACTIVE_FLOW_INDICATION){:target="_blank"} property must be set to "true".
+
+NOTE:  This is the default configuration in PubSub+ Cloud messaging services.
 
 ## Code
 
-The following code shows how message consumers can bind to an exclusive queue and handle the Consumer active/inactive event. The key aspect is to successfully set the `activeIndicationEnabled` field to true when creating the message consumer and to put appropriate event handling login in place for both the `solace.MessageConsumerEventName.ACTIVE` and `solace.MessageConsumerEventName.INACTIVE`. In this case, the sample simply logs the event.
+Implement the FlowEventHandler and XMLMessageListener interfaces. 
+
+In this sample we simply output the flow event as text to show that the event is occurring.  The XMLMessageListener interface is implemented so that we can use it to create the flow (see code below), but it is otherwise unused in this sample.
 
 ```java
-sample.createConsumer = function (session, messageConsumerName) {
-        // Create a message consumer
-        const messageConsumer = sample.session.createMessageConsumer({
-            queueDescriptor: { name: sample.queueName, type: solace.QueueType.QUEUE },
-            acknowledgeMode: solace.MessageConsumerAcknowledgeMode.CLIENT,
-            activeIndicationEnabled: true,
-        });
-        ...
-        messageConsumer.on(solace.MessageConsumerEventName.ACTIVE, function () {
-            sample.log('=== ' + messageConsumerName + ': received ACTIVE event - Ready to receive messages');
-        });
-        messageConsumer.on(solace.MessageConsumerEventName.INACTIVE, function () {
-            sample.log('=== ' + messageConsumerName + ': received INACTIVE event');
-        });
-        ...
-        return messageConsumer;
-    }
-                    
+public class QueueProvisionAndRequestActiveFlowIndication extends SampleApp implements XMLMessageListener, FlowEventHandler {
+...
+// FlowEventHandler
+public void handleEvent(Object source, FlowEventArgs event) {
+    System.out.println("Flow Event - " + event);
+}
+// XMLMessageListener
+public void onException(JCSMPException exception) {
+    exception.printStackTrace();
+}
+// XMLMessageListener
+public void onReceive(BytesXMLMessage message) {
+    System.out.println("Received Message:\n" + message.dump());
+}                    
 ```
 
-When running the full sample, first start this sample and then run the [confirmed-delivery]({{ site.baseurl }}/confirmed-delivery) sample to send 10 messages.
+Create two flows and listen to Active Flow Indication events. 
+
+When the first flow is started the active flow event is triggered because it is the only flow that is bound to the Queue.  When the second flow is started it doesn't receive the active flow event until the first flow is closed.
+
+```java
+flowOne = session.createFlow(
+    this, //xmlMessageListener
+    new ConsumerFlowProperties().setEndpoint(ep_queue).setActiveFlowIndication(true), //consumerFlowProperties
+    null, //endpointProperties
+    this //flowEventHandler
+);
+ 
+flowOne.start();
+ 
+System.out.println("Create flow two");
+flowTwo = session.createFlow(
+    this,
+    new ConsumerFlowProperties().setEndpoint(ep_queue).setActiveFlowIndication(true),
+    null,
+    this
+);
+ 
+flowTwo.start();
+ 
+Thread.sleep(5000);
+ 
+flowOne.close(); // Active flow indication event for flowTwo fires now that flowOne is closed
+```
 
 ## Learn More
 
@@ -56,7 +83,7 @@ When running the full sample, first start this sample and then run the [confirme
 {% for item in page.links %}
 <li>Related Source Code: <a href="{{ site.repository }}{{ item.link }}" target="_blank">{{ item.label }}</a></li>
 {% endfor %}
-<li><a href="{{ site.docs-active-flow-indication }}" target="_blank">Solace Feature Documentation</a></li>
+<li><a href="https://docs.solace.com/Solace-PubSub-Messaging-APIs/Developer-Guide/Creating-Flows.htm#Active-Flow-Indication" target="_blank">Solace Feature Documentation</a></li>
 </ul>
 
 

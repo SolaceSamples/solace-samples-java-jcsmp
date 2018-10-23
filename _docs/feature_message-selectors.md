@@ -1,54 +1,48 @@
 ---
 layout: features
 title: Message Selectors
-summary: Learn to use consumer active flow indication with exclusive queues.
+summary: Learn to use custom message properties and queries to select messages.
 links:
-    - label: ActiveConsumerIndication
-      link: /blob/master/src/features/ActiveConsumerIndication
 ---
 
-This feature introduction shows how multiple consumers can bind to an exclusive queue, but only one client at a time can actively receive messages.
-
-The example code builds on the Subscriber in the [publish/subscribe]({{ site.baseurl }}/publish-subscribe) messaging pattern.
+This feature introduction shows how a client can bind to a queue and select which messages to receive based on custom properties of the messages.  This is useful when the logic to select which messages to receive is not possible with a simple topic subscription.
 
 ## Feature Overview
 
-If a queue has an exclusive access type, multiple clients can bind to the queue, but only one client at a time can actively receive messages from it. Therefore, when a client creates a Flow and binds to an exclusive queue, the flow might not be active for the client if other clients are bound to the queue.
+Selectors enable client applications to specify which messages they are interested in receiving, as determined by the messages’ header field and property values. A selector is a string up to a maximum of 1,023 bytes that uses a conditional expression syntax that is a subset of SQL92. For detailed information on message selector syntax, refer to the Java Message Service Specification – Version 1.1. Selectors are supported by all Solace messaging APIs.
 
-If the Active Flow Indication Flow property is enabled, a Flow active event is returned to the client when its bound flow becomes the active flow. The client also receives a Flow inactive event whenever it loses an active flow (for example, if the flow disconnects).
-
-Using the Active Flow Indication, a client application can learn if it is the primary or backup consumer of an exclusive queue. This can be useful in clustered applications to help establish roles and function properly in active / standby consumption models.
+When a selector is used, a client only receives a message if the selector evaluates to true when the message’s header field and property values are substituted for their corresponding identifiers in the selector. The message broker filters out messages that do not match.
 
 ## Prerequisite
 
-This sample requires that the queue "tutorial/queue" exists on the message router and is configured to be "exclusive".  Ensure the queue is enabled for both Incoming and Outgoing messages and set the Permission to at least 'Consume'.
+This [Client Profile Configuration](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} property must be configured as follows:
+
+[SELECTOR](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/CapabilityType.html#SELECTOR){:target="_blank"} property must be set to "true".
+
+NOTE:  This is the default configuration in PubSub+ Cloud messaging services.
 
 ## Code
 
-The following code shows how message consumers can bind to an exclusive queue and handle the Consumer active/inactive event. The key aspect is to successfully set the `activeIndicationEnabled` field to true when creating the message consumer and to put appropriate event handling login in place for both the `solace.MessageConsumerEventName.ACTIVE` and `solace.MessageConsumerEventName.INACTIVE`. In this case, the sample simply logs the event.
+Create and bind a Flow to a temporary Queue with a message selector on a user-defined property.  In this case, we want the consumer to receive messages with the custom property "pasta" set to "rotini" or "farfalle".
 
 ```java
-sample.createConsumer = function (session, messageConsumerName) {
-        // Create a message consumer
-        const messageConsumer = sample.session.createMessageConsumer({
-            queueDescriptor: { name: sample.queueName, type: solace.QueueType.QUEUE },
-            acknowledgeMode: solace.MessageConsumerAcknowledgeMode.CLIENT,
-            activeIndicationEnabled: true,
-        });
-        ...
-        messageConsumer.on(solace.MessageConsumerEventName.ACTIVE, function () {
-            sample.log('=== ' + messageConsumerName + ': received ACTIVE event - Ready to receive messages');
-        });
-        messageConsumer.on(solace.MessageConsumerEventName.INACTIVE, function () {
-            sample.log('=== ' + messageConsumerName + ': received INACTIVE event');
-        });
-        ...
-        return messageConsumer;
-    }
-                    
+Queue myqueue = session.createTemporaryQueue();
+ConsumerFlowProperties flow_prop = new ConsumerFlowProperties();
+flow_prop.setEndpoint(myqueue);
+flow_prop.setSelector("pasta = 'rotini' OR pasta = 'farfalle'");
+cons = session.createFlow(new MessageDumpListener(), flow_prop);                    
 ```
 
-When running the full sample, first start this sample and then run the [confirmed-delivery]({{ site.baseurl }}/confirmed-delivery) sample to send 10 messages.
+Publish a number of Guaranteed messages with the given user-defined property to the temporary Queue.  In this case, we send six messages that are each set to a different pasta type.
+
+```java
+for (String p : new String[] { "macaroni", "fettuccini", "farfalle", "fiori", "rotini", "penne" }) {
+    SDTMap map = prod.createMap();
+    map.putString("pasta", p);
+    msg.setProperties(map);
+    prod.send(msg, myqueue);
+}
+```
 
 ## Learn More
 
@@ -56,7 +50,7 @@ When running the full sample, first start this sample and then run the [confirme
 {% for item in page.links %}
 <li>Related Source Code: <a href="{{ site.repository }}{{ item.link }}" target="_blank">{{ item.label }}</a></li>
 {% endfor %}
-<li><a href="{{ site.docs-active-flow-indication }}" target="_blank">Solace Feature Documentation</a></li>
+<li><a href="https://docs.solace.com/Solace-JMS-API/Selectors.htm?Highlight=selector" target="_blank">Solace Feature Documentation</a></li>
 </ul>
 
 
