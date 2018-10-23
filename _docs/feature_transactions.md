@@ -1,7 +1,7 @@
 ---
 layout: features
 title: Transactions
-summary: Learn how to group messagingoperations into an atomic transaction.
+summary: Learn how to group messaging operations into an atomic transaction.
 links:
     - label: Transactions.java
       link: /blob/master/src/main/java/com/solace/samples/features/Transactions.java
