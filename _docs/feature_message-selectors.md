@@ -3,6 +3,8 @@ layout: features
 title: Message Selectors
 summary: Learn to use custom message properties and queries to select messages.
 links:
+    - label: MessageSelectorsOnQueue.java
+      link: /blob/master/src/main/java/com/solace/samples/features/MessageSelectorsOnQueue.java
 ---
 
 This feature introduction shows how a client can bind to a queue and select which messages to receive based on custom properties of the messages.  This is useful when the logic to select which messages to receive is not possible with a simple topic subscription.

@@ -3,6 +3,8 @@ layout: features
 title: Browsing Queues
 summary: Learn how to look at the contents of a Queue without consuming any messages.
 links:
+    - label: QueueProvisionAndBrowse.java
+      link: /blob/master/src/main/java/com/solace/samples/features/QueueProvisionAndBrowse.java
 ---
 
 This sample shows how to use a Browser to look at the Queue's contents.

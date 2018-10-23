@@ -3,6 +3,8 @@ layout: features
 title: Active Consumer Indication
 summary: Learn to use consumer active flow indication with exclusive queues.
 links:
+    - label: QueueProvisionAndRequestActiveFlowIndication.java
+      link: /blob/master/src/main/java/com/solace/samples/features/QueueProvisionAndRequestActiveFlowIndication.java
 ---
 
 This sample shows how to request active flow indication for an endpoint (like a Queue) when creating a flow and how to handle active flow indication events.

@@ -3,8 +3,8 @@ layout: features
 title: Transactions
 summary: Learn to use consumer active flow indication with exclusive queues.
 links:
-    - label: ActiveConsumerIndication
-      link: /blob/master/src/features/ActiveConsumerIndication
+    - label: Transactions.java
+      link: /blob/master/src/main/java/com/solace/samples/features/Transactions.java
 ---
 
 This feature introduction shows how multiple consumers can bind to an exclusive queue, but only one client at a time can actively receive messages.
