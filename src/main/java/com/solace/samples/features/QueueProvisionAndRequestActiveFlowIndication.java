@@ -24,10 +24,10 @@ import com.solacesystems.jcsmp.JCSMPSession;
 import com.solacesystems.jcsmp.JCSMPTransportException;
 import com.solacesystems.jcsmp.Queue;
 import com.solacesystems.jcsmp.XMLMessageListener;
-import com.solacesystems.jcsmp.samples.introsamples.common.ArgParser;
-import com.solacesystems.jcsmp.samples.introsamples.common.SampleApp;
-import com.solacesystems.jcsmp.samples.introsamples.common.SampleUtils;
-import com.solacesystems.jcsmp.samples.introsamples.common.SessionConfiguration;
+import com.solace.samples.features.common.ArgParser;
+import com.solace.samples.features.common.SampleApp;
+import com.solace.samples.features.common.SampleUtils;
+import com.solace.samples.features.common.SessionConfiguration;
 
 public class QueueProvisionAndRequestActiveFlowIndication extends SampleApp implements XMLMessageListener, FlowEventHandler {
 

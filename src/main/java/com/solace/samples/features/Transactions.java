@@ -25,10 +25,10 @@ import com.solacesystems.jcsmp.ProducerFlowProperties;
 import com.solacesystems.jcsmp.Queue;
 import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
-import com.solacesystems.jcsmp.samples.introsamples.common.ArgParser;
-import com.solacesystems.jcsmp.samples.introsamples.common.SampleApp;
-import com.solacesystems.jcsmp.samples.introsamples.common.SampleUtils;
-import com.solacesystems.jcsmp.samples.introsamples.common.SessionConfiguration;
+import com.solace.samples.features.common.ArgParser;
+import com.solace.samples.features.common.SampleApp;
+import com.solace.samples.features.common.SampleUtils;
+import com.solace.samples.features.common.SessionConfiguration;
 import com.solacesystems.jcsmp.transaction.RollbackException;
 import com.solacesystems.jcsmp.transaction.TransactedSession;
 
