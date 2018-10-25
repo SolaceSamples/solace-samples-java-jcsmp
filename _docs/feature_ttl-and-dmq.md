@@ -46,7 +46,7 @@ deadMsgQ = JCSMPFactory.onlyInstance().createQueue(DMQ_NAME);
 session.provision(deadMsgQ,dmq_provision,JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
 ```
 
-Then create five messages on a regular Queue where two messages have a three second TTL and one of those messages is eligible for the DMQ.  Wait for five seconds.
+Then create five messages on a regular Queue where two messages have a three second TTL and one of those messages is eligible for the DMQ, which means that it will be sent to the DMQ when the TTL expires.  Wait for five seconds.
 
 ```java
 BytesXMLMessage m = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);

@@ -11,7 +11,7 @@ This sample shows how to request active flow indication for an endpoint (like a 
 
 ## Feature Overview
 
-If a queue has an exclusive access type (refer to Defining Endpoint Properties), multiple clients can bind to the queue, but only one client at a time can actively receive messages from it. Therefore, when a client creates a Flow and binds to an exclusive queue, the flow might not be active for the client if other clients are bound to the queue.
+If a queue has an exclusive access type (refer to [Defining Endpoint Properties](https://docs.solace.com/Solace-PubSub-Messaging-APIs/Developer-Guide/Defining-Endpoint-Proper.htm?Highlight=defining%20endpoint%20properties){:target="_blank"}), multiple clients can bind to the queue, but only one client at a time can actively receive messages from it. Therefore, when a client creates a Flow and binds to an exclusive queue, the flow might not be active for the client if other clients are bound to the queue.
 
 If the Active Flow Indication Flow property is enabled, a Flow active event is returned to the client when its bound flow becomes the active flow. The client also receives a Flow inactive event whenever it loses an active flow (for example, if the flow disconnects).
 
