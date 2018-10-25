@@ -31,18 +31,18 @@ First, create a transacted session.
 
 ```java
 protected JCSMPSession session = null;
-...
+//...
 public TransactedSession txSession;
-...
+//...
 txSession = session.createTransactedSession();
 ```
 
-Next, create a producer and consumer with the transacted session.
+Next, create a producer and consumer from the transacted session.
 
 ```java
 public XMLMessageProducer producer;
 public FlowReceiver receiver;
-...
+//...
 ProducerFlowProperties prodFlowProps = new ProducerFlowProperties();
 prodFlowProps.setWindowSize(100);
 producer = txSession.createProducer(prodFlowProps, this);
@@ -61,7 +61,7 @@ Committing the transaction automatically acknowledges receipt of the message tha
 
 ```java
 public void onReceive(BytesXMLMessage message) {
-    ...
+    //...
     BytesXMLMessage reply = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);
     reply.setDeliveryMode(DeliveryMode.PERSISTENT);
     reply.setSenderId("Replier");
@@ -70,7 +70,7 @@ public void onReceive(BytesXMLMessage message) {
     // this commit will acknowledge the received message and
     // deliver the sent message.
     txSession.commit();
-    ...
+    //...
 }
 ```
 

@@ -1,7 +1,7 @@
 ---
 layout: features
 title: Message Selectors
-summary: Learn to use custom message properties and queries to select messages.
+summary: Learn to use selectors to filter which messages are received.
 links:
     - label: MessageSelectorsOnQueue.java
       link: /blob/master/src/main/java/com/solace/samples/features/MessageSelectorsOnQueue.java

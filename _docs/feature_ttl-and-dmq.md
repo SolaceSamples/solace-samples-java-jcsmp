@@ -38,7 +38,7 @@ NOTE:  The Message Broker uses this Queue as the DMQ by default because it has t
 ```java
 private static String DMQ_NAME = "#DEAD_MSG_QUEUE";
 private Queue deadMsgQ = null;
-...
+//...
 EndpointProperties dmq_provision = new EndpointProperties();
 dmq_provision.setPermission(EndpointProperties.PERMISSION_DELETE);
 dmq_provision.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);

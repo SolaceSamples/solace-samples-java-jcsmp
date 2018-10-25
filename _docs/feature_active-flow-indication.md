@@ -11,11 +11,11 @@ This sample shows how to request active flow indication for an endpoint (like a 
 
 ## Feature Overview
 
-If a queue has an exclusive access type (refer to [Defining Endpoint Properties](https://docs.solace.com/Solace-PubSub-Messaging-APIs/Developer-Guide/Defining-Endpoint-Proper.htm?Highlight=defining%20endpoint%20properties){:target="_blank"}), multiple clients can bind to the queue, but only one client at a time can actively receive messages from it. Therefore, when a client creates a Flow and binds to an exclusive queue, the flow might not be active for the client if other clients are bound to the queue.
+If a queue has an exclusive access type, multiple clients can bind to the queue, but only one client at a time can actively receive messages from it. Therefore, when a client creates a Flow and binds to an exclusive queue, the flow might not be active for the client if other clients are bound to the queue.
 
 If the Active Flow Indication Flow property is enabled, a Flow active event is returned to the client when its bound flow becomes the active flow. The client also receives a Flow inactive event whenever it loses an active flow (for example, if the flow disconnects).
 
-Consider using Active Flow Indication as a way to manage failover from a primary to a backup consumer application when the primary consumer fails.  In this case the backup consumer can use the Active Flow Indication event to run any setup required in order for it to act as the primary consumer.  Active Flow Indication could also be used as a way to detect and respond to a Primary consumer failure which could auto-recover the consumer when it stops receiving messages.
+Using the Active Flow Indication, a client application can learn if it is the primary or backup consumer of an exclusive queue. This can be useful in clustered applications to help establish roles and function properly in active / standby consumption models.
 
 ## Prerequisite
 
@@ -29,13 +29,15 @@ NOTE:  This is the default configuration in PubSub+ Cloud messaging services.
 
 ## Code
 
-Implement the FlowEventHandler and XMLMessageListener interfaces. 
+This sample code will create two flows and show how the second flow will receive the active flow indication event when the first flow is closed.
+
+First, implement the FlowEventHandler and XMLMessageListener interfaces. 
 
 In this sample we simply output the flow event as text to show that the event is occurring.  The XMLMessageListener interface is implemented so that we can use it to create the flow (see code below), but it is otherwise unused in this sample.
 
 ```java
 public class QueueProvisionAndRequestActiveFlowIndication extends SampleApp implements XMLMessageListener, FlowEventHandler {
-...
+//...
 // FlowEventHandler
 public void handleEvent(Object source, FlowEventArgs event) {
     System.out.println("Flow Event - " + event);
@@ -50,9 +52,9 @@ public void onReceive(BytesXMLMessage message) {
 }                    
 ```
 
-Create two flows and listen to Active Flow Indication events. 
+Then, create two flows and listen to Active Flow Indication events. 
 
-When the first flow is started the active flow event is triggered because it is the only flow that is bound to the Queue.  When the second flow is started it doesn't receive the active flow event until the first flow is closed.
+When the first flow is started the active flow event is triggered because it is the only flow that is bound to the Queue.  When the second flow is started it doesn't receive the active flow event.
 
 ```java
 flowOne = session.createFlow(
@@ -62,20 +64,14 @@ flowOne = session.createFlow(
     this //flowEventHandler
 );
  
-flowOne.start();
- 
-System.out.println("Create flow two");
-flowTwo = session.createFlow(
-    this,
-    new ConsumerFlowProperties().setEndpoint(ep_queue).setActiveFlowIndication(true),
-    null,
-    this
-);
- 
-flowTwo.start();
- 
-Thread.sleep(5000);
- 
+flowOne.start();  // flowOne receives the active flow event
+
+//... flowTwo is created and started as well in the same way, but it doesn't receive the active flow event
+```
+
+When the first flow is closed, the second flow receives the active flow event.
+
+```java
 flowOne.close(); // Active flow indication event for flowTwo fires now that flowOne is closed
 ```
 
