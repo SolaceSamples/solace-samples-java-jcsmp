@@ -17,9 +17,7 @@ When a selector is used, a client only receives a message if the selector evalua
 
 ## Prerequisite
 
-This [Client Profile Configuration](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} property must be configured as follows:
-
-[SELECTOR](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/CapabilityType.html#SELECTOR){:target="_blank"} property must be set to "true".
+The [Client Profile](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} must be configured to [allow receiving guaranteed messages](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm#Allow-G-Msg-Receives){:target="_blank"}.
 
 NOTE:  This is the default configuration in PubSub+ Cloud messaging services.
 

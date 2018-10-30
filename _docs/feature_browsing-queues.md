@@ -17,11 +17,7 @@ A Browser could be used by an application to pre-screen messages by detecting me
 
 ## Prerequisite
 
-These [Client Profile Configuration](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} properties must be configured as follows:
-
-[ENDPOINT_MANAGEMENT](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/CapabilityType.html#ENDPOINT_MANAGEMENT){:target="_blank"} property must be set to "true".
-
-[BROWSER](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/CapabilityType.html#BROWSER){:target="_blank"} property must be set to "true".
+The [Client Profile](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} must be configured to [allow receiving guaranteed messages](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm#Allow-G-Msg-Receives){:target="_blank"}.
 
 NOTE:  This is the default configuration in PubSub+ Cloud messaging services.
 

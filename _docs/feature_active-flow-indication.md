@@ -19,11 +19,7 @@ Using the Active Flow Indication, a client application can learn if it is the pr
 
 ## Prerequisite
 
-These [Client Profile Configuration](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} properties must be configured as follows:
-
-[ENDPOINT_MANAGEMENT](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/CapabilityType.html#ENDPOINT_MANAGEMENT){:target="_blank"} property must be set to "true".
-
-[ACTIVE_FLOW_INDICATION](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/CapabilityType.html#ACTIVE_FLOW_INDICATION){:target="_blank"} property must be set to "true".
+The [Client Profile](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} must be configured to [allow receiving guaranteed messages](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm#Allow-G-Msg-Receives){:target="_blank"}.
 
 NOTE:  This is the default configuration in PubSub+ Cloud messaging services.
 
