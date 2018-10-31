@@ -61,11 +61,11 @@ task createAllStartScripts() << {
 				 'basicReplier':'com.solace.samples.BasicReplier',
 				 'confirmedPublish':'com.solace.samples.ConfirmedPublish',
 				 'topicToQueueMapping':'com.solace.samples.TopicToQueueMapping',
-                 'messageSelectorsOnQueue':'com.solace.samples.features.MessageSelectorsOnQueue',
-                 'messageTTLAndDeadMessageQueue':'com.solace.samples.features.MessageTTLAndDeadMessageQueue',
-                 'queueProvisionAndBrowse':'com.solace.samples.features.QueueProvisionAndBrowse',
-                 'queueProvisionAndRequestActiveFlowIndication':'com.solace.samples.features.QueueProvisionAndRequestActiveFlowIndication',
-                 'transactions':'com.solace.samples.features.Transactions'
+                 'featureMessageSelectorsOnQueue':'com.solace.samples.features.MessageSelectorsOnQueue',
+                 'featureMessageTTLAndDeadMessageQueue':'com.solace.samples.features.MessageTTLAndDeadMessageQueue',
+                 'featureQueueProvisionAndBrowse':'com.solace.samples.features.QueueProvisionAndBrowse',
+                 'featureQueueProvisionAndRequestActiveFlowIndication':'com.solace.samples.features.QueueProvisionAndRequestActiveFlowIndication',
+                 'featureTransactions':'com.solace.samples.features.Transactions'
 ]
   scripts.each() { scriptName, className ->
           def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
