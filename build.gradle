@@ -53,14 +53,19 @@ dependencies {
 task createAllStartScripts() << {
      // just a placeholder
 }
-  def scripts = [ 'topicPublisher':'com.solace.samples.TopicPublisher',
+  def scripts = ['topicPublisher':'com.solace.samples.TopicPublisher',
 				 'topicSubscriber':'com.solace.samples.TopicSubscriber',
 				 'queueProducer':'com.solace.samples.QueueProducer',
 				 'queueConsumer':'com.solace.samples.QueueConsumer',
 				 'basicRequestor':'com.solace.samples.BasicRequestor',
 				 'basicReplier':'com.solace.samples.BasicReplier',
 				 'confirmedPublish':'com.solace.samples.ConfirmedPublish',
-				 'topicToQueueMapping':'com.solace.samples.TopicToQueueMapping'
+				 'topicToQueueMapping':'com.solace.samples.TopicToQueueMapping',
+                 'featureMessageSelectorsOnQueue':'com.solace.samples.features.MessageSelectorsOnQueue',
+                 'featureMessageTTLAndDeadMessageQueue':'com.solace.samples.features.MessageTTLAndDeadMessageQueue',
+                 'featureQueueProvisionAndBrowse':'com.solace.samples.features.QueueProvisionAndBrowse',
+                 'featureQueueProvisionAndRequestActiveFlowIndication':'com.solace.samples.features.QueueProvisionAndRequestActiveFlowIndication',
+                 'featureTransactions':'com.solace.samples.features.Transactions'
 ]
   scripts.each() { scriptName, className ->
           def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
