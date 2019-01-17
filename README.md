@@ -30,7 +30,7 @@ This tutorial requires the Solace Java API library. Download the Java API librar
 Just clone and build. For example:
 
   1. clone this GitHub repository
-  1. `./gradlew assemble`
+  2. `./gradlew assemble`
 
 ## Running the Samples
 
