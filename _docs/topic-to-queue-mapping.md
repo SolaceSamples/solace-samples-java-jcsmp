@@ -51,8 +51,10 @@ First, connect to the Solace message router in almost exactly the same way as ot
 final JCSMPProperties properties = new JCSMPProperties();
 properties.setProperty(JCSMPProperties.HOST, args[0]);
 properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]);
-properties.setProperty(JCSMPProperties.PASSWORD, args[2]);
 properties.setProperty(JCSMPProperties.VPN_NAME,  args[1].split("@")[1]);
+if (args.length > 2) {
+    properties.setProperty(JCSMPProperties.PASSWORD, args[2]);
+}
 // Make sure that the session is tolerant of the subscription<
 // already existing on the queue.
 properties.setProperty(JCSMPProperties.IGNORE_DUPLICATE_SUBSCRIPTION_ERROR, true);
@@ -161,7 +163,7 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 Run the example from the command line as follows.
 
 ```
-$ ./build/staged/bin/topicToQueueMapping <host:port> <client-username>@<message-vpn> <client-password>
+$ ./build/staged/bin/topicToQueueMapping <host:port> <client-username>@<message-vpn> [client-password]
 ```
 
 You have now added a topic subscription to a queue and successfully published persistent messages to the topic and had them arrive on your Queue endpoint.

@@ -46,8 +46,10 @@ In the Solace messaging API for Java (JCSMP), Solace sessions are created from t
 final JCSMPProperties properties = new JCSMPProperties();
 properties.setProperty(JCSMPProperties.HOST, args[0]);
 properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]);
-properties.setProperty(JCSMPProperties.PASSWORD, args[2]);
 properties.setProperty(JCSMPProperties.VPN_NAME,  args[1].split("@")[1]);
+if (args.length > 2) {
+    properties.setProperty(JCSMPProperties.PASSWORD, args[2]);
+}
 final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
 
 session.connect();
@@ -186,7 +188,7 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 If you start the `TopicSubscriber`, with the required arguments of your Solace messaging, it will connect and wait for a message.
 
 ```
-$ ./build/staged/bin/topicSubscriber <host:port> <client-username>@<message-vpn> <client-password>
+$ ./build/staged/bin/topicSubscriber <host:port> <client-username>@<message-vpn> [client-password]
 TopicSubscriber initializing...
 Connected. Awaiting message...
 ```
@@ -194,7 +196,7 @@ Connected. Awaiting message...
 Then you can send a message using the `TopicPublisher` with the same arguments. If successful, the output for the producer will look like the following:
 
 ```
-$ ./build/staged/bin/topicPublisher <host:port> <client-username>@<message-vpn> <client-password>
+$ ./build/staged/bin/topicPublisher <host:port> <client-username>@<message-vpn> [client-password]
 Topic Publisher initializing...
 Connected. About to send message 'Hello world!' to topic 'tutorial/topic'...
 Message sent. Exiting.
