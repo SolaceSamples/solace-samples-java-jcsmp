@@ -72,8 +72,10 @@ First, connect to the Solace message router in exactly the same way as other tut
 final JCSMPProperties properties = new JCSMPProperties();
 properties.setProperty(JCSMPProperties.HOST, args[0]);
 properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]);
-properties.setProperty(JCSMPProperties.PASSWORD, args[2]);
 properties.setProperty(JCSMPProperties.VPN_NAME,  args[1].split("@")[1]);
+if (args.length > 2) {
+    properties.setProperty(JCSMPProperties.PASSWORD, args[2]);
+}
 final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
 session.connect();
 ```
@@ -184,7 +186,7 @@ This builds all of the Java Getting Started Samples with OS specific launch scri
 Run the example from the command line as follows.
 
 ```
-$ ./build/staged/bin/confirmedPublish <host:port> <client-username>@<message-vpn> <client-password>
+$ ./build/staged/bin/confirmedPublish <host:port> <client-username>@<message-vpn> [client-password]
 ```
 
 You have now successfully sent persistent messages to a Solace router and confirmed its receipt by correlating the acknowledgement.

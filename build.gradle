@@ -50,9 +50,11 @@ dependencies {
     compile("com.solacesystems:sol-jcsmp:10.2.0")
 }
 
-task createAllStartScripts() << {
+// unused, so commenting out (Issue #58)
+//task createAllStartScripts() << {
      // just a placeholder
-}
+//}
+
   def scripts = ['topicPublisher':'com.solace.samples.TopicPublisher',
 				 'topicSubscriber':'com.solace.samples.TopicSubscriber',
 				 'queueProducer':'com.solace.samples.QueueProducer',
@@ -79,7 +81,7 @@ task createAllStartScripts() << {
             fileMode = 0755
 			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
-    createAllStartScripts.dependsOn(t)
+    //createAllStartScripts.dependsOn(t)
 }
 
 installDist {

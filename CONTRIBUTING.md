@@ -20,7 +20,7 @@ Open a new GitHub pull request with the patch following the steps outlined below
 
 Before you submit your pull request consider the following guidelines:
 
-* Search [GitHub](https://github.com/SolaceSamples/solace-samples-template/pulls) for an open or closed Pull Request
+* Search [GitHub](https://github.com/SolaceSamples/solace-samples-java/pulls) for an open or closed Pull Request
   that relates to your submission. You don't want to duplicate effort.
 
 ### Submitting a Pull Request
@@ -29,11 +29,11 @@ Please follow these steps for all pull requests. These steps are derived from th
 
 #### Step 1: Fork
 
-Fork the project [on GitHub](https://github.com/SolaceSamples/solace-samples-template) and clone your fork
+Fork the project [on GitHub](https://github.com/SolaceSamples/solace-samples-java) and clone your fork
 locally.
 
 ```sh
-git clone https://github.com/<my-github-repo>/solace-samples-template
+git clone https://github.com/<my-github-repo>/solace-samples-java
 ```
 
 #### Step 2: Branch
@@ -67,7 +67,7 @@ $ git rebase upstream/master
 If you have not set the upstream, do so as follows:
 
 ```sh
-$ git remote add upstream https://github.com/SolaceSamples/solace-samples-template
+$ git remote add upstream https://github.com/SolaceSamples/solace-samples-java
 ```
 
 If you have already pushed your fork, then do not rebase. Instead merge any changes from master that are not already part of your branch.
@@ -82,7 +82,7 @@ git push origin my-fix-branch
 
 #### Step 6: Pull Request
 
-In GitHub, send a pull request to `solace-samples-template:master`.
+In GitHub, send a pull request to `solace-samples-java:master`.
 
 When fixing an existing issue, use the [commit message keywords](https://help.github.com/articles/closing-issues-via-commit-messages/) to close the associated GitHub issue.
 

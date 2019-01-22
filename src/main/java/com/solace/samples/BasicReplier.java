@@ -40,8 +40,10 @@ public class BasicReplier {
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);     // host:port
         properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]); // client-username
-        properties.setProperty(JCSMPProperties.PASSWORD, args[2]); // client-password
         properties.setProperty(JCSMPProperties.VPN_NAME,  args[1].split("@")[1]); // message-vpn
+        if (args.length > 2) {
+            properties.setProperty(JCSMPProperties.PASSWORD, args[2]); // client-password
+        }
         final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
         session.connect();
 
@@ -110,8 +112,8 @@ public class BasicReplier {
     public static void main(String... args) throws JCSMPException {
 
         // Check command line arguments
-        if (args.length != 3 || args[1].split("@").length != 2) {
-            System.out.println("Usage: BasicReplier <host:port> <client-username@message-vpn> <client-password>");
+        if (args.length < 2 || args[1].split("@").length != 2) {
+            System.out.println("Usage: BasicReplier <host:port> <client-username@message-vpn> [client-password]");
             System.out.println();
             System.exit(-1);
         }
