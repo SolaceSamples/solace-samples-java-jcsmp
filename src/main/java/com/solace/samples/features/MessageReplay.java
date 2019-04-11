@@ -140,12 +140,10 @@ public class MessageReplay extends SampleApp implements XMLMessageListener {
             consumer.start();
             System.out.println("Flow (" + consumer + ") created");
 
-            Thread.sleep(1000000);
+            Thread.sleep(600000);       // Idling for 10 minutes
             // Close the flow
-            System.out.println("Close flow");
+            System.out.println("Closing the flow and exiting the application.");
             consumer.close();
-            System.out.println("OK");
-
             finish(0);
         } catch (JCSMPException ex) {
             System.err.println("Encountered a JCSMPException, closing session... " + ex.getMessage());
@@ -157,7 +155,6 @@ public class MessageReplay extends SampleApp implements XMLMessageListener {
             System.err.println("Encountered an Exception... " + ex.getMessage());
             finish(1);
         }
-
     }
 
     @Override
