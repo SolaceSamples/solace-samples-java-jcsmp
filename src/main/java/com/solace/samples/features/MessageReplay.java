@@ -173,7 +173,7 @@ public class MessageReplay extends SampleApp implements XMLMessageListener {
                 if (exception instanceof JCSMPFlowTransportUnsolicitedUnbindException) {
                     switch (replayErrorResponseSubcode) {
                         case JCSMPErrorResponseSubcodeEx.REPLAY_STARTED:
-                            System.out.println("Sample handling of an unsolicited unbind for replay initiated by recreating the flow");
+                            System.out.println("Sample handling of an unsolicited unbind for replay initiated. Recreating the flow.");
                             if (consumerFlowProps.getReplayStartLocation() != null) {
                                 consumerFlowProps.setReplayStartLocation(null);
                             }
@@ -181,7 +181,7 @@ public class MessageReplay extends SampleApp implements XMLMessageListener {
                             consumer.start();
                             break;
                         case JCSMPErrorResponseSubcodeEx.REPLAY_START_TIME_NOT_AVAILABLE:
-                            System.out.println("Start date was before the log creation date, initiating replay for all messages instead");
+                            System.out.println("Start date was before the log creation date, initiating replay for all messages instead.");
                             consumerFlowProps.setReplayStartLocation(JCSMPFactory.onlyInstance().createReplayStartLocationBeginning());
                             consumer = session.createFlow(this, consumerFlowProps, null, consumerEventHandler);
                             consumer.start();
