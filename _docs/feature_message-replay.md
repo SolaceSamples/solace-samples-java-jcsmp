@@ -21,7 +21,7 @@ It is important to consider that initiating replay from the message broker will 
 
 ## Prerequisite
 
-A Replay Log must be created on the Solace message broker for the message-vpn, using [Message Replay CLI configuration](https://docs.solace.com/Configuring-and-Managing/Msg-Replay-Config.htm ){:target="_blank"} or using [Solace PubSub+ Manager](https://docs.solace.com/Solace-PubSub-Manager/PubSub-Manager-Overview.htm )(:target="_blank") administration console.
+A Replay Log must be created on the Solace message broker for the message-vpn, using [Message Replay CLI configuration](https://docs.solace.com/Configuring-and-Managing/Msg-Replay-Config.htm ){:target="_blank"} or using [Solace PubSub+ Manager](https://docs.solace.com/Solace-PubSub-Manager/PubSub-Manager-Overview.htm)(:target="_blank") administration console.
 
 NOTE: Message Replay is supported in Solace PubSub+ message broker version 9.1 or later. Solace Java API version 10.5 or later is required.
 
@@ -91,7 +91,7 @@ System.out.println("Flow (" + consumer + ") created");
 
 ### Replay-related events
 
-There are several replay-related events defined corresponding to various conditions, which can be processed in an event handler implementing the `FlowEventHandler` interface. For the definition of the events refer to the [Java API Reference](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html )(:target="_blank").
+There are several replay-related events defined corresponding to various conditions, which can be processed in an event handler implementing the `FlowEventHandler` interface. For the definition of the events refer to the [Java API Reference](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html)(:target="_blank").
 
 Some of the important events:
 * REPLAY_STARTED - a replay has been started administratively from the message-broker, the consumer flow is being disconnected.
