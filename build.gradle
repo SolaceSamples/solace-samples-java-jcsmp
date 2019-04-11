@@ -47,7 +47,7 @@ repositories {
 
 dependencies {
     // Solace Messaging API for Java Dependencies
-    compile("com.solacesystems:sol-jcsmp:10.2.0")
+    compile("com.solacesystems:sol-jcsmp:10.5.0")
 }
 
 // unused, so commenting out (Issue #58)
@@ -67,7 +67,8 @@ dependencies {
                  'featureMessageTTLAndDeadMessageQueue':'com.solace.samples.features.MessageTTLAndDeadMessageQueue',
                  'featureQueueProvisionAndBrowse':'com.solace.samples.features.QueueProvisionAndBrowse',
                  'featureQueueProvisionAndRequestActiveFlowIndication':'com.solace.samples.features.QueueProvisionAndRequestActiveFlowIndication',
-                 'featureTransactions':'com.solace.samples.features.Transactions'
+                 'featureTransactions':'com.solace.samples.features.Transactions',
+                 'featureMessageReplay':'com.solace.samples.features.MessageReply'
 ]
   scripts.each() { scriptName, className ->
           def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {

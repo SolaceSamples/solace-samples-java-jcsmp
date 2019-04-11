@@ -12,3 +12,4 @@
   - feature_message-selectors
   - feature_ttl-and-dmq
   - feature_transactions
+  - feature_message-replay
