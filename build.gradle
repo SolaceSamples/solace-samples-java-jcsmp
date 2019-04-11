@@ -68,7 +68,7 @@ dependencies {
                  'featureQueueProvisionAndBrowse':'com.solace.samples.features.QueueProvisionAndBrowse',
                  'featureQueueProvisionAndRequestActiveFlowIndication':'com.solace.samples.features.QueueProvisionAndRequestActiveFlowIndication',
                  'featureTransactions':'com.solace.samples.features.Transactions',
-                 'featureMessageReplay':'com.solace.samples.features.MessageReply'
+                 'featureMessageReplay':'com.solace.samples.features.MessageReplay'
 ]
   scripts.each() { scriptName, className ->
           def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {

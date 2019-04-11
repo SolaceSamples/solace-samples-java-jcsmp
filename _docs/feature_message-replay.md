@@ -49,7 +49,7 @@ checkCapability(CapabilityType.MESSAGE_REPLAY);
 
 ### Initiating replay
 
-First, a `ReplayStartLocation` object needs to be created to specify a subset of messages in the replay log, collected for replay.
+First, a `ReplayStartLocation` object needs to be created to specify the desired subset of messages in the replay log.
 
 There are two options:
 * use `createReplayStartLocationBeginning()` to replay all recorded messages
@@ -62,7 +62,7 @@ ReplayStartLocation replayStart = null;
 // Example dateStr parameter: String dateStr = "2019-04-05T13:37:00";
 if (dateStr != null) {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC")); // This line converts the given date into UTC time zone
+    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC")); // Convert the given date into UTC time zone
     Date date = simpleDateFormat.parse(dateStr);
     replayStart = JCSMPFactory.onlyInstance().createReplayStartLocationDate(date);
 } else {
@@ -72,7 +72,7 @@ if (dateStr != null) {
 
 Then indicate that replay is requested by setting a non-null `ReplayStartLocation` in `ConsumerFlowProperties`, which is then passed to `JCSMPSession.createFlow` as a parameter.
 
-The target `Endpoint` for replay is also set in `ConsumerFlowProperties` below. This is the normal way of setting an endpoint for a consumer flow.
+The target `Endpoint` for replay is also set in `ConsumerFlowProperties` below, which is the normal way of setting an endpoint for a consumer flow.
 
 ```java
 ConsumerFlowProperties consumerFlowProps = new ConsumerFlowProperties();
@@ -91,9 +91,9 @@ System.out.println("Flow (" + consumer + ") created");
 
 ### Replay-related events
 
-There are several replay-related events defined corresponding to various conditions, which can be processed in an event handler implementing the `FlowEventHandler` interface. For the definition of the events refer to the [Java API Reference](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html)(:target="_blank").
+`FLOW_DOWN` is the replay-related events with several subcodes defined corresponding to various conditions, which can be processed in an event handler implementing the `FlowEventHandler` interface. For the definition of the `JCSMPErrorResponseSubcodeEx` subcodes refer to the [Java API Reference](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html)(:target="_blank").
 
-Some of the important events:
+Some of the important subcodes:
 * REPLAY_STARTED - a replay has been started administratively from the message-broker, the consumer flow is being disconnected.
 * REPLAY_START_TIME_NOT_AVAILABLE - the requested replay start date is before the event log was created, which is not allowed - see above section, "Initiating replay"
 * REPLAY_FAILED
@@ -145,11 +145,11 @@ consumer = session.createFlow(this, consumerFlowProps, null, consumerEventHandle
 
 ### Replay-related Exceptions
 
-If a replay related event occurs the flow is disconnected with `JCSMPFlowTransportUnsolicitedUnbindException` and the exception handler is called if the `onException` method is overridden in the `XMLMessageListener` object that was passed to `createFlow()`.
+If a replay related event occurs the flow is disconnected with `JCSMPFlowTransportUnsolicitedUnbindException` and the exception handler is called, if the `onException` method is overridden in the `XMLMessageListener` object, that was passed to `createFlow()`.
 
 In this sample the `MessageReplay` class implements `XMLMessageListener`, hence `this` is passed as the first parameter to `createFlow()`.
 
-Here is the overridden `onException` method. In this example if the exception is `JCSMPFlowTransportUnsolicitedUnbindException` it will process the `replayErrorResponseSubcode` set by the event handler (see previous section).
+Here is the overridden `onException` method. In this example `JCSMPFlowTransportUnsolicitedUnbindException` is handled depending on the `replayErrorResponseSubcode`, which was set by the event handler (see previous section).
 * REPLAY_STARTED is handled by creating a new flow. 
 * REPLAY_START_TIME_NOT_AVAILABLE is handled by adjusting `ReplayStartLocation` to all recorded messages. 
 
@@ -204,7 +204,8 @@ Then run this sample and observe the followings, particularly the "messageId"s l
 
 1. First, a client initiated replay is started when the flow connects. All messages are requested and replayed from the replay log.
 ```
-$ ./build/staged/bin/featureMessageReplay -h <host:port> -u <client-username>@<message-vpn> -q Q/tutorial [-w <client-passWord>]
+$ ./build/staged/bin/featureMessageReplay -h <host:port> -u <client-username>@<message-vpn> \
+                                          -q Q/tutorial [-w <client-passWord>]
 ```
 2. After replay the application is able to receive live messages
 ```
