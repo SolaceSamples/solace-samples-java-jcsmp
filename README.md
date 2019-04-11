@@ -31,8 +31,8 @@ Just clone and build. For example:
 
   1. clone this GitHub repository
 ```
-    git clone https://github.com/SolaceSamples/solace-samples-java
-    cd solace-samples-java
+git clone https://github.com/SolaceSamples/solace-samples-java
+cd solace-samples-java
 ```
   2. `./gradlew assemble`
 
