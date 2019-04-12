@@ -167,27 +167,25 @@ public class MessageReplay extends SampleApp implements XMLMessageListener {
     public void onException(JCSMPException exception) {
         if (exception instanceof JCSMPFlowTransportUnsolicitedUnbindException) {
             try {
-                if (exception instanceof JCSMPFlowTransportUnsolicitedUnbindException) {
-                    switch (replayErrorResponseSubcode) {
-                        case JCSMPErrorResponseSubcodeEx.REPLAY_STARTED:
-                            System.out.println("Sample handling of an unsolicited unbind for replay initiated. Recreating the flow.");
-                            if (consumerFlowProps.getReplayStartLocation() != null) {
-                                consumerFlowProps.setReplayStartLocation(null);
-                            }
-                            consumer = session.createFlow(this, consumerFlowProps, null, consumerEventHandler);
-                            consumer.start();
-                            break;
-                        case JCSMPErrorResponseSubcodeEx.REPLAY_START_TIME_NOT_AVAILABLE:
-                            System.out.println("Start date was before the log creation date, initiating replay for all messages instead.");
-                            consumerFlowProps.setReplayStartLocation(JCSMPFactory.onlyInstance().createReplayStartLocationBeginning());
-                            consumer = session.createFlow(this, consumerFlowProps, null, consumerEventHandler);
-                            consumer.start();
-                            break;
-                        default:
-                            break;
-                    }
-                    replayErrorResponseSubcode = JCSMPErrorResponseSubcodeEx.UNKNOWN; // reset after handling
+                switch (replayErrorResponseSubcode) {
+                    case JCSMPErrorResponseSubcodeEx.REPLAY_STARTED:
+                        System.out.println("Sample handling of an unsolicited unbind for replay initiated. Recreating the flow.");
+                        if (consumerFlowProps.getReplayStartLocation() != null) {
+                            consumerFlowProps.setReplayStartLocation(null);
+                        }
+                        consumer = session.createFlow(this, consumerFlowProps, null, consumerEventHandler);
+                        consumer.start();
+                        break;
+                    case JCSMPErrorResponseSubcodeEx.REPLAY_START_TIME_NOT_AVAILABLE:
+                        System.out.println("Start date was before the log creation date, initiating replay for all messages instead.");
+                        consumerFlowProps.setReplayStartLocation(JCSMPFactory.onlyInstance().createReplayStartLocationBeginning());
+                        consumer = session.createFlow(this, consumerFlowProps, null, consumerEventHandler);
+                        consumer.start();
+                        break;
+                    default:
+                        break;
                 }
+                replayErrorResponseSubcode = JCSMPErrorResponseSubcodeEx.UNKNOWN; // reset after handling
             }
             catch (JCSMPException e) {
                 e.printStackTrace();
