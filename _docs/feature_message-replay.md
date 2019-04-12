@@ -191,7 +191,7 @@ public void onException(JCSMPException exception) {
 
 ## Running the Sample
 
-Follow the instructions to [build the samples](README.md#build-the-samples ).
+Follow the instructions to [build the samples](../README.md#build-the-samples ).
 
 Before running this sample, be sure that message-replay is enabled in the VPN used. Also messages must have been published to the replay-log for the queue that is used. The "QueueProducer" sample can be used to create and publish messages to the queue. The "QueueConsumer" sample can be used to drain the queue, so that replay is performed on an empty queue and observed by this sample. Both samples are from the [Persistence with Queues tutorial](https://solace.com/samples/solace-samples-java/persistence-with-queues/ ).
 
