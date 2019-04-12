@@ -7,23 +7,23 @@ links:
       link: /blob/master/src/main/java/com/solace/samples/features/MessageReplay.java
 ---
 
-This feature introduction shows how a client can initiate and process replay of previously-published messages, as well as deal with externally initiated message replay.
+In this introduction we show you how a client can initiate and process the replay of previously published messages, as well as deal with an externally initiated replay.
 
 ## Feature Overview
 
-At normal live publishing, guaranteed messages will be removed from the Solace message broker's [queue or topic endpoint](https://docs.solace.com/Messaging-Basics/Endpoints.htm#Endpoints ) after the consumer acknowledged receipt or successful processing. With Message Replay initiated for an endpoint, the message broker will re-publish a requested subset of previously-published and recorded messages, which enables a client to process these messages again.
+During normal publishing, guaranteed messages will be removed from the message broker's [queue or topic endpoint](https://docs.solace.com/Messaging-Basics/Endpoints.htm#Endpoints ) once the consumer acknowledges their receipt or successful processing. When Message Replay is initiated for an endpoint, the message broker will re-publish a requested subset of previously published and logged messages, which enables the client to process these messages again.
 
-Message Replay can be used for example if a client needs to catch up with missed messages and in several other [use cases](https://docs.solace.com/Features/Message-Replay.htm#Applicat ).
+Message Replay can be used if a client needs to catch up with missed messages as well as for several other [use cases](https://docs.solace.com/Features/Message-Replay.htm#Applicat ).
 
-Replay for an endpoint can be initiated programmatically from an API client connected to an exclusive endpoint, or administratively from the message broker. After replay is complete the connected client will keep getting live messages delivered.
+Message Replay for an endpoint can be initiated programmatically from an API client connected to an exclusive endpoint, or administratively from the message broker. After the replay is done, the connected client will keep getting live messages delivered.
 
-It is important to consider that initiating replay from the message broker will disconnect all connected client flows, active or not. A new flow needs to be started for a client wishing to receive replayed and subsequent messages.
+It's important to note that when initiating replay, the message broker will disconnect all connected client flows, active or not. A new flow needs to be started for a client wishing to receive replayed and subsequent messages.
 
 ## Prerequisite
 
-A Replay Log must be created on the Solace message broker for the message-vpn, using [Message Replay CLI configuration](https://docs.solace.com/Configuring-and-Managing/Msg-Replay-Config.htm ){:target="_blank"} or using [Solace PubSub+ Manager](https://docs.solace.com/Solace-PubSub-Manager/PubSub-Manager-Overview.htm)(:target="_blank") administration console.
+A replay log must be created on the message broker for the Message VPN using [Message Replay CLI configuration](https://docs.solace.com/Configuring-and-Managing/Msg-Replay-Config.htm ){:target="_blank"} or using [Solace PubSub+ Manager](https://docs.solace.com/Solace-PubSub-Manager/PubSub-Manager-Overview.htm)(:target="_blank") administration console.
 
-NOTE: Message Replay is supported in Solace PubSub+ message broker version 9.1 or later. Solace Java API version 10.5 or later is required.
+NOTE: Message Replay is supported on Solace PubSub+ 3530 and 3560 appliances running release 9.1 and greater, and on the Solace PubSub+ software message broker running release 9.1 and greater. Solace Java API version 10.5 or later is required.
 
 ![alt text](assets/images/config-replay-log.png "Configure Replay Log")
 
@@ -31,7 +31,7 @@ NOTE: Message Replay is supported in Solace PubSub+ message broker version 9.1 o
 
 ### Checking for Message Replay capability
 
-Message Replay must be supported on the message broker, therefore the code should check this first:
+Message Replay must be supported on the message broker, so this should be the first thing the code checks:
 
 ```java
 void checkCapability(final CapabilityType cap) {
@@ -52,10 +52,10 @@ checkCapability(CapabilityType.MESSAGE_REPLAY);
 First, a `ReplayStartLocation` object needs to be created to specify the desired subset of messages in the replay log.
 
 There are two options:
-* use `createReplayStartLocationBeginning()` to replay all recorded messages
+* use `createReplayStartLocationBeginning()` to replay all logged messages
 * use `createReplayStartLocationDate(Date date)` to replay only messages received from a specified `date`.
 
-Note: The `date` cannot be before the date of the replay log created, otherwise replay will fail.
+Note: The `date` can't be earlier than the date the replay log was created, otherwise replay will fail.
 
 ```java
 ReplayStartLocation replayStart = null;
@@ -70,7 +70,7 @@ if (dateStr != null) {
 }
 ```
 
-Then indicate that replay is requested by setting a non-null `ReplayStartLocation` in `ConsumerFlowProperties`, which is then passed to `JCSMPSession.createFlow` as a parameter.
+Indicate that replay is requested by setting a non-null `ReplayStartLocation` in `ConsumerFlowProperties`, which is then passed to `JCSMPSession.createFlow` as a parameter.
 
 The target `Endpoint` for replay is also set in `ConsumerFlowProperties` below, which is the normal way of setting an endpoint for a consumer flow.
 
@@ -91,16 +91,16 @@ System.out.println("Flow (" + consumer + ") created");
 
 ### Replay-related events
 
-`FLOW_DOWN` is the replay-related events with several subcodes defined corresponding to various conditions, which can be processed in an event handler implementing the `FlowEventHandler` interface. For the definition of the `JCSMPErrorResponseSubcodeEx` subcodes refer to the [Java API Reference](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html)(:target="_blank").
+`FLOW_DOWN` is the replay-related event that has several subcodes defined corresponding to various conditions, which can be processed in an event handler implementing the `FlowEventHandler` interface. For the definition of the `JCSMPErrorResponseSubcodeEx` subcodes refer to the [Java API Reference](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html)(:target="_blank").
 
 Some of the important subcodes:
-* REPLAY_STARTED - a replay has been started administratively from the message-broker, the consumer flow is being disconnected.
-* REPLAY_START_TIME_NOT_AVAILABLE - the requested replay start date is before the event log was created, which is not allowed - see above section, "Initiating replay"
+* REPLAY_STARTED - a replay has been administratively started from the message broker; the consumer flow is being disconnected.
+* REPLAY_START_TIME_NOT_AVAILABLE - the requested replay start date is before when the replay log was created, which is not allowed - see above section, "Initiating replay"
 * REPLAY_FAILED
 
 Here we will define the `ReplayFlowEventHandler`.
 
-Note that in the Java API the event handler is called on the main reactor thread and manipulating the `session` from here is not allowed because it can lead to deadlock. There will be also a related exception raised where the `session` can be manipulated in the exception handler, see the description in the next section. The event handler will set `replayErrorResponseSubcode` which will be used in the exception handler.
+Note that in the Java API, the event handler is called on the main reactor thread, and manipulating the `session` from here isn't allowed because it can lead to deadlock. There will also be a related exception raised where the `session` can be manipulated in the exception handler, see the description in the next section. The event handler will set `replayErrorResponseSubcode`, which will be used in the exception handler.
 
 ```java
 private volatile int replayErrorResponseSubcode = JCSMPErrorResponseSubcodeEx.UNKNOWN;
@@ -145,13 +145,13 @@ consumer = session.createFlow(this, consumerFlowProps, null, consumerEventHandle
 
 ### Replay-related Exceptions
 
-If a replay related event occurs the flow is disconnected with `JCSMPFlowTransportUnsolicitedUnbindException` and the exception handler is called, if the `onException` method is overridden in the `XMLMessageListener` object, that was passed to `createFlow()`.
+If a replay-related event occurs, the flow is disconnected with `JCSMPFlowTransportUnsolicitedUnbindException`, and the exception handler is called if the `onException` method is overridden in the `XMLMessageListener` object that was passed to `createFlow()`.
 
 In this sample the `MessageReplay` class implements `XMLMessageListener`, hence `this` is passed as the first parameter to `createFlow()`.
 
 Here is the overridden `onException` method. In this example `JCSMPFlowTransportUnsolicitedUnbindException` is handled depending on the `replayErrorResponseSubcode`, which was set by the event handler (see previous section).
 * REPLAY_STARTED is handled by creating a new flow. 
-* REPLAY_START_TIME_NOT_AVAILABLE is handled by adjusting `ReplayStartLocation` to all recorded messages. 
+* REPLAY_START_TIME_NOT_AVAILABLE is handled by adjusting `ReplayStartLocation` to all logged messages. 
 
 ```
 @Override
@@ -193,14 +193,14 @@ public void onException(JCSMPException exception) {
 
 Follow the instructions to [build the samples](../README.md#build-the-samples ).
 
-Before running this sample, be sure that message-replay is enabled in the VPN used. Also messages must have been published to the replay-log for the queue that is used. The "QueueProducer" sample can be used to create and publish messages to the queue. The "QueueConsumer" sample can be used to drain the queue, so that replay is performed on an empty queue and observed by this sample. Both samples are from the [Persistence with Queues tutorial](https://solace.com/samples/solace-samples-java/persistence-with-queues/ ).
+Before running this sample, be sure that Message Replay is enabled in the Message VPN. Also, messages must have been published to the replay log for the queue that is used. The "QueueProducer" sample can be used to create and publish messages to the queue. The "QueueConsumer" sample can be used to drain the queue so that replay is performed on an empty queue and observed by this sample. Both samples are from the [Persistence with Queues tutorial](https://solace.com/samples/solace-samples-java/persistence-with-queues/ ).
 
 ```
 $ ./build/staged/bin/queueProducer <host:port> <client-username>@<message-vpn> [<client-password>]
 $ ./build/staged/bin/queueConsumer <host:port> <client-username>@<message-vpn> [<client-password>]
 ```
 
-Then run this sample and observe the followings, particularly the "messageId"s listed :
+You can now run this sample and observe the following, particularly the "messageId"s listed:
 
 1. First, a client initiated replay is started when the flow connects. All messages are requested and replayed from the replay log.
 ```
@@ -211,7 +211,7 @@ $ ./build/staged/bin/featureMessageReplay -h <host:port> -u <client-username>@<m
 ```
 $ ./build/staged/bin/queueProducer <host:port> <client-username>@<message-vpn> [client-password]
 ```
-3. Now start a CLI/Message-Router initiated replay. The flow event handler monitors for a replay start event. When the Message-Router initiates a replay, the flow will see a DOWN_ERROR event with cause 'Replay Started'. This means an administrator has initiated a replay, and the application must destroy and re-create the flow to receive the replayed messages.
+3. Now start a replay from the message broker's CLI. The flow event handler monitors for a replay start event. When the message broker initiates a replay, the flow will see a DOWN_ERROR event with cause 'Replay Started'. This means an administrator has initiated a replay, and the application must destroy and re-create the flow to receive the replayed messages.
 
 ![alt text](assets/images/initiate-replay.png "Initiate Replay")
 
