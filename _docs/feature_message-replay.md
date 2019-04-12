@@ -17,15 +17,17 @@ Message Replay can be used if a client needs to catch up with missed messages as
 
 Message Replay for an endpoint can be initiated programmatically from an API client connected to an exclusive endpoint, or administratively from the message broker. After the replay is done, the connected client will keep getting live messages delivered.
 
-It's important to note that when initiating replay, the message broker will disconnect all connected client flows, active or not. A new flow needs to be started for a client wishing to receive replayed and subsequent messages.
+It's important to note that when initiating replay, the message broker will disconnect all connected client flows, active or not. A new flow needs to be started for a client wishing to receive replayed and subsequent messages. The only exception is that in the client initiated case the flow initiating the replay will not be disconnected.
 
 ## Prerequisite
 
-A replay log must be created on the message broker for the Message VPN using [Message Replay CLI configuration](https://docs.solace.com/Configuring-and-Managing/Msg-Replay-Config.htm ){:target="_blank"} or using [Solace PubSub+ Manager](https://docs.solace.com/Solace-PubSub-Manager/PubSub-Manager-Overview.htm)(:target="_blank") administration console.
+A replay log must be created on the message broker for the Message VPN using [Message Replay CLI configuration](https://docs.solace.com/Configuring-and-Managing/Msg-Replay-Config.htm ){:target="_blank"} or using [Solace PubSub+ Manager](https://docs.solace.com/Solace-PubSub-Manager/PubSub-Manager-Overview.htm)(:target="_blank") administration console. Another option for configuration is to use the [SEMP API](https://docs.solace.com/SEMP/Using-SEMP.htm)(:target="_blank").
 
 NOTE: Message Replay is supported on Solace PubSub+ 3530 and 3560 appliances running release 9.1 and greater, and on the Solace PubSub+ software message broker running release 9.1 and greater. Solace Java API version 10.5 or later is required.
 
-![alt text](assets/images/config-replay-log.png "Configure Replay Log")
+![alt text](assets/images/config-replay-log.png "Configuring Replay Log using Solace PubSub+ Manager")
+<p style="text-align:center">Configuring Replay Log using Solace PubSub+ Manager</p>
+<br>
 
 ## Code
 
@@ -53,7 +55,7 @@ First, a `ReplayStartLocation` object needs to be created to specify the desired
 
 There are two options:
 * use `createReplayStartLocationBeginning()` to replay all logged messages
-* use `createReplayStartLocationDate(Date date)` to replay only messages received from a specified `date`.
+* use `createReplayStartLocationDate(Date date)` to replay only messages received from a specified `date`. Note that the time zone matters - in this sample we will use UTC time zone for the date.
 
 Note: The `date` can't be earlier than the date the replay log was created, otherwise replay will fail.
 
@@ -91,16 +93,18 @@ System.out.println("Flow (" + consumer + ") created");
 
 ### Replay-related events
 
-`FLOW_DOWN` is the replay-related event that has several subcodes defined corresponding to various conditions, which can be processed in an event handler implementing the `FlowEventHandler` interface. For the definition of the `JCSMPErrorResponseSubcodeEx` subcodes refer to the [Java API Reference](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html)(:target="_blank").
+`FLOW_DOWN` is the replay-related event that has several Subcodes defined corresponding to various conditions, which can be processed in an event handler implementing the `FlowEventHandler` interface.
 
-Some of the important subcodes:
+Note that in the Java API, the event handler is called on the main reactor thread, and manipulating the `session` from here isn't allowed because it can lead to deadlock. There will also be a related exception raised where the `session` can be manipulated in the exception handler, see the description in the next section. 
+
+Some of the important Subcodes:
 * REPLAY_STARTED - a replay has been administratively started from the message broker; the consumer flow is being disconnected.
 * REPLAY_START_TIME_NOT_AVAILABLE - the requested replay start date is before when the replay log was created, which is not allowed - see above section, "Initiating replay"
-* REPLAY_FAILED
+* REPLAY_FAILED - indicates a failed replay attempt
 
-Here we will define the `ReplayFlowEventHandler`.
+For the definition of additional replay-related Subcodes refer to the `JCSMPErrorResponseSubcodeEx` class in the [Java API Reference](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html)(:target="_blank").
 
-Note that in the Java API, the event handler is called on the main reactor thread, and manipulating the `session` from here isn't allowed because it can lead to deadlock. There will also be a related exception raised where the `session` can be manipulated in the exception handler, see the description in the next section. The event handler will set `replayErrorResponseSubcode`, which will be used in the exception handler.
+Here we will define the `ReplayFlowEventHandler` to process events with some more example Subcodes. The event handler will set `replayErrorResponseSubcode`, which will be used in the exception handler.
 
 ```java
 private volatile int replayErrorResponseSubcode = JCSMPErrorResponseSubcodeEx.UNKNOWN;
@@ -151,7 +155,7 @@ In this sample the `MessageReplay` class implements `XMLMessageListener`, hence 
 
 Here is the overridden `onException` method. In this example `JCSMPFlowTransportUnsolicitedUnbindException` is handled depending on the `replayErrorResponseSubcode`, which was set by the event handler (see previous section).
 * REPLAY_STARTED is handled by creating a new flow. 
-* REPLAY_START_TIME_NOT_AVAILABLE is handled by adjusting `ReplayStartLocation` to all logged messages. 
+* REPLAY_START_TIME_NOT_AVAILABLE is handled by adjusting `ReplayStartLocation` to replay all logged messages. 
 
 ```
 @Override
@@ -200,6 +204,8 @@ $ ./build/staged/bin/queueProducer <host:port> <client-username>@<message-vpn> [
 $ ./build/staged/bin/queueConsumer <host:port> <client-username>@<message-vpn> [<client-password>]
 ```
 
+At this point the replay log has one message.
+
 You can now run this sample and observe the following, particularly the "messageId"s listed:
 
 1. First, a client initiated replay is started when the flow connects. All messages are requested and replayed from the replay log.
@@ -207,13 +213,17 @@ You can now run this sample and observe the following, particularly the "message
 $ ./build/staged/bin/featureMessageReplay -h <host:port> -u <client-username>@<message-vpn> \
                                           -q Q/tutorial [-w <client-passWord>]
 ```
-2. After replay the application is able to receive live messages
+2. After replay the application is able to receive live messages. Try it by publishing a new message using the "QueueProducer" sample from another terminal. Note that this message will also be added to the replay log.
 ```
 $ ./build/staged/bin/queueProducer <host:port> <client-username>@<message-vpn> [client-password]
 ```
-3. Now start a replay from the message broker's CLI. The flow event handler monitors for a replay start event. When the message broker initiates a replay, the flow will see a DOWN_ERROR event with cause 'Replay Started'. This means an administrator has initiated a replay, and the application must destroy and re-create the flow to receive the replayed messages.
+3. Now start a replay from the message broker. The flow event handler monitors for a replay start event. When the message broker initiates a replay, the flow will see a DOWN_ERROR event with cause 'Replay Started'. This means an administrator has initiated a replay, and the application must destroy and re-create the flow to receive the replayed messages.
 
-![alt text](assets/images/initiate-replay.png "Initiate Replay")
+This will replay all logged messages including the live one published in step 2.
+
+![alt text](assets/images/initiate-replay.png "Initiating Replay using Solace PubSub+ Manager")
+<p style="text-align:center">Initiating Replay using Solace PubSub+ Manager</p>
+<br>
 
 ## Learn More
 
@@ -224,5 +234,3 @@ $ ./build/staged/bin/queueProducer <host:port> <client-username>@<message-vpn> [
 <li><a href="https://docs.solace.com/Features/Message-Replay.htm" target="_blank">Solace Feature Documentation</a></li>
 </ul>
 
-
- 
