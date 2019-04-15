@@ -54,7 +54,7 @@ First, a `ReplayStartLocation` object needs to be created to specify the desired
 
 There are two options:
 * use `createReplayStartLocationBeginning()` to replay all logged messages
-* use `createReplayStartLocationDate(Date date)` to replay all logged messages received from a specified `date`. Note that the time zone matters - in this sample we will use UTC time zone for the date.
+* use `createReplayStartLocationDate(Date date)` to replay all logged messages received starting from a specified `date`. Note that the time zone matters - in this sample we will use UTC time zone for the date.
 
 Note: The `date` can't be earlier than the date the replay log was created, otherwise replay will fail.
 
