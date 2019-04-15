@@ -54,7 +54,7 @@ First, a `ReplayStartLocation` object needs to be created to specify the desired
 
 There are two options:
 * use `createReplayStartLocationBeginning()` to replay all logged messages
-* use `createReplayStartLocationDate(Date date)` to replay only messages received from a specified `date`. Note that the time zone matters - in this sample we will use UTC time zone for the date.
+* use `createReplayStartLocationDate(Date date)` to replay all logged messages received from a specified `date`. Note that the time zone matters - in this sample we will use UTC time zone for the date.
 
 Note: The `date` can't be earlier than the date the replay log was created, otherwise replay will fail.
 
@@ -99,7 +99,7 @@ Note that in the Java API, the event handler is called on the main reactor threa
 Some of the important Subcodes:
 * REPLAY_STARTED - a replay has been administratively started from the message broker; the consumer flow is being disconnected.
 * REPLAY_START_TIME_NOT_AVAILABLE - the requested replay start date is before when the replay log was created, which is not allowed - see above section, "Initiating replay"
-* REPLAY_FAILED - indicates a failed replay attempt
+* REPLAY_FAILED - indicates that an unexpected error has happened during replay
 
 For the definition of additional replay-related Subcodes refer to the `JCSMPErrorResponseSubcodeEx` class in the [Java API Reference]({{ site.docs-api-errorresponse-subcode-ex }}).
 
