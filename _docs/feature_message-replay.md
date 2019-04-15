@@ -11,9 +11,9 @@ In this introduction we show you how a client can initiate and process the repla
 
 ## Feature Overview
 
-During normal publishing, guaranteed messages will be removed from the message broker's [queue or topic endpoint](https://docs.solace.com/Messaging-Basics/Endpoints.htm#Endpoints ) once the consumer acknowledges their receipt or successful processing. When Message Replay is initiated for an endpoint, the message broker will re-publish a requested subset of previously published and logged messages, which enables the client to process these messages again.
+During normal publishing, guaranteed messages will be removed from the message broker's [queue or topic endpoint]({{ site.docs-endpoints }}) once the consumer acknowledges their receipt or successful processing. When Message Replay is initiated for an endpoint, the message broker will re-publish a requested subset of previously published and logged messages, which enables the client to process these messages again.
 
-Message Replay can be used if a client needs to catch up with missed messages as well as for several other [use cases](https://docs.solace.com/Features/Message-Replay.htm#Applicat ).
+Message Replay can be used if a client needs to catch up with missed messages as well as for several other [use cases]({{ site.docs-replay-use-cases }}).
 
 Message Replay for an endpoint can be initiated programmatically from an API client connected to an exclusive endpoint, or administratively from the message broker. After the replay is done, the connected client will keep getting live messages delivered.
 
@@ -21,7 +21,7 @@ It's important to note that when initiating replay, the message broker will disc
 
 ## Prerequisite
 
-A replay log must be created on the message broker for the Message VPN using [Message Replay CLI configuration](https://docs.solace.com/Configuring-and-Managing/Msg-Replay-Config.htm ){:target="_blank"} or using [Solace PubSub+ Manager](https://docs.solace.com/Solace-PubSub-Manager/PubSub-Manager-Overview.htm)(:target="_blank") administration console. Another option for configuration is to use the [SEMP API](https://docs.solace.com/SEMP/Using-SEMP.htm)(:target="_blank").
+A replay log must be created on the message broker for the Message VPN using [Message Replay CLI configuration]({{ site.docs-replay-cli-config }}) or using [Solace PubSub+ Manager]({{ site.docs-psplus-manager }}) administration console. Another option for configuration is to use the [SEMP API]({{ site.docs-semp-api }}).
 
 NOTE: Message Replay is supported on Solace PubSub+ 3530 and 3560 appliances running release 9.1 and greater, and on the Solace PubSub+ software message broker running release 9.1 and greater. Solace Java API version 10.5 or later is required.
 
@@ -101,7 +101,7 @@ Some of the important Subcodes:
 * REPLAY_START_TIME_NOT_AVAILABLE - the requested replay start date is before when the replay log was created, which is not allowed - see above section, "Initiating replay"
 * REPLAY_FAILED - indicates a failed replay attempt
 
-For the definition of additional replay-related Subcodes refer to the `JCSMPErrorResponseSubcodeEx` class in the [Java API Reference](https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/index.html)(:target="_blank").
+For the definition of additional replay-related Subcodes refer to the `JCSMPErrorResponseSubcodeEx` class in the [Java API Reference]({{ site.docs-api-errorresponse-subcode-ex }}).
 
 Here we will define the `ReplayFlowEventHandler` to process events with some more example Subcodes. The event handler will set `replayErrorResponseSubcode`, which will be used in the exception handler.
 
@@ -196,7 +196,7 @@ public void onException(JCSMPException exception) {
 
 Follow the instructions to [build the samples](../README.md#build-the-samples ).
 
-Before running this sample, be sure that Message Replay is enabled in the Message VPN. Also, messages must have been published to the replay log for the queue that is used. The "QueueProducer" sample can be used to create and publish messages to the queue. The "QueueConsumer" sample can be used to drain the queue so that replay is performed on an empty queue and observed by this sample. Both samples are from the [Persistence with Queues tutorial](https://solace.com/samples/solace-samples-java/persistence-with-queues/ ).
+Before running this sample, be sure that Message Replay is enabled in the Message VPN. Also, messages must have been published to the replay log for the queue that is used. The "QueueProducer" sample can be used to create and publish messages to the queue. The "QueueConsumer" sample can be used to drain the queue so that replay is performed on an empty queue and observed by this sample. Both samples are from the [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues) tutorial.
 
 ```
 $ ./build/staged/bin/queueProducer <host:port> <client-username>@<message-vpn> [<client-password>]
@@ -217,7 +217,6 @@ $ ./build/staged/bin/featureMessageReplay -h <host:port> -u <client-username>@<m
 $ ./build/staged/bin/queueProducer <host:port> <client-username>@<message-vpn> [client-password]
 ```
 3. Now start a replay from the message broker. The flow event handler monitors for a replay start event. When the message broker initiates a replay, the flow will see a DOWN_ERROR event with cause 'Replay Started'. This means an administrator has initiated a replay, and the application must destroy and re-create the flow to receive the replayed messages.
-
 This will replay all logged messages including the live one published in step 2.
 
 ![alt text](assets/images/initiate-replay.png "Initiating Replay using Solace PubSub+ Manager")
