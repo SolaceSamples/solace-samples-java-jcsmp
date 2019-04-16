@@ -53,7 +53,6 @@ public class TopicToQueueMapping  {
             }
             System.out.printf("Message Dump:%n%s%n", msg.dump());
 
-            msg.ackMessage();
             latch.countDown(); // unblock main thread
         }
 
