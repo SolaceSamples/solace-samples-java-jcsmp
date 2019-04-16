@@ -25,7 +25,7 @@ A replay log must be created on the message broker for the Message VPN using [Me
 
 NOTE: Message Replay is supported on Solace PubSub+ 3530 and 3560 appliances running release 9.1 and greater, and on the Solace PubSub+ software message broker running release 9.1 and greater. Solace Java API version 10.5 or later is required.
 
-![alt text](assets/images/config-replay-log.png "Configuring Replay Log using Solace PubSub+ Manager")
+![alt text]({{ site.baseurl }}/assets/images/config-replay-log.png "Configuring Replay Log using Solace PubSub+ Manager")
 <br>
 
 ## Code
@@ -219,7 +219,7 @@ $ ./build/staged/bin/queueProducer <host:port> <client-username>@<message-vpn> [
 3. Now start a replay from the message broker. The flow event handler monitors for a replay start event. When the message broker initiates a replay, the flow will see a DOWN_ERROR event with cause 'Replay Started'. This means an administrator has initiated a replay, and the application must destroy and re-create the flow to receive the replayed messages.
 This will replay all logged messages including the live one published in step 2.
 
-![alt text](assets/images/initiate-replay.png "Initiating Replay using Solace PubSub+ Manager")
+![alt text]({{ site.baseurl }}/assets/images/initiate-replay.png "Initiating Replay using Solace PubSub+ Manager")
 <br>
 
 ## Learn More
