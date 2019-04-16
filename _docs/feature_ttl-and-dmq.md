@@ -19,7 +19,7 @@ This feature is very useful in real-time applications where receiving a stale me
 
 ## Prerequisite
 
-The [Client Profile](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm){:target="_blank"} must be configured to [allow receiving guaranteed messages](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm#Allow-G-Msg-Receives){:target="_blank"} and [allow creating guaranteed messages](https://docs.solace.com/Configuring-and-Managing/Configuring-Client-Profiles.htm#Allow-G-Msg-Creates){:target="_blank”}.
+The [Client Profile]({{ site.docs-client-profile }}) must be configured to [allow receiving guaranteed messages]({{ site.docs-client-profile-allow-g-receives }}) and [allow creating guaranteed messages]({{ site.docs-client-profile-allow-g-creates }}).
 
 NOTE:  This is the default configuration in PubSub+ Cloud messaging services.
 
