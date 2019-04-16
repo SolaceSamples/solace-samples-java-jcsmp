@@ -194,7 +194,7 @@ public void onException(JCSMPException exception) {
 
 ## Running the Sample
 
-Follow the instructions to [build the samples](../README.md#build-the-samples ).
+Follow the instructions to [build the samples]({{ site.repository }}/blob/master/README.md#build-the-samples ).
 
 Before running this sample, be sure that Message Replay is enabled in the Message VPN. Also, messages must have been published to the replay log for the queue that is used. The "QueueProducer" sample can be used to create and publish messages to the queue. The "QueueConsumer" sample can be used to drain the queue so that replay is performed on an empty queue and observed by this sample. Both samples are from the [Persistence with Queues]({{ site.baseurl }}/persistence-with-queues) tutorial.
 
