@@ -228,6 +228,6 @@ This will replay all logged messages including the live one published in step 2.
 {% for item in page.links %}
 <li>Related Source Code: <a href="{{ site.repository }}{{ item.link }}" target="_blank">{{ item.label }}</a></li>
 {% endfor %}
-<li><a href="https://docs.solace.com/Features/Message-Replay.htm" target="_blank">Solace Feature Documentation</a></li>
+<li><a href="https://docs.solace.com/Configuring-and-Managing/Message-Replay.htm" target="_blank">Solace Feature Documentation</a></li>
 </ul>
 
