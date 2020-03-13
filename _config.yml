@@ -9,7 +9,7 @@ repository: https://github.com/SolaceSamples/solace-samples-java
 # Link
 links-get-started: //dev.solace.com/get-started/java-tutorials/
 links-downloads: //solace.com/downloads/
-links-community: //solace.com/support/
+links-community: //solace.community
 docs-core-concepts: //docs.solace.com/PubSub-Basics/Core-Concepts.htm
 docs-psplus-manager: //docs.solace.com/Solace-PubSub-Manager/PubSub-Manager-Overview.htm
 docs-semp-api: //docs.solace.com/SEMP/Using-SEMP.htm
