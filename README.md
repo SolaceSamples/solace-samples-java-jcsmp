@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/SolaceSamples/solace-samples-java.svg?branch=master)](https://travis-ci.org/SolaceSamples/solace-samples-java)
 
+# Note: This repo will be archived. See https://github.com/SolaceSamples/solace-samples-java-jcsmp for latest Solace Java JCSMP Samples
+
 # Getting Started Examples
 ## Solace Messaging API for Java (JCSMP)
 
