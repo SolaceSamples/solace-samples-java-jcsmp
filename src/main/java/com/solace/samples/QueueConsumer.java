@@ -65,7 +65,7 @@ public class QueueConsumer {
         final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
         session.connect();
 
-        final String queueName = "Q/tutorial";
+        final String queueName = "AjouTestQ11";
         System.out.printf("Attempting to provision the queue '%s' on the appliance.%n", queueName);
         final EndpointProperties endpointProps = new EndpointProperties();
         // set queue permissions to "consume" and access-type to "exclusive"
