@@ -1,9 +1,11 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'application'
+plugins {
+    id 'java'
+    id 'application'
+    id 'idea'
+    id 'eclipse'
+}
 
-// Don't need these task, so disabling them. Makes it possible to avoid
+// Don't need these tasks, so disabling them. Makes it possible to avoid
 // declaring a single application main class.
 startScripts.enabled = false
 run.enabled = false
@@ -14,16 +16,17 @@ run.enabled = false
 distTar.enabled=false
 distZip.enabled=false
 
-applicationName = 'solace-samples-java'
-version = ''
+applicationName = 'solace-samples-java-jcsmp'
+//version = ''
 
 jar {
-    baseName = 'solace-samples-java'
-    version =  version
+    archiveBaseName = 'solace-samples-java-jcsmp'
+    archiveVersion = ''
     manifest {
-        attributes 'Implementation-Title': 'Solace Getting Started Samples',
-                   'Implementation-Version': version
+        attributes 'Implementation-Title': 'Solace JCSMP Getting Started Samples',
+                   'Implementation-Version': ''
     }
+    exclude '**/log4j2.xml'  // don't put it inside the JAR file, we'll have it external in config dir
 }
 
 // Download context sensitive help and/or source code for eclipse and idea
@@ -31,6 +34,11 @@ eclipse {
     classpath {
         downloadJavadoc = true
         downloadSources = true
+    }
+    jdt {
+        //if you want to alter the java versions (by default they are configured with gradle java plugin settings):
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 }
 
@@ -43,46 +51,86 @@ idea {
 
 repositories {
     mavenCentral()
+    jcenter()
+
+    // temporary, for testing
+    flatDir {
+        dirs 'lib'
+    }
 }
 
 dependencies {
     // Solace Messaging API for Java Dependencies
-    compile("com.solacesystems:sol-jcsmp:10.5.0")
+    implementation group: 'com.solacesystems', name: 'sol-jcsmp', version: '10.10.0'
+    // new improved logging framework, log4j2
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+    // needed to 'bridge' the JCSMP API logs from JCL to log4j
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: '2.14.1'
+    // include this next one if you want to use JsonLayout for log4j
+    //implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.4'
+
+    //implementation fileTree(dir: 'lib', include: '*.jar')  // temporary, for testing of stuff
+
+    // Use JUnit test framework.
+    //testImplementation 'junit:junit:4.13'
 }
 
-// unused, so commenting out (Issue #58)
-//task createAllStartScripts() << {
-     // just a placeholder
-//}
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+}
 
-  def scripts = ['topicPublisher':'com.solace.samples.TopicPublisher',
-				 'topicSubscriber':'com.solace.samples.TopicSubscriber',
-				 'queueProducer':'com.solace.samples.QueueProducer',
-				 'queueConsumer':'com.solace.samples.QueueConsumer',
-				 'basicRequestor':'com.solace.samples.BasicRequestor',
-				 'basicReplier':'com.solace.samples.BasicReplier',
-				 'confirmedPublish':'com.solace.samples.ConfirmedPublish',
-				 'topicToQueueMapping':'com.solace.samples.TopicToQueueMapping',
-                 'featureMessageSelectorsOnQueue':'com.solace.samples.features.MessageSelectorsOnQueue',
-                 'featureMessageTTLAndDeadMessageQueue':'com.solace.samples.features.MessageTTLAndDeadMessageQueue',
-                 'featureQueueProvisionAndBrowse':'com.solace.samples.features.QueueProvisionAndBrowse',
-                 'featureQueueProvisionAndRequestActiveFlowIndication':'com.solace.samples.features.QueueProvisionAndRequestActiveFlowIndication',
-                 'featureTransactions':'com.solace.samples.features.Transactions',
-                 'featureMessageReplay':'com.solace.samples.features.MessageReplay'
+tasks.withType(JavaCompile).all {
+    options.compilerArgs.add("-Xlint:all")
+}
+
+// used to make the various start/run scripts
+def scripts = [
+    'HelloWorld':'com.solace.samples.jcsmp.HelloWorld',
+    'DirectProcessor':'com.solace.samples.jcsmp.patterns.DirectProcessor',
+    'DirectPublisher':'com.solace.samples.jcsmp.patterns.DirectPublisher',
+    'DirectReplier':'com.solace.samples.jcsmp.patterns.DirectReplier',
+    'DirectRequestorBlocking':'com.solace.samples.jcsmp.patterns.DirectRequestorBlocking',
+    'DirectSubscriber':'com.solace.samples.jcsmp.patterns.DirectSubscriber',
+    'GuaranteedProcessor':'com.solace.samples.jcsmp.patterns.GuaranteedProcessor',
+    'GuaranteedPublisher':'com.solace.samples.jcsmp.patterns.GuaranteedPublisher',
+    'GuaranteedPublisherAckTrack':'com.solace.samples.jcsmp.patterns.GuaranteedPublisherAckTrack',
+    'GuaranteedReplier':'com.solace.samples.jcsmp.patterns.GuaranteedReplier',
+    'GuaranteedRequestor':'com.solace.samples.jcsmp.patterns.GuaranteedRequestor',
+    'GuaranteedSubscriber':'com.solace.samples.jcsmp.patterns.GuaranteedSubscriber',
+    'TransactedProcessor':'com.solace.samples.jcsmp.patterns.TransactedProcessor',
+    'featureMessageSelectorsOnQueue':'com.solace.samples.jcsmp.features.MessageSelectorsOnQueue',
+    'featureMessageTTLAndDeadMessageQueue':'com.solace.samples.jcsmp.features.MessageTTLAndDeadMessageQueue',
+    'featureQueueProvisionAndBrowse':'com.solace.samples.jcsmp.features.QueueProvisionAndBrowse',
+    'featureQueueProvisionAndRequestActiveFlowIndication':'com.solace.samples.jcsmp.features.QueueProvisionAndRequestActiveFlowIndication',
+    'featureTransactions':'com.solace.samples.jcsmp.features.Transactions',
+    'featureMessageReplay':'com.solace.samples.jcsmp.features.MessageReplay'
 ]
-  scripts.each() { scriptName, className ->
-          def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
+// for each of those array entries, let's make a start script
+scripts.each() { scriptName, className ->
+    def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
         mainClassName = className
         applicationName = scriptName
         outputDir = new File(project.buildDir, 'scripts')
-        classpath = jar.outputs.files + project.configurations.runtime
+        classpath = jar.outputs.files + project.configurations.runtimeClasspath
+        classpath += files('src/dist/config')  // this is where our log4j2.xml file will be
+        doLast {  // necessary since Gradle assumes all classpath are under 'lib', need to modify
+          def windowsScriptFile = file getWindowsScript()
+          def unixScriptFile = file getUnixScript()
+          windowsScriptFile.text = windowsScriptFile.text.replace('%APP_HOME%\\lib\\config', '%APP_HOME%\\config')
+          unixScriptFile.text = unixScriptFile.text.replace('$APP_HOME/lib/config', '$APP_HOME/config')
+        }
+        defaultJvmOpts = ['-ea']  // enable assertions
     }
-      applicationDistribution.into("bin") {
-            from(t)
-            fileMode = 0755
-			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    applicationDistribution.into("bin") {
+        from(t)
+        fileMode = 0755
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
-    //createAllStartScripts.dependsOn(t)
 }
 
 installDist {
