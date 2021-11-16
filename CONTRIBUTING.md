@@ -10,9 +10,9 @@ We'd love for you to contribute and welcome your help. Here are some guidelines 
 
 ## <a name="issue"></a> Did you find a issue?
 
-* **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/SolaceSamples/solace-samples-java/issues).
+* **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/SolaceSamples/solace-samples-java-jcsmp/issues).
 
-* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/SolaceSamples/solace-samples-java/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible, and a **code sample** or an **executable test case** demonstrating the expected behavior that is not occurring.
+* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/SolaceSamples/solace-samples-java-jcsmp/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible, and a **code sample** or an **executable test case** demonstrating the expected behavior that is not occurring.
 
 ## <a name="submitting"></a> Did you write a patch that fixes a bug?
 
@@ -20,7 +20,7 @@ Open a new GitHub pull request with the patch following the steps outlined below
 
 Before you submit your pull request consider the following guidelines:
 
-* Search [GitHub](https://github.com/SolaceSamples/solace-samples-java/pulls) for an open or closed Pull Request
+* Search [GitHub](https://github.com/SolaceSamples/solace-samples-java-jcsmp/pulls) for an open or closed Pull Request
   that relates to your submission. You don't want to duplicate effort.
 
 ### Submitting a Pull Request
@@ -29,11 +29,11 @@ Please follow these steps for all pull requests. These steps are derived from th
 
 #### Step 1: Fork
 
-Fork the project [on GitHub](https://github.com/SolaceSamples/solace-samples-java) and clone your fork
+Fork the project [on GitHub](https://github.com/SolaceSamples/solace-samples-java-jcsmp) and clone your fork
 locally.
 
 ```sh
-git clone https://github.com/<my-github-repo>/solace-samples-java
+git clone https://github.com/<my-github-username>/solace-samples-java-jcsmp
 ```
 
 #### Step 2: Branch
@@ -67,7 +67,7 @@ $ git rebase upstream/master
 If you have not set the upstream, do so as follows:
 
 ```sh
-$ git remote add upstream https://github.com/SolaceSamples/solace-samples-java
+$ git remote add upstream https://github.com/SolaceSamples/solace-samples-java-jcsmp
 ```
 
 If you have already pushed your fork, then do not rebase. Instead merge any changes from master that are not already part of your branch.
@@ -82,7 +82,7 @@ git push origin my-fix-branch
 
 #### Step 6: Pull Request
 
-In GitHub, send a pull request to `solace-samples-java:master`.
+In GitHub, send a pull request to `solace-samples-java-jcsmp:main`.
 
 When fixing an existing issue, use the [commit message keywords](https://help.github.com/articles/closing-issues-via-commit-messages/) to close the associated GitHub issue.
 
@@ -91,25 +91,6 @@ When fixing an existing issue, use the [commit message keywords](https://help.gi
   * Commit these changes to your branch (ex: my-fix-branch)
 
 That's it! Thank you for your contribution!
-
-## <a name="features"></a> **Do you have an ideas for a new feature or a change to an existing one?**
-
-* Open a GitHub [enhancement request issue](https://github.com/SolaceSamples/solace-samples-java/issues/new) and describe the new functionality.
-
-## <a name="addFeature"></a> **Steps to add a new feature**
-
-* Add your feature source file under src/main/java/com/solace/samples/features/newFeature.java
-* Update the build.gradle file by appending your source file name to the list of scripts  
-
-        def scripts = [ 'topicPublisher':'com.solace.samples.TopicPublisher',  
-                        'topicSubscriber':'com.solace.samples.TopicSubscriber',  
-                        'newFeature':'com.solace.samples.features.newFeature')  
-* Add your feature markdown file under \_docs/feature\_newFeature.md
-* Update the \_docs/tutorials.yml to include the new feature by appending your feature name to the features list
-
-        features:  
-        - feature-1  
-        - feature_newFeature  
 
 ##  <a name="questions"></a> Do you have questions about the source code?
 

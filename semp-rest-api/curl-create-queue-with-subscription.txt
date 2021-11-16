@@ -1,0 +1,27 @@
+# This file contains an example of how to use the RESTful Management API called "SEMP"
+# to create a queue and add a topic subscription to it.
+# This is an alternative to using the PubSub+ Manager GUI, or CLI.
+# For more info: https://docs.solace.com/API-Developer-Online-Ref-Documentation/swagger-ui/config/index.html
+
+
+# STEP 1 : CREATE A NEW QUEUE 
+
+curl http://localhost:8080/SEMP/v2/config/msgVpns/default/queues \
+  -X POST \
+  -u admin:admin \
+  -H "Content-type:application/json" \
+  -d '{ "queueName": "q_samples",
+        "accessType": "exclusive",
+        "maxMsgSpoolUsage": 100,
+        "permission": "consume",
+        "ingressEnabled": true,
+        "egressEnabled": true }'
+
+
+# STEP 2 : ADD A TOPIC SUBSCRIPTION TO THE QUEUE
+
+curl http://localhost:8080/SEMP/v2/config/msgVpns/default/queues/q_samples/subscriptions \
+  -X POST \
+  -u admin:admin \
+  -H "Content-type:application/json" \
+  -d '{ "subscriptionTopic": "solace/samples/*/pers/>" }'
