@@ -108,7 +108,15 @@ def scripts = [
     'featureQueueProvisionAndBrowse':'com.solace.samples.jcsmp.features.QueueProvisionAndBrowse',
     'featureQueueProvisionAndRequestActiveFlowIndication':'com.solace.samples.jcsmp.features.QueueProvisionAndRequestActiveFlowIndication',
     'featureTransactions':'com.solace.samples.jcsmp.features.Transactions',
-    'featureMessageReplay':'com.solace.samples.jcsmp.features.MessageReplay'
+    'featureMessageReplay':'com.solace.samples.jcsmp.features.MessageReplay',
+    'topicPublisher':'com.solace.samples.jcsmp.features.TopicPublisher',
+    'topicSubscriber':'com.solace.samples.jcsmp.features.TopicSubscriber',
+    'queueProducer':'com.solace.samples.jcsmp.features.QueueProducer',
+    'queueConsumer':'com.solace.samples.jcsmp.features.QueueConsumer',
+    'basicRequestor':'com.solace.samples.jcsmp.features.BasicRequestor',
+    'basicReplier':'com.solace.samples.jcsmp.features.BasicReplier',
+    'confirmedPublish':'com.solace.samples.jcsmp.features.ConfirmedPublish',
+    'topicToQueueMapping':'com.solace.samples.jcsmp.features.TopicToQueueMapping',
 ]
 // for each of those array entries, let's make a start script
 scripts.each() { scriptName, className ->
