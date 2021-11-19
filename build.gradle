@@ -93,7 +93,7 @@ assemble.dependsOn installDist
 
 allprojects {
     tasks.withType(Test).configureEach {
-        maxParallelForks = 4
+        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
         if (!project.hasProperty("createReports")) {
             reports.html.required = false
             reports.junitXml.required = false
