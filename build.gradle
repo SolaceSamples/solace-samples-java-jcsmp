@@ -51,7 +51,6 @@ idea {
 
 repositories {
     mavenCentral()
-    jcenter()
 
     // temporary, for testing
     flatDir {
@@ -63,10 +62,10 @@ dependencies {
     // Solace Messaging API for Java Dependencies
     implementation group: 'com.solacesystems', name: 'sol-jcsmp', version: '10.10.0'
     // new improved logging framework, log4j2
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.16.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.16.0'
     // needed to 'bridge' the JCSMP API logs from JCL to log4j
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: '2.14.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: '2.16.0'
     // include this next one if you want to use JsonLayout for log4j
     //implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.4'
 
@@ -121,7 +120,7 @@ def scripts = [
 // for each of those array entries, let's make a start script
 scripts.each() { scriptName, className ->
     def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
-        mainClassName = className
+        mainClass = className
         applicationName = scriptName
         outputDir = new File(project.buildDir, 'scripts')
         classpath = jar.outputs.files + project.configurations.runtimeClasspath
