@@ -31,13 +31,20 @@ import com.solacesystems.jcsmp.JCSMPException;
 import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
 import com.solacesystems.jcsmp.JCSMPSession;
-import com.solacesystems.jcsmp.JCSMPStreamingPublishEventHandler;
+import com.solacesystems.jcsmp.JCSMPStreamingPublishCorrelatingEventHandler;
 import com.solacesystems.jcsmp.Queue;
 import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.Topic;
 import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
+/**
+ * Deprecated sample. Best practice is to admin-configure queues with topic subscriptions
+ * using SEMP or PubSub+ Manager.  See example in folder "semp-rest-api".
+ * However, if you want your messaging API to be able to add/remove topic subscriptions on
+ * queues, this sample show that.  Note that your queue needs "modify topic" permissions
+ * to work, rather than the default "consume" permissions.
+ */
 public class TopicToQueueMapping  {
 
     final int count = 5;
@@ -114,17 +121,16 @@ public class TopicToQueueMapping  {
 
         /** Anonymous inner-class for handling publishing events */
         final XMLMessageProducer prod = session.getMessageProducer(
-                new JCSMPStreamingPublishEventHandler() {
-                    @Override
-                    public void responseReceived(String messageID) {
-                        System.out.printf("Producer received response for msg ID #%s%n",messageID);
-                    }
-
-                    @Override
-                    public void handleError(String messageID, JCSMPException e, long timestamp) {
-                        System.out.printf("Producer received error for msg ID %s @ %s - %s%n",
-                                messageID,timestamp,e);
-                    }
+                new JCSMPStreamingPublishCorrelatingEventHandler() {
+        			@Override
+        			public void responseReceivedEx(Object key) {
+                        System.out.println("Producer received response for msg: " + key.toString());
+        			}
+        			
+        			@Override
+        			public void handleErrorEx(Object key, JCSMPException cause, long timestamp) {
+                        System.out.printf("Producer received error for msg: %s@%s - %s%n", key.toString(), timestamp, cause);
+        			}
                 });
 
         TextMessage msg =  JCSMPFactory.onlyInstance().createMessage(TextMessage.class);

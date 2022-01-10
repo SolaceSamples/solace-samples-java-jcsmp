@@ -33,6 +33,11 @@ import com.solacesystems.jcsmp.Queue;
 import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
+/**
+ * Slightly older sample.  New streaming correlating publisher callback passes object back, rather than long ID
+ * as before, so less need to have complicated MsgInfo data structure to track outstanding published messages.
+ * Easier to just use actual Message object as key.
+ */
 public class ConfirmedPublish {
 
     final int count = 5;
@@ -83,16 +88,6 @@ public class ConfirmedPublish {
                 System.out.printf("Message response (accepted) received for %s \n", i);
             }
             latch.countDown();
-        }
-
-        @Override
-        public void handleError(String messageID, JCSMPException cause, long timestamp) {
-            // Never called
-        }
-
-        @Override
-        public void responseReceived(String messageID) {
-            // Never called
         }
     }
 
