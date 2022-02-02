@@ -25,7 +25,7 @@ import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
 import com.solacesystems.jcsmp.JCSMPRequestTimeoutException;
 import com.solacesystems.jcsmp.JCSMPSession;
-import com.solacesystems.jcsmp.JCSMPStreamingPublishEventHandler;
+import com.solacesystems.jcsmp.JCSMPStreamingPublishCorrelatingEventHandler;
 import com.solacesystems.jcsmp.Requestor;
 import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.Topic;
@@ -33,6 +33,9 @@ import com.solacesystems.jcsmp.XMLMessageConsumer;
 import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
+/**
+ * Deprecated sample, see patterns/DirectRequestorBlocking instead
+ */
 public class BasicRequestor {
 
     public static void main(String... args) throws JCSMPException {
@@ -71,16 +74,16 @@ public class BasicRequestor {
 
         /** Anonymous inner-class for handling publishing events */
         @SuppressWarnings("unused")
-        XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
-            @Override
-            public void responseReceived(String messageID) {
-                System.out.println("Producer received response for msg: " + messageID);
-            }
-            @Override
-            public void handleError(String messageID, JCSMPException e, long timestamp) {
-                System.out.printf("Producer received error for msg: %s@%s - %s%n",
-                        messageID,timestamp,e);
-            }
+        XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishCorrelatingEventHandler() {
+			@Override
+			public void responseReceivedEx(Object key) {
+                System.out.println("Producer received response for msg: " + key.toString());
+			}
+			
+			@Override
+			public void handleErrorEx(Object key, JCSMPException cause, long timestamp) {
+                System.out.printf("Producer received error for msg: %s@%s - %s%n", key.toString(), timestamp, cause);
+			}
         });
 
         XMLMessageConsumer consumer = session.getMessageConsumer((XMLMessageListener)null);

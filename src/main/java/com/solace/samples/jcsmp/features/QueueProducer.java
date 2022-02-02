@@ -28,11 +28,14 @@ import com.solacesystems.jcsmp.JCSMPException;
 import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
 import com.solacesystems.jcsmp.JCSMPSession;
-import com.solacesystems.jcsmp.JCSMPStreamingPublishEventHandler;
+import com.solacesystems.jcsmp.JCSMPStreamingPublishCorrelatingEventHandler;
 import com.solacesystems.jcsmp.Queue;
 import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
+/**
+ * Deprecated sample, see patterns/GuaranteedPublisher instead
+ */
 public class QueueProducer {
 
     public static void main(String... args) throws JCSMPException, InterruptedException {
@@ -80,16 +83,16 @@ public class QueueProducer {
 
         /** Anonymous inner-class for handling publishing events */
         final XMLMessageProducer prod = session.getMessageProducer(
-                new JCSMPStreamingPublishEventHandler() {
-                    @Override
-                    public void responseReceived(String messageID) {
-                        System.out.printf("Producer received response for msg ID #%s%n",messageID);
-                    }
-                    @Override
-                    public void handleError(String messageID, JCSMPException e, long timestamp) {
-                        System.out.printf("Producer received error for msg ID %s @ %s - %s%n",
-                                messageID,timestamp,e);
-                    }
+                new JCSMPStreamingPublishCorrelatingEventHandler() {
+        			@Override
+        			public void responseReceivedEx(Object key) {
+                        System.out.println("Producer received response for msg: " + key.toString());
+        			}
+        			
+        			@Override
+        			public void handleErrorEx(Object key, JCSMPException cause, long timestamp) {
+                        System.out.printf("Producer received error for msg: %s@%s - %s%n", key.toString(), timestamp, cause);
+        			}
                 });
 
         // Publish-only session is now hooked up and running!

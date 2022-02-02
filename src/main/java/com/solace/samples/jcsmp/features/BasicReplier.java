@@ -26,13 +26,16 @@ import com.solacesystems.jcsmp.JCSMPException;
 import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
 import com.solacesystems.jcsmp.JCSMPSession;
-import com.solacesystems.jcsmp.JCSMPStreamingPublishEventHandler;
+import com.solacesystems.jcsmp.JCSMPStreamingPublishCorrelatingEventHandler;
 import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.Topic;
 import com.solacesystems.jcsmp.XMLMessageConsumer;
 import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
+/**
+ * Deprecated sample, see patterns/DirectReplier instead
+ */
 public class BasicReplier {
 
     public void run(String... args) throws JCSMPException {
@@ -50,17 +53,18 @@ public class BasicReplier {
         final Topic topic = JCSMPFactory.onlyInstance().createTopic("tutorial/requests");
 
         /** Anonymous inner-class for handling publishing events */
-        final XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
-            @Override
-            public void responseReceived(String messageID) {
-                System.out.println("Producer received response for msg: " + messageID);
-            }
-
-            @Override
-            public void handleError(String messageID, JCSMPException e, long timestamp) {
-                System.out.printf("Producer received error for msg: %s@%s - %s%n", messageID, timestamp, e);
-            }
-        });
+        final XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishCorrelatingEventHandler() {
+			
+			@Override
+			public void responseReceivedEx(Object key) {
+                System.out.println("Producer received response for msg: " + key.toString());
+			}
+			
+			@Override
+			public void handleErrorEx(Object key, JCSMPException cause, long timestamp) {
+                System.out.printf("Producer received error for msg: %s@%s - %s%n", key.toString(), timestamp, cause);
+			}
+		});
 
         /** Anonymous inner-class for request handling **/
         final XMLMessageConsumer cons = session.getMessageConsumer(new XMLMessageListener() {
