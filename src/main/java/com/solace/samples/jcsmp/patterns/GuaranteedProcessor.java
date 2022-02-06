@@ -53,7 +53,7 @@ public class GuaranteedProcessor {
     static final String TOPIC_PREFIX = "solace/samples/";  // used as the topic "root"
     private static final String API = "JCSMP";
     private static final int PUBLISH_WINDOW_SIZE = 100;
-    private static final String QUEUE_NAME = "q_pers_processor";
+    private static final String QUEUE_NAME = "q_jcsmp_processor";
     
     private static volatile int msgSentCounter = 0;                 // num messages sent
     private static volatile int msgRecvCounter = 0;                 // num messages received

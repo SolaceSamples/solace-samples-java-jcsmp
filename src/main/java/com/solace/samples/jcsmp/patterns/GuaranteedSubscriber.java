@@ -40,7 +40,7 @@ import org.apache.logging.log4j.Logger;
 public class GuaranteedSubscriber {
 
     private static final String SAMPLE_NAME = GuaranteedSubscriber.class.getSimpleName();
-    private static final String QUEUE_NAME = "q_samples";
+    private static final String QUEUE_NAME = "q_jcsmp_sub";
     private static final String API = "JCSMP";
     
     private static volatile int msgRecvCounter = 0;                 // num messages received
