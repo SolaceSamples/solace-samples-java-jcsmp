@@ -160,7 +160,7 @@ public class GuaranteedProcessor {
                 TextMessage outboundMsg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
                 final String upperCaseTopic = inboundTopic.toUpperCase();  // as a silly example of "processing"
                 outboundMsg.setText(upperCaseTopic);
-                if (inboundMsg.getApplicationMessageId() != null) {
+                if (inboundMsg.getApplicationMessageId() != null) {  // set the new message ID to the same as this one
                     outboundMsg.setApplicationMessageId(inboundMsg.getApplicationMessageId());  // populate for traceability
                 }
                 outboundMsg.setDeliveryMode(DeliveryMode.PERSISTENT);
