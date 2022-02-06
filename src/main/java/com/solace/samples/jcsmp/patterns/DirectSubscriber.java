@@ -98,6 +98,7 @@ public class DirectSubscriber {
         });
 
         session.addSubscription(JCSMPFactory.onlyInstance().createTopic(TOPIC_PREFIX + "*/direct/>"));
+        // add more subscriptions here if you want
         consumer.start();
         System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
         while (System.in.available() == 0 && !isShutdown) {

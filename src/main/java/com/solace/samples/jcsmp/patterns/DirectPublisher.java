@@ -16,6 +16,13 @@
 
 package com.solace.samples.jcsmp.patterns;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import com.solacesystems.jcsmp.BytesMessage;
 import com.solacesystems.jcsmp.JCSMPChannelProperties;
 import com.solacesystems.jcsmp.JCSMPErrorResponseException;
@@ -29,11 +36,6 @@ import com.solacesystems.jcsmp.JCSMPTransportException;
 import com.solacesystems.jcsmp.SessionEventArgs;
 import com.solacesystems.jcsmp.SessionEventHandler;
 import com.solacesystems.jcsmp.XMLMessageProducer;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * A more performant sample that shows an application that publishes.
@@ -101,51 +103,46 @@ public class DirectPublisher {
             }
         });
 
-        ExecutorService publishThread = Executors.newSingleThreadExecutor();
-        publishThread.submit(() -> {  // create an application thread for publishing in a loop, instead of main thread
-            // preallocate a binary message, reuse it each loop, for performance
-            final BytesMessage message = JCSMPFactory.onlyInstance().createMessage(BytesMessage.class);
-            byte[] payload = new byte[PAYLOAD_SIZE];  // preallocate memory, for reuse, for performance
-            while (!isShutdown) {
-                try {
-                    // each loop, change the payload, less trivial example than static payload
-                    char chosenCharacter = (char)(Math.round(msgSentCounter % 26) + 65);  // rotate through letters [A-Z]
-                    Arrays.fill(payload,(byte)chosenCharacter);  // fill the payload completely with that char
-                    message.setData(payload);
-                    message.setApplicationMessageId(UUID.randomUUID().toString());  // as an example of a header
-                    // dynamic topics!!  "solace/samples/jcsmp/direct/pub/A"
-                    String topicString = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
-                            .append("/direct/pub/").append(chosenCharacter).toString();  // StringBuilder faster than +
-                    producer.send(message,JCSMPFactory.onlyInstance().createTopic(topicString));  // send the message
-                    msgSentCounter++;  // add one
-                    message.reset();   // reuse this message, to avoid having to recreate it: better performance
-                } catch (JCSMPException e) {  // threw from send(), only thing that is throwing here, but keep trying (unless shutdown?)
-                    System.out.printf("### Caught while trying to producer.send(): %s%n",e);
-                    if (e instanceof JCSMPTransportException) {  // all reconnect attempts failed
-                        isShutdown = true;  // let's quit; or, could initiate a new connection attempt
-                    }
-                } finally {  // add a delay between messages
-                    try {
-                        Thread.sleep(1000 / APPROX_MSG_RATE_PER_SEC);  // do Thread.sleep(0) for max speed
-                        // Note: STANDARD Edition Solace PubSub+ broker is limited to 10k msg/s max ingress
-                    } catch (InterruptedException e) {
-                        isShutdown = true;
-                    }
-                }
-            }
-            // before shutting down, you could send a "quitting" message or health/stats message or something..?
-            publishThread.shutdown();
-        });
-
-        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
-        // block the main thread, waiting for a quit signal
-        while (System.in.available() == 0 && !isShutdown) {
-            Thread.sleep(1000);
+        ScheduledExecutorService statsPrintingThread = Executors.newSingleThreadScheduledExecutor();
+        statsPrintingThread.scheduleAtFixedRate(() -> {
             System.out.printf("%s %s Published msgs/s: %,d%n",API,SAMPLE_NAME,msgSentCounter);  // simple way of calculating message rates
             msgSentCounter = 0;
+        }, 1, 1, TimeUnit.SECONDS);
+  
+        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
+        // preallocate a binary message, reuse it each loop, for performance
+        final BytesMessage message = JCSMPFactory.onlyInstance().createMessage(BytesMessage.class);
+        byte[] payload = new byte[PAYLOAD_SIZE];  // preallocate memory, for reuse, for performance
+        // loop the main thread, waiting for a quit signal
+        while (System.in.available() == 0 && !isShutdown) {
+            try {
+                // each loop, change the payload, less trivial example than static payload
+                char chosenCharacter = (char)(Math.round(msgSentCounter % 26) + 65);  // rotate through letters [A-Z]
+                Arrays.fill(payload,(byte)chosenCharacter);  // fill the payload completely with that char
+                message.setData(payload);
+                message.setApplicationMessageId(UUID.randomUUID().toString());  // as an example of a header
+                // dynamic topics!!  "solace/samples/jcsmp/direct/pub/A"
+                String topicString = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
+                        .append("/direct/pub/").append(chosenCharacter).toString();  // StringBuilder faster than +
+                producer.send(message,JCSMPFactory.onlyInstance().createTopic(topicString));  // send the message
+                msgSentCounter++;  // add one
+                message.reset();   // reuse this message, to avoid having to recreate it: better performance
+            } catch (JCSMPException e) {  // threw from send(), only thing that is throwing here, but keep trying (unless shutdown?)
+                System.out.printf("### Caught while trying to producer.send(): %s%n",e);
+                if (e instanceof JCSMPTransportException) {  // all reconnect attempts failed
+                    isShutdown = true;  // let's quit; or, could initiate a new connection attempt
+                }
+            } finally {  // add a delay between messages
+                try {
+                    Thread.sleep(1000 / APPROX_MSG_RATE_PER_SEC);  // do Thread.sleep(0) for max speed
+                    // Note: STANDARD Edition Solace PubSub+ broker is limited to 10k msg/s max ingress
+                } catch (InterruptedException e) {
+                    isShutdown = true;
+                }
+            }
         }
         isShutdown = true;
-        Thread.sleep(500);
+        statsPrintingThread.shutdown();  // stop printing stats
         session.closeSession();  // will also close producer object
         System.out.println("Main thread quitting.");
     }
