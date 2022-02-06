@@ -155,7 +155,7 @@ public class GuaranteedProcessor {
             }
             msgRecvCounter++;
             String inboundTopic = inboundMsg.getDestination().getName();
-            if (inboundTopic.matches(TOPIC_PREFIX + ".+?/pers/pub/.*")) {  // use of regex to match variable API level
+            if (inboundTopic.contains("/pers/pub/")) {  // simple validation of topic
                 // how to "process" the incoming message? maybe do a DB lookup? add some additional properties? or change the payload?
                 TextMessage outboundMsg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
                 final String upperCaseTopic = inboundTopic.toUpperCase();  // as a silly example of "processing"
@@ -166,7 +166,8 @@ public class GuaranteedProcessor {
                 outboundMsg.setDeliveryMode(DeliveryMode.PERSISTENT);
                 outboundMsg.setCorrelationKey(new ProcessorCorrelationKey(inboundMsg, outboundMsg));  // need to wait for publish ACK
                 String [] inboundTopicLevels = inboundTopic.split("/",6);
-                String onwardsTopic = new StringBuilder(TOPIC_PREFIX).append("jcsmp/pers/upper/").append(inboundTopicLevels[5]).toString();
+                String onwardsTopic = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
+                		.append("pers/upper/").append(inboundTopicLevels[5]).toString();
                 try {
                     producer.send(outboundMsg, JCSMPFactory.onlyInstance().createTopic(onwardsTopic));
                     msgSentCounter++;

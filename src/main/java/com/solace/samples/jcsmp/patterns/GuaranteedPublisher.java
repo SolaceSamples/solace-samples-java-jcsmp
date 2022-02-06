@@ -124,8 +124,8 @@ public class GuaranteedPublisher {
             map.putString("sample",API + "_" + SAMPLE_NAME);
             message.setProperties(map);
             message.setCorrelationKey(message);  // used for ACK/NACK correlation locally within the API
-            String topicString = new StringBuilder(TOPIC_PREFIX)
-                    .append(API.toLowerCase()).append("/pers/pub/").append(chosenCharacter).toString();
+            String topicString = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
+            		.append("/pers/pub/").append(chosenCharacter).toString();
             // NOTE: publishing to topic, so make sure GuaranteedSubscriber queue is subscribed to same topic,
             //       or enable "Reject Message to Sender on No Subscription Match" the client-profile
             Topic topic = JCSMPFactory.onlyInstance().createTopic(topicString);
