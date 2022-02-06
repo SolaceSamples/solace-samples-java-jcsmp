@@ -16,6 +16,16 @@
 
 package com.solace.samples.jcsmp.patterns;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.solacesystems.jcsmp.BytesMessage;
 import com.solacesystems.jcsmp.BytesXMLMessage;
 import com.solacesystems.jcsmp.DeliveryMode;
@@ -35,13 +45,6 @@ import com.solacesystems.jcsmp.SessionEventArgs;
 import com.solacesystems.jcsmp.SessionEventHandler;
 import com.solacesystems.jcsmp.Topic;
 import com.solacesystems.jcsmp.XMLMessageProducer;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class GuaranteedPublisher {
     
@@ -52,6 +55,7 @@ public class GuaranteedPublisher {
     private static final int APPROX_MSG_RATE_PER_SEC = 100;
     private static final int PAYLOAD_SIZE = 512;
     
+    // remember to add log4j2.xml to your classpath
     private static final Logger logger = LogManager.getLogger();  // log4j2, but could also use SLF4J, JCL, etc.
 
     private static volatile int msgSentCounter = 0;                   // num messages sent
@@ -94,57 +98,56 @@ public class GuaranteedPublisher {
                 logger.info("*** Received a producer event: " + event);
             }
         });
-
-        ExecutorService publishThread = Executors.newSingleThreadExecutor();
-        publishThread.submit(() -> {
-            byte[] payload = new byte[PAYLOAD_SIZE];
-            System.out.println("Publishing to topic '"+ TOPIC_PREFIX + API.toLowerCase() + 
-                    "/pers/pub/...', please ensure queue has matching subscription."); 
-            try {
-                while (!isShutdown) {
-                    BytesMessage message = JCSMPFactory.onlyInstance().createMessage(BytesMessage.class);
-                    // each loop, change the payload
-                    char chosenCharacter = (char)(Math.round(msgSentCounter % 26) + 65);  // choose a "random" letter [A-Z]
-                    Arrays.fill(payload,(byte)chosenCharacter);  // fill the payload completely with that char
-                    // use a BytesMessage this sample, instead of TextMessage
-                    message.setData(payload);
-                    message.setDeliveryMode(DeliveryMode.PERSISTENT);  // required for Guaranteed
-                    message.setApplicationMessageId(UUID.randomUUID().toString());  // as an example
-                    // as another example, let's define a user property!
-                    SDTMap map = JCSMPFactory.onlyInstance().createMap();
-                    map.putString("sample","JCSMP GuaranteedPublisher");
-                    message.setProperties(map);
-                    message.setCorrelationKey(message);  // used for ACK/NACK correlation locally within the API
-                    String topicString = new StringBuilder(TOPIC_PREFIX)
-                            .append(API.toLowerCase()).append("/pers/pub/").append(chosenCharacter).toString();
-                    // NOTE: publishing to topic, so make sure GuaranteedSubscriber queue is subscribed to same topic,
-                    //       or enable "Reject Message to Sender on No Subscription Match" the client-profile
-                    Topic topic = JCSMPFactory.onlyInstance().createTopic(topicString);
-                    producer.send(message, topic);  // message is *NOT* Guaranteed until ACK comes back to PublishCallbackHandler
-                    msgSentCounter++;
-                    try {
-                        Thread.sleep(1000 / APPROX_MSG_RATE_PER_SEC);  // do Thread.sleep(0) for max speed
-                        // Note: STANDARD Edition Solace PubSub+ broker is limited to 10k msg/s max ingress
-                    } catch (InterruptedException e) {
-                        isShutdown = true;
-                    }
-                }
-            } catch (JCSMPException e) {
-                e.printStackTrace();
-            } finally {
-                publishThread.shutdown();
-                logger.info("Publisher Thread shutdown");
-            }
-        });
-
-        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
-        // block the main thread, waiting for a quit signal
-        while (System.in.available() == 0 && !isShutdown) {
-            Thread.sleep(1000);
+        
+        ScheduledExecutorService statsPrintingThread = Executors.newSingleThreadScheduledExecutor();
+        statsPrintingThread.scheduleAtFixedRate(() -> {
             System.out.printf("%s %s Published msgs/s: %,d%n",API,SAMPLE_NAME,msgSentCounter);  // simple way of calculating message rates
             msgSentCounter = 0;
+        }, 1, 1, TimeUnit.SECONDS);
+        
+        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
+        byte[] payload = new byte[PAYLOAD_SIZE];  // preallocate
+        BytesMessage message = JCSMPFactory.onlyInstance().createMessage(BytesMessage.class);  // preallocate
+        System.out.println("Publishing to topic '"+ TOPIC_PREFIX + API.toLowerCase() + 
+                "/pers/pub/...', please ensure queue has matching subscription."); 
+        while (System.in.available() == 0 && !isShutdown) {  // loop until ENTER pressed, or shutdown flag
+            message.reset();  // ready for reuse
+            // each loop, change the payload as an example
+            char chosenCharacter = (char)(Math.round(msgSentCounter % 26) + 65);  // choose a "random" letter [A-Z]
+            Arrays.fill(payload,(byte)chosenCharacter);  // fill the payload completely with that char
+            // use a BytesMessage this sample, instead of TextMessage
+            message.setData(payload);
+            message.setDeliveryMode(DeliveryMode.PERSISTENT);  // required for Guaranteed
+            message.setApplicationMessageId(UUID.randomUUID().toString());  // as an example
+            // as another example, let's define a user property!
+            SDTMap map = JCSMPFactory.onlyInstance().createMap();
+            map.putString("sample",API + "_" + SAMPLE_NAME);
+            message.setProperties(map);
+            message.setCorrelationKey(message);  // used for ACK/NACK correlation locally within the API
+            String topicString = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
+            		.append("/pers/pub/").append(chosenCharacter).toString();
+            // NOTE: publishing to topic, so make sure GuaranteedSubscriber queue is subscribed to same topic,
+            //       or enable "Reject Message to Sender on No Subscription Match" the client-profile
+            Topic topic = JCSMPFactory.onlyInstance().createTopic(topicString);
+            try {
+                producer.send(message, topic);
+                msgSentCounter++;
+            } catch (JCSMPException e) {  // threw from send(), only thing that is throwing here, but keep trying (unless shutdown?)
+                System.out.printf("### Caught while trying to producer.send(): %s%n",e);
+                if (e instanceof JCSMPTransportException) {  // all reconnect attempts failed
+                    isShutdown = true;  // let's quit; or, could initiate a new connection attempt
+                }
+            } finally {  // add a delay between messages
+                try {
+                    Thread.sleep(1000 / APPROX_MSG_RATE_PER_SEC);  // do Thread.sleep(0) for max speed
+                    // Note: STANDARD Edition Solace PubSub+ broker is limited to 10k msg/s max ingress
+                } catch (InterruptedException e) {
+                    isShutdown = true;
+                }
+            }
         }
-        isShutdown = true;   // will stop the publish thread
+        isShutdown = true;
+        statsPrintingThread.shutdown();  // stop printing stats
         Thread.sleep(1500);  // give time for the ACKs to arrive from the broker
         session.closeSession();
         System.out.println("Main thread quitting.");

@@ -40,6 +40,10 @@ import com.solacesystems.jcsmp.SessionEventHandler;
 import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,14 +53,15 @@ public class GuaranteedProcessor {
     static final String TOPIC_PREFIX = "solace/samples/";  // used as the topic "root"
     private static final String API = "JCSMP";
     private static final int PUBLISH_WINDOW_SIZE = 100;
-    private static final String QUEUE_NAME = "q_pers_processor";
+    private static final String QUEUE_NAME = "q_jcsmp_processor";
     
     private static volatile int msgSentCounter = 0;                 // num messages sent
     private static volatile int msgRecvCounter = 0;                 // num messages received
     private static volatile boolean isShutdown = false;             // are we done?
     private static FlowReceiver flowQueueReceiver;
 
-    private static final Logger logger = LogManager.getLogger(GuaranteedProcessor.class);  // log4j2, but could also use SLF4J, JCL, etc.
+    // remember to add log4j2.xml to your classpath
+    private static final Logger logger = LogManager.getLogger();  // log4j2, but could also use SLF4J, JCL, etc.
 
     /** This is the main app.  Use this type of app for receiving Guaranteed messages (e.g. via a queue endpoint),
      *  doing some processing (translation, decoration, etc.) and then republishing to a new destination. */
@@ -133,6 +138,15 @@ public class GuaranteedProcessor {
         System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
         System.out.println(" * Remember to modify the queue topic subscriptions to match Publisher and Processor");
         BytesXMLMessage inboundMsg;
+
+        // make a thread for printing message rate stats
+        ScheduledExecutorService statsPrintingThread = Executors.newSingleThreadScheduledExecutor();
+        statsPrintingThread.scheduleAtFixedRate(() -> {
+            System.out.printf("%s %s Received -> Published msgs/s: %,d -> %,d%n",
+                    API, SAMPLE_NAME, msgRecvCounter, msgSentCounter);  // simple way of calculating message rates
+            msgRecvCounter = 0;
+            msgSentCounter = 0;
+        }, 1, 1, TimeUnit.SECONDS);
         
         while (System.in.available() == 0 && !isShutdown) {
             inboundMsg = flowQueueReceiver.receive(1000);  // blocking receive a message
@@ -141,18 +155,19 @@ public class GuaranteedProcessor {
             }
             msgRecvCounter++;
             String inboundTopic = inboundMsg.getDestination().getName();
-            if (inboundTopic.matches(TOPIC_PREFIX + ".+?/pers/pub/.*")) {  // use of regex to match variable API level
+            if (inboundTopic.contains("/pers/pub/")) {  // simple validation of topic
                 // how to "process" the incoming message? maybe do a DB lookup? add some additional properties? or change the payload?
                 TextMessage outboundMsg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
                 final String upperCaseTopic = inboundTopic.toUpperCase();  // as a silly example of "processing"
                 outboundMsg.setText(upperCaseTopic);
-                if (inboundMsg.getApplicationMessageId() != null) {
+                if (inboundMsg.getApplicationMessageId() != null) {  // set the new message ID to the same as this one
                     outboundMsg.setApplicationMessageId(inboundMsg.getApplicationMessageId());  // populate for traceability
                 }
                 outboundMsg.setDeliveryMode(DeliveryMode.PERSISTENT);
                 outboundMsg.setCorrelationKey(new ProcessorCorrelationKey(inboundMsg, outboundMsg));  // need to wait for publish ACK
                 String [] inboundTopicLevels = inboundTopic.split("/",6);
-                String onwardsTopic = new StringBuilder(TOPIC_PREFIX).append("jcsmp/pers/upper/").append(inboundTopicLevels[5]).toString();
+                String onwardsTopic = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
+                		.append("pers/upper/").append(inboundTopicLevels[5]).toString();
                 try {
                     producer.send(outboundMsg, JCSMPFactory.onlyInstance().createTopic(onwardsTopic));
                     msgSentCounter++;
@@ -169,10 +184,8 @@ public class GuaranteedProcessor {
         }
         isShutdown = true;
         flowQueueReceiver.stop();
-        Thread.sleep(1000);
-        System.out.println("Total messages received: "+msgRecvCounter);
-        System.out.println("Total messages sent: "+msgSentCounter);
-        System.out.println();
+        statsPrintingThread.shutdown();  // stop printing stats
+        Thread.sleep(1500);  // give time for the ACKs to arrive to/from the broker
         session.closeSession();  // will also close consumer object
         System.out.println("Main thread quitting.");
     }

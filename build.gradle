@@ -79,6 +79,7 @@ sourceSets {
     main {
         java {
             srcDir 'src/main/java'
+            srcDir 'src/dist/config'  // so eclipse can find the log4j2.xml file
         }
     }
 }

@@ -33,6 +33,9 @@ import com.solacesystems.jcsmp.XMLMessageConsumer;
 import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A Processor is a microservice or application that receives a message, does something with the info,
@@ -103,56 +106,54 @@ public class DirectProcessor {
             }
         });
 
-        // Simple anonymous inner-class for async receiving of messages
-        final XMLMessageConsumer cons = session.getMessageConsumer(new XMLMessageListener() {
-            @Override
-            public void onReceive(BytesXMLMessage inboundMsg) {
-                msgRecvCounter++;
-                String inboundTopic = inboundMsg.getDestination().getName();
-                if (inboundTopic.matches(TOPIC_PREFIX + ".+?/direct/pub/.*")) {  // use of regex to match variable API level
-                    // how to "process" the incoming message? maybe do a DB lookup? add some additional properties? or change the payload?
-                    TextMessage outboundMsg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
-                    final String upperCaseMessage = inboundTopic.toUpperCase();  // as a silly example of "processing"
-                    outboundMsg.setText(upperCaseMessage);
-                    if (inboundMsg.getApplicationMessageId() != null) {  // populate for traceability
-                        outboundMsg.setApplicationMessageId(inboundMsg.getApplicationMessageId());
-                    }
-                    String [] inboundTopicLevels = inboundTopic.split("/",6);
-                    String outboundTopic = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
-                            .append("/direct/upper/").append(inboundTopicLevels[5]).toString();
-                    try {
-                        producer.send(outboundMsg, JCSMPFactory.onlyInstance().createTopic(outboundTopic));
-                        msgSentCounter++;
-                    } catch (JCSMPException e) {  // threw from send(), only thing that is throwing here, but keep looping (unless shutdown?)
-                        System.out.printf("### Caught while trying to producer.send(): %s%n",e);
-                        if (e instanceof JCSMPTransportException) {  // unrecoverable
-                            isShutdown = true;
-                        }
-                    }
-                } else if (inboundMsg.getDestination().getName().endsWith("control/quit")) {  // special sample message
-                    System.out.println(">>> QUIT message received, shutting down.");  // example of command-and-control w/msgs
-                    isShutdown = true;
-                }
-            }
-
-            public void onException(JCSMPException e) {
-                System.out.printf("Consumer received exception: %s%n", e);
-            }
-        });
-
+        // pass null as message listener to initiate blocking/sync receive() behaviour (check Subscriber for async)
+        final XMLMessageConsumer consumer = session.getMessageConsumer((XMLMessageListener)null);
         session.addSubscription(JCSMPFactory.onlyInstance().createTopic(TOPIC_PREFIX + "*/direct/pub/>"));  // listen to the direct publisher samples
         // add more subscriptions here if you want
-        cons.start();
-
-        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
-        while (System.in.available() == 0 && !isShutdown) {  // time to loop!
-            Thread.sleep(1000);  // take a pause
+        consumer.start();
+        
+        // make a thread for printing message rate stats
+        ScheduledExecutorService statsPrintingThread = Executors.newSingleThreadScheduledExecutor();
+        statsPrintingThread.scheduleAtFixedRate(() -> {
             System.out.printf("%s %s Received -> Published msgs/s: %,d -> %,d%n",
-                    API,SAMPLE_NAME,msgRecvCounter,msgSentCounter);  // simple way of calculating message rates
+                    API, SAMPLE_NAME, msgRecvCounter, msgSentCounter);  // simple way of calculating message rates
             msgRecvCounter = 0;
             msgSentCounter = 0;
+        }, 1, 1, TimeUnit.SECONDS);
+
+        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
+        BytesXMLMessage inboundMsg;
+        while (System.in.available() == 0 && !isShutdown) {  // time to loop!
+        	inboundMsg = consumer.receive(1000); // try to receive a message\
+        	if (inboundMsg == null) continue;  // timed out trying to get message, so continue to loop
+            msgRecvCounter++;
+            String inboundTopic = inboundMsg.getDestination().getName();
+            if (inboundTopic.contains("/direct/pub/")) {  // simple validation of topic
+                // how to "process" the incoming message? maybe do a DB lookup? add some additional properties? or change the payload?
+                TextMessage outboundMsg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
+                final String upperCaseMessage = inboundTopic.toUpperCase();  // as a silly example of "processing"
+                outboundMsg.setText(upperCaseMessage);
+                if (inboundMsg.getApplicationMessageId() != null) {  // populate for traceability
+                    outboundMsg.setApplicationMessageId(inboundMsg.getApplicationMessageId());
+                }
+                String [] inboundTopicLevels = inboundTopic.split("/",6);
+                String outboundTopic = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
+                        .append("/direct/upper/").append(inboundTopicLevels[5]).toString();
+                try {
+                    producer.send(outboundMsg, JCSMPFactory.onlyInstance().createTopic(outboundTopic));
+                    msgSentCounter++;
+                } catch (JCSMPException e) {  // threw from send(), only thing that is throwing here, but keep looping (unless shutdown?)
+                    System.out.printf("### Caught while trying to producer.send(): %s%n",e);
+                    if (e instanceof JCSMPTransportException) {  // connection issue; connect again, or terminate
+                        isShutdown = true;
+                    }
+                }
+            } else {
+            	// received a message that I wasn't expecting... handle it here somehow
+            }
         }
         isShutdown = true;
+        statsPrintingThread.shutdown();  // stop printing stats
         session.closeSession();  // will also close producer and consumer objects
         System.out.println("Main thread quitting.");
     }

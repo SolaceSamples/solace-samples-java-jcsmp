@@ -46,7 +46,7 @@ public class DirectReplier {
             System.out.printf("Usage: %s <host:port> <message-vpn> <client-username> [password]%n%n", SAMPLE_NAME);
             System.exit(-1);
         }
-        System.out.println(SAMPLE_NAME + " initializing...");
+        System.out.println(API + " " + SAMPLE_NAME + " initializing...");
         
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);          // host:port
@@ -91,6 +91,7 @@ public class DirectReplier {
         final XMLMessageConsumer cons = session.getMessageConsumer(new XMLMessageListener() {
             @Override
             public void onReceive(BytesXMLMessage requestMsg) {
+            	// allowed to reply/publish from callback thread because this is Direct messaging
                 if (requestMsg.getDestination().getName().contains("direct/request") && requestMsg.getReplyTo() != null) {
                     System.out.printf(">> %s %s received request on '%s', generating response.%n",
                             API,SAMPLE_NAME,requestMsg.getDestination());
@@ -113,7 +114,6 @@ public class DirectReplier {
                 } else {
                     System.out.println("Received message without reply-to field");
                 }
-
             }
 
             public void onException(JCSMPException e) {
@@ -124,7 +124,7 @@ public class DirectReplier {
         // subscribe to 'solace/samples/*/direct/request' ... the * is to match any pub
         session.addSubscription(JCSMPFactory.onlyInstance().createTopic(TOPIC_PREFIX + "*/direct/request"));
         // for use with Solace HTTP MicroGateway feature, will respond to REST GET request on same URI
-        // try doing: curl -u default:default http://localhost:9000/solace/samples/rest/direct/request
+        // change Message VPN REST mode to "gateway" and try doing: curl http://localhost:9000/solace/samples/rest/direct/request
         session.addSubscription(JCSMPFactory.onlyInstance().createTopic("GET/" + TOPIC_PREFIX + "*/direct/request"));
         cons.start();
 

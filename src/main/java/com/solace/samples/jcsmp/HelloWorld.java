@@ -59,7 +59,7 @@ public class HelloWorld {
             uniqueName = reader.readLine().trim().replaceAll("\\s+", "_");  // clean up whitespace
         }
         
-        System.out.println(API + " " + SAMPLE_NAME + " JCSMP initializing...");
+        System.out.println(API + " " + SAMPLE_NAME + " initializing...");
         // Build the properties object for initializing the JCSMP Session
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);          // host:port

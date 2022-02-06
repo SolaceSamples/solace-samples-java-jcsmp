@@ -14,3 +14,4 @@ _site
 .DS_Store
 docs/_site
 .idea
+log/

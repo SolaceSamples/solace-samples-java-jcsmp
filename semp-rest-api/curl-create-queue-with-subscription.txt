@@ -10,7 +10,7 @@ curl http://localhost:8080/SEMP/v2/config/msgVpns/default/queues \
   -X POST \
   -u admin:admin \
   -H "Content-type:application/json" \
-  -d '{ "queueName": "q_samples",
+  -d '{ "queueName": "q_jcsmp_sub",
         "accessType": "exclusive",
         "maxMsgSpoolUsage": 100,
         "permission": "consume",
@@ -20,7 +20,7 @@ curl http://localhost:8080/SEMP/v2/config/msgVpns/default/queues \
 
 # STEP 2 : ADD A TOPIC SUBSCRIPTION TO THE QUEUE
 
-curl http://localhost:8080/SEMP/v2/config/msgVpns/default/queues/q_samples/subscriptions \
+curl http://localhost:8080/SEMP/v2/config/msgVpns/default/queues/q_jcsmp_sub/subscriptions \
   -X POST \
   -u admin:admin \
   -H "Content-type:application/json" \

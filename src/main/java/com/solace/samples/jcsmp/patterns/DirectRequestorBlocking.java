@@ -53,7 +53,7 @@ public class DirectRequestorBlocking {
             System.out.printf("Usage: %s <host:port> <message-vpn> <client-username> [password]%n%n", SAMPLE_NAME);
             System.exit(-1);
         }
-        System.out.println(SAMPLE_NAME + " initializing...");
+        System.out.println(API + " " + SAMPLE_NAME + " initializing...");
 
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);          // host:port
