@@ -40,6 +40,10 @@ import com.solacesystems.jcsmp.SessionEventHandler;
 import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,7 +60,8 @@ public class GuaranteedProcessor {
     private static volatile boolean isShutdown = false;             // are we done?
     private static FlowReceiver flowQueueReceiver;
 
-    private static final Logger logger = LogManager.getLogger(GuaranteedProcessor.class);  // log4j2, but could also use SLF4J, JCL, etc.
+    // remember to add log4j2.xml to your classpath
+    private static final Logger logger = LogManager.getLogger();  // log4j2, but could also use SLF4J, JCL, etc.
 
     /** This is the main app.  Use this type of app for receiving Guaranteed messages (e.g. via a queue endpoint),
      *  doing some processing (translation, decoration, etc.) and then republishing to a new destination. */
@@ -133,6 +138,15 @@ public class GuaranteedProcessor {
         System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
         System.out.println(" * Remember to modify the queue topic subscriptions to match Publisher and Processor");
         BytesXMLMessage inboundMsg;
+
+        // make a thread for printing message rate stats
+        ScheduledExecutorService statsPrintingThread = Executors.newSingleThreadScheduledExecutor();
+        statsPrintingThread.scheduleAtFixedRate(() -> {
+            System.out.printf("%s %s Received -> Published msgs/s: %,d -> %,d%n",
+                    API, SAMPLE_NAME, msgRecvCounter, msgSentCounter);  // simple way of calculating message rates
+            msgRecvCounter = 0;
+            msgSentCounter = 0;
+        }, 1, 1, TimeUnit.SECONDS);
         
         while (System.in.available() == 0 && !isShutdown) {
             inboundMsg = flowQueueReceiver.receive(1000);  // blocking receive a message
@@ -169,10 +183,8 @@ public class GuaranteedProcessor {
         }
         isShutdown = true;
         flowQueueReceiver.stop();
-        Thread.sleep(1000);
-        System.out.println("Total messages received: "+msgRecvCounter);
-        System.out.println("Total messages sent: "+msgSentCounter);
-        System.out.println();
+        statsPrintingThread.shutdown();  // stop printing stats
+        Thread.sleep(1500);  // give time for the ACKs to arrive to/from the broker
         session.closeSession();  // will also close consumer object
         System.out.println("Main thread quitting.");
     }
