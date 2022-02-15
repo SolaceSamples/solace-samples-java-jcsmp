@@ -10,7 +10,7 @@
  * Producer-Independent Messages, which can be reused and resent multiple times 
  * with different data payloads.
  * 
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

@@ -3,7 +3,7 @@
  * 
  * Common utilities to support JCSMP samples.
  * 
- * Copyright 2006-2021 Solace Corporation. All rights reserved.
+ * Copyright 2006-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features.common;

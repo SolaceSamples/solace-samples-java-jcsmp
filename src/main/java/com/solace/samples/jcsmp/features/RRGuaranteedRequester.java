@@ -14,7 +14,7 @@
  *
  * Notes: the RRGuaranteedReplier supports request queue or topic formats, but not both at the same time.
  *
- * Copyright 2013-2021 Solace Corporation. All rights reserved.
+ * Copyright 2013-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

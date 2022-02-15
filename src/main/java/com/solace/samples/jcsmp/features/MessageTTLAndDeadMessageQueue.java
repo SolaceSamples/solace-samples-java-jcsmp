@@ -6,7 +6,7 @@
  * with TTL enabled; how to allow an expired message to be collected by
  * the Dead Message Queue (DMQ).
  * 
- * Copyright 2011-2021 Solace Corporation. All rights reserved.
+ * Copyright 2011-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

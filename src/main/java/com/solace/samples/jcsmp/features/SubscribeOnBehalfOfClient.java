@@ -10,7 +10,7 @@
  * behalf of session #2. A message is then published on that Topic,
  * which is received by session #2.
  * 
- * Copyright 2011-2021 Solace Corporation. All rights reserved.
+ * Copyright 2011-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

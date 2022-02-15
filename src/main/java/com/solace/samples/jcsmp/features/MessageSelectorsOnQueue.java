@@ -12,7 +12,7 @@
  * - Show that messages matching the registered selector are delivered to 
  *   the temporary Queue Flow.
  *   
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

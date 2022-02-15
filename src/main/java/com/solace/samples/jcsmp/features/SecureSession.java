@@ -13,7 +13,7 @@
  * be set up on the appliance and it must contain the root CA that signed the client
  * certificate. The VPN must also have client-certificate authentication enabled.
  * 
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

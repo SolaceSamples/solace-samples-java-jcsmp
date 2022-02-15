@@ -7,7 +7,7 @@
  * A replier receives the message and replies with a message sent to a queue
  * the requestor is bound to. 
  * 
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;
