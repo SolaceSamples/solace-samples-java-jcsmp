@@ -81,12 +81,12 @@ To generate IDEA metadata (.iml and .ipr files), do the following:
 The Solace JCSMP API uses Apache Commons Logging (JCL) (formerly _Jarkarta_ Commons Logging), and is therefore compatible to use with logging frameworks like log4j2.
 Specifically, these samples use the [Commons Logging Bridge](https://logging.apache.org/log4j/log4j-2.4/log4j-jcl/index.html) to bridge logging data from JCL to log4j2.
 
-You can see the required log4j2 dependencies inside the `build.gradle` file, and the configuration file in `src/main/resources/`.  Log4j2 easily allows you to configure various outputs such
+You can see the required log4j2 dependencies inside the `build.gradle` file, and the configuration file in `src/dist/config/`.  Log4j2 easily allows you to configure various outputs such
 as console, file, and many others (e.g. JMS!) for all of the JCSMP API logs.
 
 It is best practice to ensure whatever logging implementation you use, that it is configurable at runtime without having to recompile and redeploy.
 
-In the included log configuration file `src/main/resources/log4j2.xml` there are various logging levels that can be configured using JVM system variables.  For example,
+In the included log configuration file `src/dist/config/log4j2.xml` there are various logging levels that can be configured using JVM system variables.  For example,
 use `-Djcsmp_api_log_level=debug` to set the API logging to debug.  If using the Gradle run scripts, use the convinience environment variable `JAVA_OPTS`.  E.g.:
 
 ```

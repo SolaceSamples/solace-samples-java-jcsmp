@@ -233,6 +233,8 @@ public class ArgParser {
             	i++;
             	if (i >= args.length) return 1;
             	cf.setSslConnetionDowngrade(args[i]);
+            }  else if (args[i].equals("-z")) {
+				sc.setCompression(true);
             }
         }
         

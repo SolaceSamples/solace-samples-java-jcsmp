@@ -1,26 +1,25 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Copyright 2021 Solace Corporation. All rights reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.solace.samples.jcsmp.features;
 
-import java.util.concurrent.CountDownLatch;
-
+import com.solace.samples.jcsmp.features.common.ArgParser;
+import com.solace.samples.jcsmp.features.common.SampleApp;
+import com.solace.samples.jcsmp.features.common.SampleUtils;
+import com.solace.samples.jcsmp.features.common.SessionConfiguration;
 import com.solacesystems.jcsmp.BytesXMLMessage;
 import com.solacesystems.jcsmp.CapabilityType;
 import com.solacesystems.jcsmp.Consumer;
@@ -31,160 +30,186 @@ import com.solacesystems.jcsmp.JCSMPException;
 import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
 import com.solacesystems.jcsmp.JCSMPSession;
-import com.solacesystems.jcsmp.JCSMPStreamingPublishCorrelatingEventHandler;
+import com.solacesystems.jcsmp.JCSMPTransportException;
 import com.solacesystems.jcsmp.Queue;
-import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.Topic;
 import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
 /**
- * Deprecated sample. Best practice is to admin-configure queues with topic subscriptions
+ * NOTE: this sample does not illustrate Solace best practices for topic-to-queue subscription
+ * management.  Ideally, best practice is to admin-configure queues with topic subscriptions
  * using SEMP or PubSub+ Manager.  See example in folder "semp-rest-api".
  * However, if you want your messaging API to be able to add/remove topic subscriptions on
- * queues, this sample show that.  Note that your queue needs "modify topic" permissions
+ * queues, this sample shows that.  Note that your queue needs "modify topic" permissions
  * to work, rather than the default "consume" permissions.
  */
-public class TopicToQueueMapping  {
+public class TopicToQueueMapping extends SampleApp {
+    Consumer cons = null;
+    XMLMessageProducer prod = null;
+    SessionConfiguration conf = null;
+	static int rx_msg_count = 0;
+	
+    void createSession(String[] args) {
+        ArgParser parser = new ArgParser();
 
-    final int count = 5;
-    final CountDownLatch latch = new CountDownLatch(count); // used for
+        // Parse command-line arguments.
+        if (parser.parse(args) == 0)
+            conf = parser.getConfig();
+        else
+            printUsage(parser.isSecure());
 
-    class SimplePrintingMessageListener implements XMLMessageListener {
-        @Override
-        public void onReceive(BytesXMLMessage msg) {
-            if (msg instanceof TextMessage) {
-                System.out.printf("TextMessage received: '%s'%n", ((TextMessage) msg).getText());
-            } else {
-                System.out.println("Message received.");
-            }
-            System.out.printf("Message Dump:%n%s%n", msg.dump());
-
-            latch.countDown(); // unblock main thread
-        }
-
-        @Override
-        public void onException(JCSMPException e) {
-            System.out.printf("Consumer received exception: %s%n", e);
-            latch.countDown(); // unblock main thread
-        }
+        session = SampleUtils.newSession(conf, new PrintingSessionEventHandler(),null);
     }
 
-    void run(String[] args) throws JCSMPException {
+    void printUsage(boolean secure) {
+        String strusage = ArgParser.getCommonUsage(secure);
+        System.out.println(strusage);
+        finish(1);
+    }
 
-        System.out.println("TopicToQueueMapping initializing...");
-        final JCSMPProperties properties = new JCSMPProperties();
-        properties.setProperty(JCSMPProperties.HOST, args[0]);     // host:port
-        properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]); // client-username
-        properties.setProperty(JCSMPProperties.VPN_NAME,  args[1].split("@")[1]); // message-vpn
-        if (args.length > 2) {
-            properties.setProperty(JCSMPProperties.PASSWORD, args[2]); // client-password
-        }
-        
-        // Make sure that the session is tolerant of the subscription already existing on the queue.
-        properties.setProperty(JCSMPProperties.IGNORE_DUPLICATE_SUBSCRIPTION_ERROR, true);
+    public static void main(String[] args) {
+        TopicToQueueMapping qsample = new TopicToQueueMapping();
+        qsample.run(args);
+    }
 
-        final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
-        session.connect();
-
-        // Confirm the current session supports the capabilities required.
-        if (session.isCapable(CapabilityType.PUB_GUARANTEED) &&
-            session.isCapable(CapabilityType.SUB_FLOW_GUARANTEED) &&
-            session.isCapable(CapabilityType.ENDPOINT_MANAGEMENT) &&
-            session.isCapable(CapabilityType.QUEUE_SUBSCRIPTIONS)) {
-            System.out.println("All required capabilities supported!");
+    void checkCapability(final CapabilityType cap) {
+        System.out.printf("Checking for capability %s...", cap);
+        if (session.isCapable(cap)) {
+            System.out.println("OK");
         } else {
-            System.out.println("Missing required capability.");
-            System.out.println("Capability - PUB_GUARANTEED: " + session.isCapable(CapabilityType.PUB_GUARANTEED));
-            System.out.println("Capability - SUB_FLOW_GUARANTEED: " + session.isCapable(CapabilityType.SUB_FLOW_GUARANTEED));
-            System.out.println("Capability - ENDPOINT_MANAGEMENT: " + session.isCapable(CapabilityType.ENDPOINT_MANAGEMENT));
-            System.out.println("Capability - QUEUE_SUBSCRIPTIONS: " + session.isCapable(CapabilityType.QUEUE_SUBSCRIPTIONS));
-            System.exit(1);
+            System.out.println("FAILED");
+            finish(1);
         }
+    }
 
-        Queue queue = JCSMPFactory.onlyInstance().createQueue("Q/tutorial/topicToQueueMapping");
+    byte[] getBinaryData(int len) {
+        final byte[] tmpdata = "the quick brown fox jumps over the lazy dog / flying spaghetti monster ".getBytes();
+        final byte[] ret_data = new byte[len];
+        for (int i = 0; i < len; i++)
+            ret_data[i] = tmpdata[i % tmpdata.length];
+        return ret_data;
+    }
 
-        /*
-         * Provision a new queue on the appliance, ignoring if it already
-         * exists. Set permissions, access type, quota (100MB), and provisioning flags.
-         */
-        System.out.printf("Provision queue '%s' on the appliance...", queue);
-        EndpointProperties endpointProvisionProperties = new EndpointProperties();
-        endpointProvisionProperties.setPermission(EndpointProperties.PERMISSION_DELETE);
-        endpointProvisionProperties.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
-        endpointProvisionProperties.setQuota(100);
-        session.provision(queue, endpointProvisionProperties, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
-
-        // Add the Topic Subscription to the Queue.
-        Topic tutorialTopic = JCSMPFactory.onlyInstance().createTopic("T/mapped/topic/sample");
-        session.addSubscription(queue, tutorialTopic, JCSMPSession.WAIT_FOR_CONFIRM);
-
-        /** Anonymous inner-class for handling publishing events */
-        final XMLMessageProducer prod = session.getMessageProducer(
-                new JCSMPStreamingPublishCorrelatingEventHandler() {
-        			@Override
-        			public void responseReceivedEx(Object key) {
-                        System.out.println("Producer received response for msg: " + key.toString());
-        			}
-        			
-        			@Override
-        			public void handleErrorEx(Object key, JCSMPException cause, long timestamp) {
-                        System.out.printf("Producer received error for msg: %s@%s - %s%n", key.toString(), timestamp, cause);
-        			}
-                });
-
-        TextMessage msg =  JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
-        msg.setDeliveryMode(DeliveryMode.PERSISTENT);
-        for (int i = 1; i <= count; i++) {
-            msg.setText("Message number " + i);
-            prod.send(msg, tutorialTopic);
-        }
-        System.out.println("Sent messages.");
-
-        /*
-         * Create a Flow to consume messages on the Queue. There should be
-         * five messages on the Queue.
-         */
-
-        ConsumerFlowProperties flow_prop = new ConsumerFlowProperties();
-        flow_prop.setEndpoint(queue);
-        Consumer cons = session.createFlow(new SimplePrintingMessageListener(), flow_prop);
-        cons.start();
-
+    void run(String[] args) {
+        createSession(args);
+        Queue ep_queue = null;
+        int finishCode = 0;
         try {
-            latch.await(); // block here until message received, and latch will flip
-        } catch (InterruptedException e) {
-            System.out.println("I was awoken while waiting");
+            // Connects the Session and acquires a message producer.
+			session.connect();
+			prod = session.getMessageProducer(new PrintingPubCallback());
+			final String virtRouterName = (String) session.getProperty(JCSMPProperties.VIRTUAL_ROUTER_NAME);
+			System.out.printf("Router's virtual router name: '%s'\n", virtRouterName);
+
+            // Check capability to provision endpoints.
+            checkCapability(CapabilityType.ENDPOINT_MANAGEMENT);
+            // Check capability to add subscriptions to queues.
+            checkCapability(CapabilityType.QUEUE_SUBSCRIPTIONS);
+
+            /*
+             * Provision a new queue on the appliance, ignoring if it already
+             * exists. Set permissions, access type, and provisioning flags.
+             */
+            EndpointProperties ep_provision = new EndpointProperties();
+            // Set permissions to allow all.
+            ep_provision.setPermission(EndpointProperties.PERMISSION_DELETE);
+            // Set access type to exclusive.
+            ep_provision.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
+            // Set Quota to 100 MB.
+            ep_provision.setQuota(100);
+			ep_queue = JCSMPFactory.onlyInstance().createQueue("sample_queue_TopicToQueueMapping");
+            System.out.printf("Provision queue '%s' on the appliance...", ep_queue);
+            session.provision(ep_queue, ep_provision, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
+            System.out.println("OK");
+
+            // Add the Topic to the Queue.
+            Topic addedTopic = JCSMPFactory.onlyInstance().createTopic("sample_queue_AddedTopic");
+            session.addSubscription(ep_queue, addedTopic, JCSMPSession.WAIT_FOR_CONFIRM);
+            
+            /*
+             * Publish some messages to this Queue. Use
+             * producer-independent messages acquired from JCSMPFactory.
+             */
+            BytesXMLMessage m = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);
+            m.setDeliveryMode(DeliveryMode.PERSISTENT);
+            for (int i = 1; i <= 5; i++) {
+                m.setUserData(String.valueOf(i).getBytes());
+                m.writeAttachment(getBinaryData(i * 20));
+                if (i == 1) {
+                    prod.send(m, ep_queue);
+                } else {
+                    prod.send(m, addedTopic);
+                }
+            }
+            Thread.sleep(500);
+            System.out.println("Sent messages.");
+
+			/*
+			 * Create a Flow to consume messages on the Queue. There should be 
+			 * five messages on the Queue.
+			 */
+			rx_msg_count = 0;
+			ConsumerFlowProperties flow_prop = new ConsumerFlowProperties();
+			flow_prop.setEndpoint(ep_queue);
+			cons = session.createFlow(new MessageDumpListener(), flow_prop);
+			cons.start();
+			Thread.sleep(2000);
+			System.out.printf("Finished consuming messages, the number of message on the queue is '%s'.\n", rx_msg_count);
+        } catch (JCSMPTransportException ex) {
+            System.err.println("Encountered a JCSMPTransportException, closing consumer channel... " + ex.getMessage());
+            if (cons != null) {
+                cons.close();
+                // At this point the consumer handle is unusable; a new one
+                // should be created by calling 
+                // cons = session.getMessageConsumer(...) if the
+                // application logic requires the consumer channel to remain open.
+            }
+            finishCode = 1;
+        } catch (JCSMPException ex) {
+            System.err.println("Encountered a JCSMPException, closing consumer channel... " + ex.getMessage());
+            // Possible causes:
+            // - Authentication error: invalid username/password
+            // - Provisioning error: unable to add subscriptions from CSMP
+            // - Invalid or unsupported properties specified
+            if (cons != null) {
+                cons.close();
+                // At this point the consumer handle is unusable, a new one
+                // should be created
+                // by calling cons = session.getMessageConsumer(...) if the
+                // application
+                // logic requires the consumer channel to remain open.
+            }
+            finishCode = 1;
+        } catch (Exception ex) {
+            System.err.println("Encountered an Exception... " + ex.getMessage());
+            ex.printStackTrace();
+            finishCode = 1;
+        } finally {
+            if (cons != null) {
+                cons.close();
+            }
+            if (ep_queue != null) {
+                System.out.printf("Deprovision queue '%s'...", ep_queue);
+                try {
+                    session.deprovision(ep_queue, JCSMPSession.FLAG_IGNORE_DOES_NOT_EXIST);
+                } catch(JCSMPException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("OK");
+            finish(finishCode);
         }
-        System.out.println("Finished consuming expected messages.");
-
-
-        // Close consumer
-        cons.close();
-        System.out.println("Exiting.");
-        session.closeSession();
     }
+    
+	static class MessageDumpListener implements XMLMessageListener {
+		public void onException(JCSMPException exception) {
+			exception.printStackTrace();
+		}
 
-    public static void main(String... args) throws JCSMPException {
-
-        // Check command line arguments
-        if (args.length < 2 || args[1].split("@").length != 2) {
-            System.out.println("Usage: TopicToQueueMapping <host:port> <client-username@message-vpn> [client-password]");
-            System.out.println();
-            System.exit(-1);
-        }
-        if (args[1].split("@")[0].isEmpty()) {
-            System.out.println("No client-username entered");
-            System.out.println();
-            System.exit(-1);
-        }
-        if (args[1].split("@")[1].isEmpty()) {
-            System.out.println("No message-vpn entered");
-            System.out.println();
-            System.exit(-1);
-        }
-
-        TopicToQueueMapping app = new TopicToQueueMapping();
-        app.run(args);
-    }
+		public void onReceive(BytesXMLMessage message) {
+			System.out.println("\n======== Received message ======== \n" + message.dump());
+			rx_msg_count++;
+		}
+	}
 }
