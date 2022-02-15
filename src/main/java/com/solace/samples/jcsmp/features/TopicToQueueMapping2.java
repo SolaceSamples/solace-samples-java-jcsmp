@@ -135,6 +135,7 @@ public class TopicToQueueMapping2  {
         msg.setDeliveryMode(DeliveryMode.PERSISTENT);
         for (int i = 1; i <= count; i++) {
             msg.setText("Message number " + i);
+            msg.setCorrelationKey(i);
             prod.send(msg, tutorialTopic);
         }
         System.out.println("Sent messages.");

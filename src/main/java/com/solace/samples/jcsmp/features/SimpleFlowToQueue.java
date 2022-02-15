@@ -162,6 +162,7 @@ public class SimpleFlowToQueue extends SampleApp implements XMLMessageListener, 
             for (int i = 0; i < 10; i++) {
 				BytesXMLMessage msg = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);
 				msg.setDeliveryMode(DeliveryMode.PERSISTENT);
+				msg.setCorrelationKey(msg);  // correlation key for receiving ACKs
 				producer.send(msg, queue);
                 Thread.sleep(1000);
             }

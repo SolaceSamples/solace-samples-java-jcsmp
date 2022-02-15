@@ -118,6 +118,7 @@ public class NoLocalPubSub extends SampleApp implements JCSMPStreamingPublishCor
 		byte[] data = "Attachment data. Sample 'NoLocalPubSub'".getBytes();
 		msg.writeAttachment(data);
 		msg.setDeliveryMode(delMode);
+		if (delMode == DeliveryMode.PERSISTENT) msg.setCorrelationKey(msg);  // correlation key for receiving ACKs
 		prod.send(msg, dest);
 	}
 

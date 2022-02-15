@@ -97,6 +97,7 @@ public class Transactions extends SampleApp implements JCSMPStreamingPublishCorr
                 BytesXMLMessage reply = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);
                 reply.setDeliveryMode(DeliveryMode.PERSISTENT);
                 reply.setSenderId("Replier");
+                reply.setCorrelationKey(reply);  // correlation key for receiving ACKs
                 producer.send(reply, message.getReplyTo());
                 
                 // this commit will acknowledge the received message and
@@ -173,6 +174,7 @@ public class Transactions extends SampleApp implements JCSMPStreamingPublishCorr
             request.setDeliveryMode(DeliveryMode.PERSISTENT);
             request.setSenderId("Requestor");
             request.setReplyTo(requestor.queue);
+            request.setCorrelationKey(request);  // correlation key for receiving ACKs
             requestor.producer.send(request, replier.queue);
 
             // Need to commit to deliver the request message from a transacted session

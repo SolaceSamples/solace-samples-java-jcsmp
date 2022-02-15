@@ -136,6 +136,7 @@ public class TopicToQueueMapping extends SampleApp {
             for (int i = 1; i <= 5; i++) {
                 m.setUserData(String.valueOf(i).getBytes());
                 m.writeAttachment(getBinaryData(i * 20));
+                m.setCorrelationKey(i);
                 if (i == 1) {
                     prod.send(m, ep_queue);
                 } else {

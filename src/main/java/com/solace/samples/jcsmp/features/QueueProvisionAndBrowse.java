@@ -118,6 +118,7 @@ public class QueueProvisionAndBrowse extends SampleApp {
 			for (int i = 1; i <= 5; i++) {
 				m.setUserData(String.valueOf(i).getBytes());
 				m.writeAttachment(getBinaryData(i * 20));
+				m.setCorrelationKey(i);  // correlation key for receiving ACKs
 				prod.send(m, ep_queue);
 			}
 			Thread.sleep(500);

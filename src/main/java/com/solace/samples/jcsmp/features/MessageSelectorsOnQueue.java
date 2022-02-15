@@ -131,7 +131,7 @@ public class MessageSelectorsOnQueue extends SampleApp {
 				SDTMap map = prod.createMap();
 				map.putString("pasta", p);
 				msg.setProperties(map);
-				
+				msg.setCorrelationKey(p);  // correlation key for receiving ACKs
 				System.out.printf(
 					"Sending %s message to destination '%s'; pasta type='%s'...\n",
 					msg.getDeliveryMode(),

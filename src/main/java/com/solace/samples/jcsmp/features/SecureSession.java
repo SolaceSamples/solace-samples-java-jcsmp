@@ -189,6 +189,7 @@ public class SecureSession extends SampleApp implements XMLMessageListener, JCSM
                 BytesXMLMessage msg = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);
                 msg.setDeliveryMode(DeliveryMode.PERSISTENT);
                 msg.writeAttachment(data);
+                msg.setCorrelationKey(msg);  // correlation key for receiving ACKs
                 producer.send(msg, queue);
                 Thread.sleep(1000);
             }

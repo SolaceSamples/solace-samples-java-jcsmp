@@ -104,7 +104,7 @@ public class RRGuaranteedRequester extends SampleApp {
         request.setStream(stream);
         request.setDeliveryMode(DeliveryMode.PERSISTENT);
         request.setReplyTo(replyQueue);
-        
+        request.setCorrelationKey(request);  // correlation key for receiving ACKs
         XMLMessageProducer messageProducer = session.getMessageProducer(new PrintingPubCallback());
         messageProducer.send(request, requestDestination);
         

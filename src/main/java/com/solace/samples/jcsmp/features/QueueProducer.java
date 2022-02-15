@@ -102,7 +102,7 @@ public class QueueProducer {
         msg.setDeliveryMode(DeliveryMode.PERSISTENT);
         String text = "Persistent Queue Tutorial! "+DateFormat.getDateTimeInstance().format(new Date());
         msg.setText(text);
-
+        msg.setCorrelationKey(msg);  // correlation key for receiving ACKs
         // Send message directly to the queue
         prod.send(msg, queue);
 	// Delivery not yet confirmed. See ConfirmedPublish.java

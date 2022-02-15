@@ -100,7 +100,7 @@ public class RRGuaranteedReplier extends SampleApp {
             stream.writeDouble(result);
             replyMessage.setStream(stream);
             replyMessage.setDeliveryMode(DeliveryMode.PERSISTENT);
-            
+            replyMessage.setCorrelationKey(replyMessage);  // correlation key for receiving ACKs
             return replyMessage;
         }
         
@@ -112,7 +112,7 @@ public class RRGuaranteedReplier extends SampleApp {
             stream.writeBoolean(false);
             replyMessage.setStream(stream);
             replyMessage.setDeliveryMode(DeliveryMode.PERSISTENT);
-            
+            replyMessage.setCorrelationKey(replyMessage);  // correlation key for receiving ACKs
             return replyMessage;
         }
         
