@@ -70,14 +70,6 @@ public class HelloWorld {
         }
         properties.setProperty(JCSMPProperties.REAPPLY_SUBSCRIPTIONS, true);  // subscribe Direct subs after reconnect
 
-
-        // If you are using TLS (necessary in the case of Publishing to an OpenShift route port 443 with passthrough) you need these truststore properties.
-        properties.setProperty(JCSMPProperties.SSL_TRUST_STORE, "/home/alee/keystore/clientkeystore");
-        properties.setProperty(JCSMPProperties.SSL_TRUST_STORE_PASSWORD, "password");
-
-
-
-
         final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
         session.connect();  // connect to the broker
         
