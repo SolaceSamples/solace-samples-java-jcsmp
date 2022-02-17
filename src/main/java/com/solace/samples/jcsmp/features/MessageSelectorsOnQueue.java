@@ -12,7 +12,7 @@
  * - Show that messages matching the registered selector are delivered to 
  *   the temporary Queue Flow.
  *   
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;
@@ -131,7 +131,7 @@ public class MessageSelectorsOnQueue extends SampleApp {
 				SDTMap map = prod.createMap();
 				map.putString("pasta", p);
 				msg.setProperties(map);
-				
+				msg.setCorrelationKey(p);  // correlation key for receiving ACKs
 				System.out.printf(
 					"Sending %s message to destination '%s'; pasta type='%s'...\n",
 					msg.getDeliveryMode(),

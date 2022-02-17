@@ -10,7 +10,7 @@
  * Producer-Independent Messages, which can be reused and resent multiple times 
  * with different data payloads.
  * 
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;
@@ -118,6 +118,7 @@ public class QueueProvisionAndBrowse extends SampleApp {
 			for (int i = 1; i <= 5; i++) {
 				m.setUserData(String.valueOf(i).getBytes());
 				m.writeAttachment(getBinaryData(i * 20));
+				m.setCorrelationKey(i);  // correlation key for receiving ACKs
 				prod.send(m, ep_queue);
 			}
 			Thread.sleep(500);

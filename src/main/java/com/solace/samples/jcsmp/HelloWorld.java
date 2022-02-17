@@ -69,6 +69,7 @@ public class HelloWorld {
             properties.setProperty(JCSMPProperties.PASSWORD, args[3]);  // client-password
         }
         properties.setProperty(JCSMPProperties.REAPPLY_SUBSCRIPTIONS, true);  // subscribe Direct subs after reconnect
+
         final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
         session.connect();  // connect to the broker
         

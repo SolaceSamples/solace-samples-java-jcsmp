@@ -10,7 +10,7 @@
  * Topic Endpoint called 'my_sample_topicendpoint' be provisioned on the appliance
  * with at least 'Modify Topic' permissions.
  * 
- * Copyright 2007-2021 Solace Corporation. All rights reserved.
+ * Copyright 2007-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;
@@ -154,6 +154,7 @@ public class SimpleFlowToTopic extends SampleApp implements XMLMessageListener, 
             for (int i = 0; i < 10; i++) {
                 BytesXMLMessage msg = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);
 				msg.setDeliveryMode(DeliveryMode.PERSISTENT);
+				msg.setCorrelationKey(msg);  // correlation key for receiving ACKs
                 producer.send(msg, topic);
                 Thread.sleep(1000);
             }

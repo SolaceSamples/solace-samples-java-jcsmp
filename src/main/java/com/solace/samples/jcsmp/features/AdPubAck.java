@@ -31,7 +31,7 @@
  * wanted to resend rejected messages it would have to avoid doing
  * this in the callback.
  *
- * Copyright 2012-2021 Solace Corporation. All rights reserved.
+ * Copyright 2012-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

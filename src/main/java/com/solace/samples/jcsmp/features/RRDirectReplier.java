@@ -12,7 +12,7 @@
  *  | RRDirectRequester |                      | RRDirectReplier  |
  *  |-------------------|  <--ReplyToTopic---- |------------------|
  *
- * Copyright 2013-2021 Solace Corporation. All rights reserved.
+ * Copyright 2013-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

@@ -5,7 +5,7 @@
  * exclusive Queue) on the appliance, then how to request active flow indication
  * when creating a flow.
  * 
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

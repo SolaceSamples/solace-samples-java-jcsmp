@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Copyright 2021-2022 Solace Corporation. All rights reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.solace.samples.jcsmp.features;
@@ -39,10 +36,11 @@ import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
 /**
- * Deprecated sample. Best practice is to admin-configure queues with topic subscriptions
+ * NOTE: this sample does not illustrate Solace best practices for topic-to-queue subscription
+ * management.  Ideally, best practice is to admin-configure queues with topic subscriptions
  * using SEMP or PubSub+ Manager.  See example in folder "semp-rest-api".
  * However, if you want your messaging API to be able to add/remove topic subscriptions on
- * queues, this sample show that.  Note that your queue needs "modify topic" permissions
+ * queues, this sample shows that.  Note that your queue needs "modify topic" permissions
  * to work, rather than the default "consume" permissions.
  */
 public class TopicToQueueMapping  {
@@ -116,7 +114,7 @@ public class TopicToQueueMapping  {
         session.provision(queue, endpointProvisionProperties, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
 
         // Add the Topic Subscription to the Queue.
-        Topic tutorialTopic = JCSMPFactory.onlyInstance().createTopic("T/mapped/topic/sample");
+        Topic tutorialTopic = JCSMPFactory.onlyInstance().createTopic("solace/mapped/topic/sample");
         session.addSubscription(queue, tutorialTopic, JCSMPSession.WAIT_FOR_CONFIRM);
 
         /** Anonymous inner-class for handling publishing events */
@@ -137,6 +135,7 @@ public class TopicToQueueMapping  {
         msg.setDeliveryMode(DeliveryMode.PERSISTENT);
         for (int i = 1; i <= count; i++) {
             msg.setText("Message number " + i);
+            msg.setCorrelationKey(i);
             prod.send(msg, tutorialTopic);
         }
         System.out.println("Sent messages.");

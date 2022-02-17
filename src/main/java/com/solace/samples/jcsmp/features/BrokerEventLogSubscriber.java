@@ -29,7 +29,7 @@
  * This sample triggers a CLIENT_CLIENT_CONNECT event by connecting a second
  * time to the appliance (triggerSecondaryConnection()).
  * 
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

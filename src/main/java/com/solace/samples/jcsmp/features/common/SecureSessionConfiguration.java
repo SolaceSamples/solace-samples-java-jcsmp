@@ -1,7 +1,7 @@
 /**
  * SecureSessionConfiguration.java
  * 
- * Copyright 2006-2021 Solace Corporation. All rights reserved.
+ * Copyright 2006-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features.common;
@@ -24,6 +24,7 @@ public class SecureSessionConfiguration extends SessionConfiguration {
     private String privateKeyAlias;
     private String privateKeyPwd;
     private String sslConnDowngrade;
+    private boolean compression;
     
     public SecureSessionConfiguration() {
         ciphers = null;
@@ -40,6 +41,7 @@ public class SecureSessionConfiguration extends SessionConfiguration {
         validateCertificates = null;
         validateCertificateDates = null;
         sslConnDowngrade = null;
+        compression = false;
     }
     
     public String getExcludeProtocols() {
@@ -112,6 +114,14 @@ public class SecureSessionConfiguration extends SessionConfiguration {
     
     public String getSslConnetionDowngrade( ) {
         return this.sslConnDowngrade;
+    }
+
+    public boolean isCompression() {
+    	return compression;
+    }
+    
+    public void setCompression(boolean level) {
+    	compression = level;
     }
 
     @Override

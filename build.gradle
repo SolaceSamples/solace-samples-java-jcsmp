@@ -60,7 +60,7 @@ repositories {
 
 dependencies {
     // Solace Messaging API for Java Dependencies
-    implementation group: 'com.solacesystems', name: 'sol-jcsmp', version: '10.13.0'
+    implementation group: 'com.solacesystems', name: 'sol-jcsmp', version: '10.13.1'
     // new improved logging framework, log4j2
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
@@ -98,9 +98,6 @@ def scripts = [
     'DirectSubscriber':'com.solace.samples.jcsmp.patterns.DirectSubscriber',
     'GuaranteedProcessor':'com.solace.samples.jcsmp.patterns.GuaranteedProcessor',
     'GuaranteedPublisher':'com.solace.samples.jcsmp.patterns.GuaranteedPublisher',
-    'GuaranteedPublisherAckTrack':'com.solace.samples.jcsmp.patterns.GuaranteedPublisherAckTrack',
-    'GuaranteedReplier':'com.solace.samples.jcsmp.patterns.GuaranteedReplier',
-    'GuaranteedRequestor':'com.solace.samples.jcsmp.patterns.GuaranteedRequestor',
     'GuaranteedSubscriber':'com.solace.samples.jcsmp.patterns.GuaranteedSubscriber',
     'TransactedProcessor':'com.solace.samples.jcsmp.patterns.TransactedProcessor',
     'featureMessageSelectorsOnQueue':'com.solace.samples.jcsmp.features.MessageSelectorsOnQueue',

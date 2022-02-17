@@ -1,7 +1,7 @@
 /**
  * ArgParser.java
  * 
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features.common;
@@ -233,6 +233,8 @@ public class ArgParser {
             	i++;
             	if (i >= args.length) return 1;
             	cf.setSslConnetionDowngrade(args[i]);
+            }  else if (args[i].equals("-z")) {
+				sc.setCompression(true);
             }
         }
         

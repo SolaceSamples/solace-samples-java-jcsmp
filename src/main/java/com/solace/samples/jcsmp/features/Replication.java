@@ -4,7 +4,7 @@
  * This sample illustrates the use of an unacked list when using replication
  * with host lists.
  * 
- * Copyright 2012-2021 Solace Corporation. All rights reserved.
+ * Copyright 2012-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;

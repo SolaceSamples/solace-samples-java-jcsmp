@@ -6,7 +6,7 @@
  * with TTL enabled; how to allow an expired message to be collected by
  * the Dead Message Queue (DMQ).
  * 
- * Copyright 2011-2021 Solace Corporation. All rights reserved.
+ * Copyright 2011-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;
@@ -156,6 +156,7 @@ public class MessageTTLAndDeadMessageQueue extends SampleApp {
 					m.setTimeToLive(0);
 					m.setDMQEligible(false);
 				}
+				m.setCorrelationKey(i);  // correlation key for receiving ACKs
 				prod.send(m, ep_queue);
 			}
 			Thread.sleep(1000);
@@ -194,6 +195,7 @@ public class MessageTTLAndDeadMessageQueue extends SampleApp {
 					m.setTimeToLive(0);
 					m.setDMQEligible(false);
 				}
+				m.setCorrelationKey(i+5);  // correlation key for receiving ACK
 				prod.send(m, ep_queue);
 			}
 			Thread.sleep(500);
@@ -256,6 +258,7 @@ public class MessageTTLAndDeadMessageQueue extends SampleApp {
 			Calendar cal = Calendar.getInstance(TimeZone.getDefault());
 	        cal.set(1981, 11, 2, 0, 0, 0);  
 			m.setExpiration(cal.getTimeInMillis());
+			m.setCorrelationKey(m);  // correlation key for receiving ACKs
 			prod.send(m, ep_queue);
 			Thread.sleep(500);
 			System.out.println("Sent message with message expiration set.");

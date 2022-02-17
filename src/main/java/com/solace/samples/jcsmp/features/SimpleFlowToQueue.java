@@ -8,7 +8,7 @@
  * called 'my_sample_queue' be provisioned on the appliance with at least 
  * 'Consume' permissions.
  * 
- * Copyright 2009-2021 Solace Corporation. All rights reserved.
+ * Copyright 2009-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;
@@ -162,6 +162,7 @@ public class SimpleFlowToQueue extends SampleApp implements XMLMessageListener, 
             for (int i = 0; i < 10; i++) {
 				BytesXMLMessage msg = JCSMPFactory.onlyInstance().createMessage(BytesXMLMessage.class);
 				msg.setDeliveryMode(DeliveryMode.PERSISTENT);
+				msg.setCorrelationKey(msg);  // correlation key for receiving ACKs
 				producer.send(msg, queue);
                 Thread.sleep(1000);
             }

@@ -14,7 +14,7 @@
  *
  * Notes: the RRGuaranteedReplier supports request queue or topic formats, but not both at the same time.
  *
- * Copyright 2013-2021 Solace Corporation. All rights reserved.
+ * Copyright 2013-2022 Solace Corporation. All rights reserved.
  */
 
 package com.solace.samples.jcsmp.features;
@@ -100,7 +100,7 @@ public class RRGuaranteedReplier extends SampleApp {
             stream.writeDouble(result);
             replyMessage.setStream(stream);
             replyMessage.setDeliveryMode(DeliveryMode.PERSISTENT);
-            
+            replyMessage.setCorrelationKey(replyMessage);  // correlation key for receiving ACKs
             return replyMessage;
         }
         
@@ -112,7 +112,7 @@ public class RRGuaranteedReplier extends SampleApp {
             stream.writeBoolean(false);
             replyMessage.setStream(stream);
             replyMessage.setDeliveryMode(DeliveryMode.PERSISTENT);
-            
+            replyMessage.setCorrelationKey(replyMessage);  // correlation key for receiving ACKs
             return replyMessage;
         }
         
