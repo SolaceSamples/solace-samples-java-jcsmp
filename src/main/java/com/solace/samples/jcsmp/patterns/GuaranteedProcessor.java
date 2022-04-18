@@ -167,7 +167,7 @@ public class GuaranteedProcessor {
                 outboundMsg.setCorrelationKey(new ProcessorCorrelationKey(inboundMsg, outboundMsg));  // need to wait for publish ACK
                 String [] inboundTopicLevels = inboundTopic.split("/",6);
                 String onwardsTopic = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
-                		.append("pers/upper/").append(inboundTopicLevels[5]).toString();
+                		.append("/pers/upper/").append(inboundTopicLevels[5]).toString();
                 try {
                     producer.send(outboundMsg, JCSMPFactory.onlyInstance().createTopic(onwardsTopic));
                     msgSentCounter++;
