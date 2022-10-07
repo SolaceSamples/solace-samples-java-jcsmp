@@ -133,7 +133,7 @@ public class GuaranteedPublisher {
                 producer.send(message, topic);
                 msgSentCounter++;
             } catch (JCSMPException e) {  // threw from send(), only thing that is throwing here, but keep trying (unless shutdown?)
-                System.out.printf("### Caught while trying to producer.send(): %s%n",e);
+                logger.warn("### Caught while trying to producer.send()",e);
                 if (e instanceof JCSMPTransportException) {  // all reconnect attempts failed
                     isShutdown = true;  // let's quit; or, could initiate a new connection attempt
                 }
