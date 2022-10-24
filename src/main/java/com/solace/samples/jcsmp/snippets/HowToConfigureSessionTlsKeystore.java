@@ -22,19 +22,19 @@ import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPSession;
 
 /**
- * Demonstrates how to configure a Session using properties supporting OpenId Connect authentication
+ * Demonstrates how to configure a TLS Session with a specific truststore.
  */
-public class HowToConfigureSessionUsingOpenIdConnect {
+public class HowToConfigureSessionTlsKeystore {
 
-  public void createOIDCSession(JCSMPProperties sessionProperties, String idToken, String accessTokenOptional) throws InvalidPropertiesException
-  {
-    sessionProperties.setProperty(JCSMPProperties.AUTHENTICATION_SCHEME, JCSMPProperties.AUTHENTICATION_SCHEME_OAUTH2);
-    sessionProperties.setProperty(JCSMPProperties.OAUTH2_ACCESS_TOKEN, accessTokenOptional);
-    sessionProperties.setProperty(JCSMPProperties.OIDC_ID_TOKEN, idToken);
-     
-    final JCSMPFactory sessionFactory = JCSMPFactory.onlyInstance();
-   
-    final JCSMPSession session =sessionFactory.createSession(sessionProperties);
-  }
-    
+
+	public JCSMPSession create(JCSMPProperties sessionProperties) throws InvalidPropertiesException {
+
+		sessionProperties.setProperty(JCSMPProperties.SSL_TRUST_STORE, "/Users/myself/path/to/truststore.jks");
+		sessionProperties.setProperty(JCSMPProperties.SSL_TRUST_STORE_PASSWORD, "tsPassword");
+		
+		final JCSMPFactory sessionFactory = JCSMPFactory.onlyInstance();
+		final JCSMPSession session = sessionFactory.createSession(sessionProperties);
+		return session;
+	}
+
 }
