@@ -34,7 +34,7 @@ import io.opentelemetry.semconv.trace.attributes.SemanticAttributes.MessagingDes
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes.MessagingOperationValues;
 import java.util.function.Consumer;
 
-public class HowToImplementManualInstrumentation {
+public class HowToImplementTracingManualInstrumentation {
 
   /**
    * Example how to inject a tracing context into Solace Message before it is published to a queue

@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.solace.samples.jcsmp.features.manualinstrumentation;
+package com.solace.samples.jcsmp.features.distributedtracing;
 
 import com.solace.messaging.trace.propagation.SolaceJCSMPTextMapSetter;
 import com.solacesystems.jcsmp.Destination;
@@ -48,11 +48,11 @@ import io.opentelemetry.semconv.trace.attributes.SemanticAttributes.MessagingDes
  * <p>
  * This is the Publisher in the Publish-Subscribe messaging pattern.
  */
-public class DirectPublisher {
+public class DirectPublisherWithManualInstrumentation {
 
   private static final String SERVICE_NAME = "SolaceJCSMPTopicPublisherManualInstrument";
-  private static final String SAMPLE_NAME = DirectPublisher.class.getSimpleName();
-  private static final String TOPIC_NAME = "solace/tracing";
+  private static final String SAMPLE_NAME = DirectPublisherWithManualInstrumentation.class.getSimpleName();
+  private static final String TOPIC_NAME = "solace/samples/jcsmp/direct/pub/tracing";
   private static final String API = "JCSMP";
 
   static {
@@ -110,7 +110,7 @@ public class DirectPublisher {
         .setSpanKind(SpanKind.PRODUCER)
         //Optional: user defined Span attributes
         .setAttribute("SERVICE_NAME", SERVICE_NAME)
-        .setAttribute(SemanticAttributes.MESSAGING_SYSTEM, "SolacePubSub+")
+        .setAttribute(SemanticAttributes.MESSAGING_SYSTEM, "solace")
         .setAttribute(SemanticAttributes.MESSAGING_OPERATION, "send")
         .setAttribute(SemanticAttributes.MESSAGING_DESTINATION, messageDestination.getName())
         .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_KIND,
@@ -141,7 +141,7 @@ public class DirectPublisher {
     }
     log(API + " " + SAMPLE_NAME + " initializing...");
 
-    new DirectPublisher().run(args);
+    new DirectPublisherWithManualInstrumentation().run(args);
 
     log("Main thread quitting.");
   }

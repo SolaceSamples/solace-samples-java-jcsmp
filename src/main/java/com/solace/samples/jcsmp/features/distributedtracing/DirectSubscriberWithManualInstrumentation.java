@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.solace.samples.jcsmp.features.manualinstrumentation;
+package com.solace.samples.jcsmp.features.distributedtracing;
 
 import com.solace.messaging.trace.propagation.SolaceJCSMPTextMapGetter;
 import com.solacesystems.jcsmp.BytesXMLMessage;
@@ -48,11 +48,11 @@ import java.util.function.Consumer;
  * <p>
  * This is the Subscriber in the Publish-Subscribe messaging pattern.
  */
-public class DirectSubscriber {
+public class DirectSubscriberWithManualInstrumentation {
 
   private static final String SERVICE_NAME = "SolaceJCSMPTopicSubscriberManualInstrument";
-  private static final String SAMPLE_NAME = DirectSubscriber.class.getSimpleName();
-  private static final String TOPIC_NAME = "solace/tracing";
+  private static final String SAMPLE_NAME = DirectSubscriberWithManualInstrumentation.class.getSimpleName();
+  private static final String TOPIC_NAME = "solace/samples/jcsmp/direct/pub/tracing";
   private static final String API = "JCSMP";
 
   //Latch used for synchronizing between threads
@@ -127,7 +127,7 @@ public class DirectSubscriber {
           .setSpanKind(SpanKind.CONSUMER)
           //Optional: user defined Span attributes
           .setAttribute("SERVICE_NAME", SERVICE_NAME)
-          .setAttribute(SemanticAttributes.MESSAGING_SYSTEM, "SolacePubSub+")
+          .setAttribute(SemanticAttributes.MESSAGING_SYSTEM, "solace")
           .setAttribute(SemanticAttributes.MESSAGING_OPERATION, MessagingOperationValues.PROCESS)
           .setAttribute(SemanticAttributes.MESSAGING_DESTINATION, messageDestination.getName())
           .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_KIND,
@@ -155,7 +155,7 @@ public class DirectSubscriber {
     }
     log(API + " " + SAMPLE_NAME + " initializing...");
 
-    new DirectSubscriber().run(args);
+    new DirectSubscriberWithManualInstrumentation().run(args);
 
     log("Main thread quitting.");
   }

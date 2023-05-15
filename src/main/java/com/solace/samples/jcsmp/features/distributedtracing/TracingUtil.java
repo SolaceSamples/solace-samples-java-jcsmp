@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.solace.samples.jcsmp.features.manualinstrumentation;
+package com.solace.samples.jcsmp.features.distributedtracing;
 
 
 import io.opentelemetry.api.baggage.propagation.W3CBaggagePropagator;
