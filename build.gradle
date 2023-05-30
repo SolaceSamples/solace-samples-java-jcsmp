@@ -122,7 +122,7 @@ def scripts = [
     'confirmedPublish':'com.solace.samples.jcsmp.features.ConfirmedPublish',
     'topicToQueueMapping':'com.solace.samples.jcsmp.features.TopicToQueueMapping',
     'dtDirectPublisher':'com/solace/samples/jcsmp/features/distributedtracing/DirectPublisherWithManualInstrumentation',
-    'distributedTracingDirectSubscriberWithManualInstrumentation':'com/solace/samples/jcsmp/features/distributedtracing/DirectSubscriberWithManualInstrumentation'
+    'dtDirectSubscriber':'com/solace/samples/jcsmp/features/distributedtracing/DirectSubscriberWithManualInstrumentation'
 ]
 // for each of those array entries, let's make a start script
 scripts.each() { scriptName, className ->
