@@ -121,7 +121,7 @@ def scripts = [
     'basicReplier':'com.solace.samples.jcsmp.features.BasicReplier',
     'confirmedPublish':'com.solace.samples.jcsmp.features.ConfirmedPublish',
     'topicToQueueMapping':'com.solace.samples.jcsmp.features.TopicToQueueMapping',
-    'distributedTracingDirectPublisherWithManualInstrumentation':'com/solace/samples/jcsmp/features/distributedtracing/DirectPublisherWithManualInstrumentation',
+    'dtDirectPublisher':'com/solace/samples/jcsmp/features/distributedtracing/DirectPublisherWithManualInstrumentation',
     'distributedTracingDirectSubscriberWithManualInstrumentation':'com/solace/samples/jcsmp/features/distributedtracing/DirectSubscriberWithManualInstrumentation'
 ]
 // for each of those array entries, let's make a start script
