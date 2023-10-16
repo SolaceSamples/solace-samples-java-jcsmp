@@ -34,7 +34,6 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes.MessagingDestinationKindValues;
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes.MessagingOperationValues;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
@@ -129,10 +128,8 @@ public class DirectSubscriberWithManualInstrumentation {
           .setAttribute("SERVICE_NAME", SERVICE_NAME)
           .setAttribute(SemanticAttributes.MESSAGING_SYSTEM, "solace")
           .setAttribute(SemanticAttributes.MESSAGING_OPERATION, MessagingOperationValues.PROCESS)
-          .setAttribute(SemanticAttributes.MESSAGING_DESTINATION, messageDestination.getName())
-          .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_KIND,
-              MessagingDestinationKindValues.TOPIC)
-          .setAttribute(SemanticAttributes.MESSAGING_TEMP_DESTINATION, false)
+          .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_NAME, messageDestination.getName())
+          .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_TEMPORARY, false)
           // creates a parent child relationship to a message publisher's application span if any
           .setParent(extractedContext)
           .startSpan();
