@@ -157,7 +157,7 @@ public class SecureSession extends SampleApp implements XMLMessageListener, JCSM
         	properties.setProperty(JCSMPProperties.SSL_CONNECTION_DOWNGRADE_TO, conf.getSslConnetionDowngrade());
         }
         // option for in-memory trust stores and key stores:  https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/JCSMPProperties.html
-        if (conf.getTrustStore() == null) {
+        if (conf.getTrustStore() == null && conf.getTrustStorePwd() == null) {
             try {
                 KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
                 char[] password = "some password".toCharArray();
