@@ -37,7 +37,6 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes.MessagingDestinationKindValues;
 
 /**
  * A sample that shows how to generate a Publisher/send span with Solace OpenTelemetry Integration
@@ -112,10 +111,8 @@ public class DirectPublisherWithManualInstrumentation {
         .setAttribute("SERVICE_NAME", SERVICE_NAME)
         .setAttribute(SemanticAttributes.MESSAGING_SYSTEM, "solace")
         .setAttribute(SemanticAttributes.MESSAGING_OPERATION, "send")
-        .setAttribute(SemanticAttributes.MESSAGING_DESTINATION, messageDestination.getName())
-        .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_KIND,
-            MessagingDestinationKindValues.TOPIC)
-        .setAttribute(SemanticAttributes.MESSAGING_TEMP_DESTINATION, false)
+        .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_NAME, messageDestination.getName())
+        .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_TEMPORARY, false)
         .setParent(Context.current()) // set current context as parent
         .startSpan();
 
