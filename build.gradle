@@ -111,6 +111,7 @@ def scripts = [
     'featureQueueProvisionAndRequestActiveFlowIndication':'com.solace.samples.jcsmp.features.QueueProvisionAndRequestActiveFlowIndication',
     'featureTransactions':'com.solace.samples.jcsmp.features.Transactions',
     'featureMessageReplay':'com.solace.samples.jcsmp.features.MessageReplay',
+    'featureSecureSession':'com.solace.samples.jcsmp.features.SecureSession',
     'topicPublisher':'com.solace.samples.jcsmp.features.TopicPublisher',
     'topicSubscriber':'com.solace.samples.jcsmp.features.TopicSubscriber',
     'queueProducer':'com.solace.samples.jcsmp.features.QueueProducer',
