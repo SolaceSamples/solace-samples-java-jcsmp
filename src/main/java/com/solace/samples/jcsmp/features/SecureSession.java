@@ -160,7 +160,7 @@ public class SecureSession extends SampleApp implements XMLMessageListener, JCSM
         if (conf.getTrustStore() == null && conf.getTrustStorePwd() == null) {
             try {
                 KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-                char[] password = "some password".toCharArray();
+                char[] password = "some password".toCharArray();  // probably don't hardcode password, retreive from env variable or other secure way
                 ks.load(null, password);
                 // initialize keystore here...
                 // properties.setProperty(JCSMPProperties.SSL_IN_MEMORY_TRUST_STORE, ks);
