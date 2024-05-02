@@ -22,6 +22,7 @@ import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.ContextPropagators;
 import io.opentelemetry.context.propagation.TextMapPropagator;
+import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
 import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.resources.Resource;
@@ -32,37 +33,41 @@ import java.util.concurrent.TimeUnit;
 
 public class TracingUtil {
 
-  private TracingUtil() {
-  }
+    private TracingUtil() {}
 
-  public static void initManualTracing(String serviceName) {
-    //OpenTelemetry Resource object
-    Resource resource = Resource.getDefault().merge(Resource.create(
-        Attributes.of(ResourceAttributes.SERVICE_NAME, serviceName)));
+    public static void initManualTracing(String serviceName) {
+        //OpenTelemetry Resource object
+        Resource resource = Resource.getDefault().merge(Resource.create(
+            Attributes.of(ResourceAttributes.SERVICE_NAME, serviceName)));
 
-    //OpenTelemetry provides gRPC, HTTP and NoOp span exporter.
-    //Change the collector host/ip and port below if it's not running on default localhost:4317
-    OtlpGrpcSpanExporter spanExporter = OtlpGrpcSpanExporter.builder()
-        //.setEndpoint("http://localhost:4317")
-        .build();
+        //OpenTelemetry provides gRPC, HTTP and NoOp span exporter.
+        //Change the collector host/ip and port below if it's not running on default localhost:4317
+        OtlpGrpcSpanExporter spanExporterGrpc = OtlpGrpcSpanExporter.builder()
+            .setEndpoint("http://localhost:4317")
+            .build();
 
-    //Use OpenTelemetry SdkTracerProvider as TracerProvider
-    SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
-        .addSpanProcessor(BatchSpanProcessor.builder(spanExporter)
-            .setScheduleDelay(100, TimeUnit.MILLISECONDS).build())
-        .setResource(resource)
-        .build();
+        OtlpHttpSpanExporter spanExporterHttp = OtlpHttpSpanExporter.builder()
+            .setEndpoint("http://localhost:4318")
+            .addHeader("authorization", "dataKey abc123")
+            .build();
 
-    //This Instance can be used to get tracer if it is not configured as global
-    OpenTelemetrySdk.builder()
-        .setTracerProvider(sdkTracerProvider)
-        .setPropagators(
-            ContextPropagators.create(
-                TextMapPropagator.composite(
-                    W3CTraceContextPropagator.getInstance(), //W3C Context Propagator
-                    W3CBaggagePropagator.getInstance()  //W3C Baggage Propagator
+        //Use OpenTelemetry SdkTracerProvider as TracerProvider
+        SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(BatchSpanProcessor.builder(spanExporterHttp)
+                .setScheduleDelay(100, TimeUnit.MILLISECONDS).build())
+            .setResource(resource)
+            .build();
+
+        //This Instance can be used to get tracer if it is not configured as global
+        OpenTelemetrySdk.builder()
+            .setTracerProvider(sdkTracerProvider)
+            .setPropagators(
+                ContextPropagators.create(
+                    TextMapPropagator.composite(
+                        W3CTraceContextPropagator.getInstance(), //W3C Context Propagator
+                        W3CBaggagePropagator.getInstance() //W3C Baggage Propagator
+                    )
                 )
-            )
-        ).buildAndRegisterGlobal();
-  }
+            ).buildAndRegisterGlobal();
+    }
 }
