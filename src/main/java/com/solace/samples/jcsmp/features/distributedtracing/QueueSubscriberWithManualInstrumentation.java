@@ -20,6 +20,7 @@ import com.solacesystems.jcsmp.*;
 import java.io.IOException;
 import java.util.Map;
 
+//OpenTelemetry Instrumentation Imports:
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.baggage.Baggage;
@@ -38,17 +39,18 @@ import io.opentelemetry.context.Context;
 public class QueueSubscriberWithManualInstrumentation {
     // remember to add log4j2.xml to your classpath
     private static final Logger logger = LogManager.getLogger(); // log4j2, but could also use SLF4J, JCL, etc.
-    private static final String SERVICE_NAME = "ACME Distribution [DEV]";
+    private static final String SERVICE_NAME = "iPaaS Workflow Process [DEV]";
     private static final String SAMPLE_NAME = QueueSubscriberWithManualInstrumentation.class.getSimpleName();
-    private static final String QUEUE_NAME = "q.product_to_distribution";
     private static final String API = "JCSMP";
+    private static String queueName;
     private static volatile int msgRecvCounter = 0; // num messages received
     private static volatile boolean hasDetectedRedelivery = false; // detected any messages being redelivered?
     private static volatile boolean isShutdown = false; // are we done?
     private static FlowReceiver flowQueueReceiver;
 
     static {
-        //Setup OpenTelemetry
+    	// "configure an instance of the OpenTelemetrySdk as early as possible in your application."
+    	// Ref: https://opentelemetry.io/docs/languages/java/instrumentation/
         TracingUtil.initManualTracing(SERVICE_NAME);
     }
 
@@ -57,7 +59,7 @@ public class QueueSubscriberWithManualInstrumentation {
      */
     public static void main(String...args) throws JCSMPException, InterruptedException, IOException {
         if (args.length < 3) { // Check command line arguments
-            System.out.printf("Usage: %s <host:port> <message-vpn> <client-username> [password]%n%n", SAMPLE_NAME);
+            System.out.printf("Usage: %s <host:port> <message-vpn> <queue-name> <client-username> [password]%n%n", SAMPLE_NAME);
             System.exit(-1);
         }
         System.out.println(API + " " + SAMPLE_NAME + " initializing...");
@@ -65,9 +67,9 @@ public class QueueSubscriberWithManualInstrumentation {
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]); // host:port
         properties.setProperty(JCSMPProperties.VPN_NAME, args[1]); // message-vpn
-        properties.setProperty(JCSMPProperties.USERNAME, args[2]); // client-username
-        if (args.length > 3) {
-            properties.setProperty(JCSMPProperties.PASSWORD, args[3]); // client-password
+        properties.setProperty(JCSMPProperties.USERNAME, args[3]); // client-username
+        if (args.length > 4) {
+            properties.setProperty(JCSMPProperties.PASSWORD, args[4]); // client-password
         }
         JCSMPChannelProperties channelProps = new JCSMPChannelProperties();
         channelProps.setReconnectRetries(20); // recommended settings
@@ -83,15 +85,17 @@ public class QueueSubscriberWithManualInstrumentation {
         });
         session.connect();
 
+        queueName = args[2];
+        
         // configure the queue API object locally
-        final Queue queue = JCSMPFactory.onlyInstance().createQueue(QUEUE_NAME);
+        final Queue queue = JCSMPFactory.onlyInstance().createQueue(queueName);
         // Create a Flow be able to bind to and consume messages from the Queue.
         final ConsumerFlowProperties flow_prop = new ConsumerFlowProperties();
         flow_prop.setEndpoint(queue);
         flow_prop.setAckMode(JCSMPProperties.SUPPORTED_MESSAGE_ACK_CLIENT); // best practice
         flow_prop.setActiveFlowIndication(true); // Flow events will advise when
 
-        System.out.printf("Attempting to bind to queue '%s' on the broker.%n", QUEUE_NAME);
+        System.out.printf("Attempting to bind to queue '%s' on the broker.%n", queueName);
         try {
             // see bottom of file for QueueFlowListener class, which receives the messages from the queue
             flowQueueReceiver = session.createFlow(new QueueFlowListener(), flow_prop, null, new FlowEventHandler() {
@@ -106,7 +110,7 @@ public class QueueSubscriberWithManualInstrumentation {
             throw e;
         } catch (JCSMPErrorResponseException e) { // something else went wrong: queue not exist, queue shutdown, etc.
             logger.error(e);
-            System.err.printf("%n*** Could not establish a connection to queue '%s': %s%n", QUEUE_NAME, e.getMessage());
+            System.err.printf("%n*** Could not establish a connection to queue '%s': %s%n", queueName, e.getMessage());
             System.err.println("Create queue using PubSub+ Manager WebGUI, and add subscription solace/tracing ");
             System.err.println("  or see the SEMP CURL scripts inside the 'semp-rest-api' directory.");
             // could also try to retry, loop and retry until successfully able to connect to the queue
@@ -144,25 +148,24 @@ public class QueueSubscriberWithManualInstrumentation {
         @Override
         public void onReceive(BytesXMLMessage message) {
 
+        	// Use the getter to extract OpenTelemetry context from the received message. (e.g. Parent Trace ID)
+        	// (It is always advised to extract context before injecting new one.) 
+        	// The SolaceJCSMPTextMapGetter handles extraction from Solace SMF messages that can embed OTEL.
             final OpenTelemetry openTelemetry = GlobalOpenTelemetry.get();
             final Tracer tracer = openTelemetry.getTracer(SERVICE_NAME);
             final SolaceJCSMPTextMapGetter getter = new SolaceJCSMPTextMapGetter();
 
-            // Extract tracing context from message, if any using the SolaceJCSMPTextMapGetter
-            // It is always advised to extract context before injecting new one
-
-            final Context extractedContext = openTelemetry.getPropagators().getTextMapPropagator()
-                .extract(Context.current(), message, getter);
+            final Context extractedContext = openTelemetry.getPropagators()
+            		.getTextMapPropagator()
+                    .extract(Context.current(), message, getter);
             
-            
-
-            // Set the extracted context as current context
+            // Set the extracted context as current context as starting point
             try (Scope scope = extractedContext.makeCurrent()) {
 
-                // Create a child span to signal the receive and set extracted/current context as parent of this span
+                // Create a child span to signal the message receive and set extracted/current context as parent of this span
                 final Span receiveSpan = tracer.
-                spanBuilder("Product Update > Received")
-                    .setSpanKind(SpanKind.CONSUMER)
+                spanBuilder("Product Update > Received")    // The name as seen in the OTEL visualisation.
+                    .setSpanKind(SpanKind.CONSUMER)         // A broad identifier of the type of operation
 
                     // Optional: user defined Span attributes
                     // dot separated, snake_case is the convention, keeping to a fixed 'something.*' name space too for custom ones.
@@ -182,11 +185,13 @@ public class QueueSubscriberWithManualInstrumentation {
                     .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_NAME, message.getDestination().getName())
                     .setAttribute(SemanticAttributes.NET_PROTOCOL_NAME, "smf")
 
+                    // Example attribute setting in a given namespace, information specific to this application 
                     .setAttribute("com.acme.product_update.receive_key.1", "myValue1")
                     //.setAttribute(...)
-                    .setParent(extractedContext).startSpan();
+                    .setParent(extractedContext)
+                    .startSpan();
 
-                //... and then we do some processing and have another span to signal that
+                //... and then we do some processing and have another span to signal that part of the code
 
                 Baggage receivedTelemetryBaggage = Baggage.fromContext(extractedContext);
                 String receivedTelemetryBaggageStr = "";
@@ -202,14 +207,14 @@ public class QueueSubscriberWithManualInstrumentation {
 
                 try {
                     final Span processingSpan = tracer
-                        .spanBuilder("Product Update > Processed")
-                        .setSpanKind(SpanKind.SERVER)
+                        .spanBuilder("Product Update > Processed")    // The name as seen in the OTEL visualisation.
+                        .setSpanKind(SpanKind.SERVER)                 // Signalling this is internal server operation now
 
-                        // Set more attributes as needed
+                        // Set more attributes as needed for this part of the instrumentation
                         .setAttribute("com.acme.product_update.processing_key.1", "postProcessingInformation")
 
                         //.setAttribute(...)
-                        .setParent(Context.current().with(receiveSpan)) // make RECEIVE span be the parent
+                        .setParent(Context.current().with(receiveSpan)) // make the RECEIVE span be the parent.
                         .startSpan();
                     try {
                         msgRecvCounter++;
@@ -224,20 +229,23 @@ public class QueueSubscriberWithManualInstrumentation {
                         // NOTE that messages can be acknowledged from a different thread.
                         message.ackMessage(); // ACKs are asynchronous
                     } catch (Exception e) {
-                        processingSpan.recordException(e); //Span can record exception if any
+                    	// Any exceptions in the processing can also be captured in the span:
+                        processingSpan.recordException(e); 
                         processingSpan.setStatus(StatusCode.ERROR, e.getMessage()); //Set span status as ERROR/FAILED
                     } finally {
+                    	// Mark the end of the span (instrumented section of code) by calling .end(). Data is then emitted.
                         processingSpan.end(); //End processSpan. Span data is exported when span.end() is called.
                     }
                 } finally {
-                    receiveSpan.end(); //End receiveSpan. Span data is exported when span.end() is called.
+                	// Mark the end of the parent span too by calling .end(). Data is then emitted.
+                    receiveSpan.end(); 
                 }
             }
         }
 
         @Override
         public void onException(JCSMPException e) {
-            logger.warn("### Queue " + QUEUE_NAME + " Flow handler received exception.  Stopping!!", e);
+            logger.warn("### Queue " + queueName + " Flow handler received exception.  Stopping!!", e);
             if (e instanceof JCSMPTransportException) { // all reconnect attempts failed
                 isShutdown = true; // let's quit; or, could initiate a new connection attempt
             } else {

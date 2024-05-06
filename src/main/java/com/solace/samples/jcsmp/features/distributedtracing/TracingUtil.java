@@ -16,7 +16,6 @@
 
 package com.solace.samples.jcsmp.features.distributedtracing;
 
-
 import io.opentelemetry.api.baggage.propagation.W3CBaggagePropagator;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
@@ -31,30 +30,36 @@ import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
 import java.util.concurrent.TimeUnit;
 
+// A class to facilitate OpenTelemetry Instrumentation. Can be commonly used across the application.
 public class TracingUtil {
 
     private TracingUtil() {}
 
     public static void initManualTracing(String serviceName) {
-        //OpenTelemetry Resource object
+    	
+        // OpenTelemetry Resource object
         Resource resource = Resource.getDefault().merge(Resource.create(
             Attributes.of(ResourceAttributes.SERVICE_NAME, serviceName)));
 
-        //OpenTelemetry provides gRPC, HTTP and NoOp span exporter.
-        //Change the collector host/ip and port below if it's not running on default localhost:4317
+        // OpenTelemetry provides gRPC, HTTP and NoOp span exporter.
+        // Configure the endpoint details dependent on the protocol choice for your OTLP receiver endpoint
+        
+        // If gRPC:
         OtlpGrpcSpanExporter spanExporterGrpc = OtlpGrpcSpanExporter.builder()
             .setEndpoint("http://localhost:4317")
             .build();
 
+        // If HTTP:
         OtlpHttpSpanExporter spanExporterHttp = OtlpHttpSpanExporter.builder()
-            .setEndpoint("http://localhost:4318")
-            .addHeader("authorization", "dataKey abc123")
+            .setEndpoint("https://yourhost.com/opentelemetry/public/v1/traces/")
+            .addHeader("authorization", "dataKey example-key")
             .build();
 
-        //Use OpenTelemetry SdkTracerProvider as TracerProvider
+        // Use OpenTelemetry SdkTracerProvider as TracerProvider, picking between gRPC or HTTP:
         SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(BatchSpanProcessor.builder(spanExporterHttp)
-                .setScheduleDelay(100, TimeUnit.MILLISECONDS).build())
+            //.addSpanProcessor(BatchSpanProcessor.builder(spanExporterGrpc)
+       		.addSpanProcessor(BatchSpanProcessor.builder(spanExporterHttp)		
+            .setScheduleDelay(1000, TimeUnit.MILLISECONDS).build())
             .setResource(resource)
             .build();
 
