@@ -62,12 +62,13 @@ dependencies {
     // Solace Messaging API for Java Dependencies
     implementation group: 'com.solacesystems', name: 'sol-jcsmp', version: '10.+'
     // new improved logging framework, log4j2
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.19.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.+'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.+'
     // needed to 'bridge' the JCSMP API logs from JCL to log4j
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: '2.19.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: '2.+'
     // include this next one if you want to use JsonLayout for log4j
     //implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.4'
+    //implementation group: 'org.fusesource.jansi', name: 'jansi', version: '2.4.1'
 
     //implementation fileTree(dir: 'lib', include: '*.jar')  // temporary, for testing of stuff
 
@@ -111,6 +112,7 @@ def scripts = [
     'featureQueueProvisionAndRequestActiveFlowIndication':'com.solace.samples.jcsmp.features.QueueProvisionAndRequestActiveFlowIndication',
     'featureTransactions':'com.solace.samples.jcsmp.features.Transactions',
     'featureMessageReplay':'com.solace.samples.jcsmp.features.MessageReplay',
+    'featureSecureSession':'com.solace.samples.jcsmp.features.SecureSession',
     'topicPublisher':'com.solace.samples.jcsmp.features.TopicPublisher',
     'topicSubscriber':'com.solace.samples.jcsmp.features.TopicSubscriber',
     'queueProducer':'com.solace.samples.jcsmp.features.QueueProducer',
@@ -120,6 +122,7 @@ def scripts = [
     'confirmedPublish':'com.solace.samples.jcsmp.features.ConfirmedPublish',
     'topicToQueueMapping':'com.solace.samples.jcsmp.features.TopicToQueueMapping',
     'dtDirectPublisher':'com/solace/samples/jcsmp/features/distributedtracing/DirectPublisherWithManualInstrumentation',
+    'GuaranteedSubscriberWithSettle':'com.solace.samples.jcsmp.patterns.GuaranteedSubscriberWithSettle',
     'dtDirectSubscriber':'com/solace/samples/jcsmp/features/distributedtracing/DirectSubscriberWithManualInstrumentation'
 ]
 // for each of those array entries, let's make a start script
