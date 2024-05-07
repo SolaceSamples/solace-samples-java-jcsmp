@@ -23,7 +23,7 @@
 package com.solace.samples.jcsmp.features;
 
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.logging.log4j.LogManager;
@@ -234,8 +234,6 @@ public class SimpleFlowToQueueNack extends SampleApp implements XMLMessageListen
 
             session.connect();
 
-            final CountDownLatch latch = new CountDownLatch(1); // used for synchronizing b/w threads
-
             // Create a Queue to receive messages.
             Queue queue;
 
@@ -274,11 +272,12 @@ public class SimpleFlowToQueueNack extends SampleApp implements XMLMessageListen
             // Start the receiver
             receiver.start();
 
-            try {
-                latch.await(); // block here until message received, and latch will flip
-            } catch (InterruptedException e) {
-                logger.info("I was awoken while waiting");
+            System.out.println("Press ENTER to stop");
+            Scanner in = new Scanner(System.in);
+            if (in.hasNextLine()) {
+                System.out.println("Closing the connection");
             }
+            in.close();
 
             // Close the receiver.
             receiver.close();
