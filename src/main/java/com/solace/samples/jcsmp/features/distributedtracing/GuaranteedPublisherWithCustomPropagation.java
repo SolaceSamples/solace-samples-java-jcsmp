@@ -86,7 +86,9 @@ public class GuaranteedPublisherWithCustomPropagation {
             new JCSMPStreamingPublishCorrelatingEventHandler() {
                 // unused in Direct Messaging application, only for Guaranteed/Persistent publishing application
                 @Override
-                public void responseReceivedEx(Object key) {}
+                public void responseReceivedEx(Object key) {
+                	log("### Received an ACK");
+                }
 
                 // can be called for ACL violations, connection loss, and Persistent NACKs
                 @Override
@@ -101,6 +103,7 @@ public class GuaranteedPublisherWithCustomPropagation {
         final TextMessage message = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
         message.setText("Hello World!!");
         message.setDeliveryMode(DeliveryMode.PERSISTENT);		// Distributed Tracing only covers persistent messaging
+        message.setAckImmediately(true);  // so we don't have to wait for the pub ACK window to close
 
         final OpenTelemetry openTelemetry = GlobalOpenTelemetry.get();
         final Tracer tracer = openTelemetry.getTracer(SERVICE_NAME);
@@ -108,7 +111,7 @@ public class GuaranteedPublisherWithCustomPropagation {
         //TRACE MESSAGE PUBLISH
         messagePublisherTracer(message, producer, topic, openTelemetry, tracer);
 
-        Thread.sleep(1000);
+        Thread.sleep(1000);  // ideally should wait until the publish ACK arrives back from the broker
 
         session.closeSession(); // will also close producer object
     }
