@@ -57,8 +57,8 @@ public class TracingUtil {
 
         // Use OpenTelemetry SdkTracerProvider as TracerProvider, picking between gRPC or HTTP:
         SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
-            //.addSpanProcessor(BatchSpanProcessor.builder(spanExporterGrpc)
-       		.addSpanProcessor(BatchSpanProcessor.builder(spanExporterHttp)		
+            .addSpanProcessor(BatchSpanProcessor.builder(spanExporterGrpc)
+//       		.addSpanProcessor(BatchSpanProcessor.builder(spanExporterHttp)		
             .setScheduleDelay(1000, TimeUnit.MILLISECONDS).build())
             .setResource(resource)
             .build();
