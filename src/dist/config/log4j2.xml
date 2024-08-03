@@ -11,6 +11,11 @@
         <!--JSONLayout/-->
       </PatternLayout>
     </File>
+    <!--Solace name="solaceLogger" host="localhost" vpn="default" username="asdf" password="asdf" direct="true" appName="justTesting">
+      <PatternLayout>
+        <Pattern>%d %p whoami %c{1} [%t] %m</Pattern>
+      </PatternLayout>
+    </Solace-->
   </Appenders>
   <Loggers>
     <!-- you can dynamically set the log level from the command line using jvm system variables -->
@@ -21,6 +26,7 @@
     <Root level="${sys:root_log_level:-info}">
       <AppenderRef ref="console"/>
       <AppenderRef ref="logfile"/>
+      <!--AppenderRef ref="solaceLogger"/-->
     </Root>
   </Loggers>
 </Configuration>

@@ -18,6 +18,11 @@
 
 package com.solace.samples.jcsmp.features;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.KeyStore;
+
 import com.solace.samples.jcsmp.features.common.ArgParser;
 import com.solace.samples.jcsmp.features.common.SampleApp;
 import com.solace.samples.jcsmp.features.common.SecureSessionConfiguration;
@@ -151,6 +156,19 @@ public class SecureSession extends SampleApp implements XMLMessageListener, JCSM
         if (conf.getSslConnetionDowngrade() != null){
         	properties.setProperty(JCSMPProperties.SSL_CONNECTION_DOWNGRADE_TO, conf.getSslConnetionDowngrade());
         }
+        // option for in-memory trust stores and key stores:  https://docs.solace.com/API-Developer-Online-Ref-Documentation/java/com/solacesystems/jcsmp/JCSMPProperties.html
+        if (conf.getTrustStore() == null && conf.getTrustStorePwd() == null) {
+            try {
+                KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+                char[] password = "some password".toCharArray();  // probably don't hardcode password, retreive from env variable or other secure way
+                ks.load(null, password);
+                // initialize keystore here...
+                // properties.setProperty(JCSMPProperties.SSL_IN_MEMORY_TRUST_STORE, ks);
+            } catch (GeneralSecurityException | IOException e) {
+                // deal with it
+            }
+        }
+
         session = JCSMPFactory.onlyInstance().createSession(properties);
     }
 
