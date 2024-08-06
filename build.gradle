@@ -77,8 +77,8 @@ dependencies {
 
     //Distributed Tracing Dependency on OpenTelemetry and Solace OpenTelemetry JCSMP Integration
     implementation group: 'com.solace', name: 'solace-opentelemetry-jcsmp-integration', version: '1.1.0'
-    implementation group: 'io.opentelemetry', name: 'opentelemetry-exporter-otlp', version: '1.29.0'
-    implementation group: 'io.opentelemetry', name: 'opentelemetry-semconv', version: '1.29.0-alpha'
+    implementation group: 'io.opentelemetry', name: 'opentelemetry-exporter-otlp', version: '1.+'
+    implementation group: 'io.opentelemetry.semconv', name: 'opentelemetry-semconv', version: '1.+'
 }
 
 sourceSets {

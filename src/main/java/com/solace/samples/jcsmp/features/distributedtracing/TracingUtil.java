@@ -16,53 +16,63 @@
 
 package com.solace.samples.jcsmp.features.distributedtracing;
 
-
 import io.opentelemetry.api.baggage.propagation.W3CBaggagePropagator;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.ContextPropagators;
 import io.opentelemetry.context.propagation.TextMapPropagator;
+import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
 import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
-import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
+import io.opentelemetry.semconv.ResourceAttributes;
 import java.util.concurrent.TimeUnit;
 
+// A class to facilitate OpenTelemetry Instrumentation. Can be commonly used across the application.
 public class TracingUtil {
 
-  private TracingUtil() {
-  }
+    private TracingUtil() {}
 
-  public static void initManualTracing(String serviceName) {
-    //OpenTelemetry Resource object
-    Resource resource = Resource.getDefault().merge(Resource.create(
-        Attributes.of(ResourceAttributes.SERVICE_NAME, serviceName)));
+    public static void initManualTracing(String serviceName) {
+    	
+        // OpenTelemetry Resource object
+        Resource resource = Resource.getDefault().merge(Resource.create(
+            Attributes.of(ResourceAttributes.SERVICE_NAME, serviceName)));
 
-    //OpenTelemetry provides gRPC, HTTP and NoOp span exporter.
-    //Change the collector host/ip and port below if it's not running on default localhost:4317
-    OtlpGrpcSpanExporter spanExporter = OtlpGrpcSpanExporter.builder()
-        //.setEndpoint("http://localhost:4317")
-        .build();
+        // OpenTelemetry provides gRPC, HTTP and NoOp span exporter.
+        // Configure the endpoint details dependent on the protocol choice for your OTLP receiver endpoint
+        
+        // If gRPC:
+        OtlpGrpcSpanExporter spanExporterGrpc = OtlpGrpcSpanExporter.builder()
+            .setEndpoint("http://localhost:4317")
+            .build();
 
-    //Use OpenTelemetry SdkTracerProvider as TracerProvider
-    SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
-        .addSpanProcessor(BatchSpanProcessor.builder(spanExporter)
-            .setScheduleDelay(100, TimeUnit.MILLISECONDS).build())
-        .setResource(resource)
-        .build();
+        // If HTTP:
+        OtlpHttpSpanExporter spanExporterHttp = OtlpHttpSpanExporter.builder()
+            .setEndpoint("https://yourhost.com/opentelemetry/public/v1/traces/")
+            .addHeader("authorization", "dataKey example-key")
+            .build();
 
-    //This Instance can be used to get tracer if it is not configured as global
-    OpenTelemetrySdk.builder()
-        .setTracerProvider(sdkTracerProvider)
-        .setPropagators(
-            ContextPropagators.create(
-                TextMapPropagator.composite(
-                    W3CTraceContextPropagator.getInstance(), //W3C Context Propagator
-                    W3CBaggagePropagator.getInstance()  //W3C Baggage Propagator
+        // Use OpenTelemetry SdkTracerProvider as TracerProvider, picking between gRPC or HTTP:
+        SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(BatchSpanProcessor.builder(spanExporterGrpc)
+//       		.addSpanProcessor(BatchSpanProcessor.builder(spanExporterHttp)		
+            .setScheduleDelay(1000, TimeUnit.MILLISECONDS).build())
+            .setResource(resource)
+            .build();
+
+        //This Instance can be used to get tracer if it is not configured as global
+        OpenTelemetrySdk.builder()
+            .setTracerProvider(sdkTracerProvider)
+            .setPropagators(
+                ContextPropagators.create(
+                    TextMapPropagator.composite(
+                        W3CTraceContextPropagator.getInstance(), //W3C Context Propagator
+                        W3CBaggagePropagator.getInstance() //W3C Baggage Propagator
+                    )
                 )
-            )
-        ).buildAndRegisterGlobal();
-  }
+            ).buildAndRegisterGlobal();
+    }
 }
