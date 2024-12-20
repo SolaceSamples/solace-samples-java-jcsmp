@@ -70,7 +70,7 @@ public class HowToConfigureSessionUsingOpenIdConnect {
     }
 
     private String refreshOIDCAccessToken(String issuerId) throws Exception {
-        String newIdToken = fetchNewOAuthIDToken();
+        String newIdToken = fetchNewOidcIdToken();
         if (newIdToken == null || newIdToken == null) {
             throw new Exception("Failed to refresh OIDC token");
         }
@@ -123,7 +123,7 @@ public class HowToConfigureSessionUsingOpenIdConnect {
         return "newAccessTokenFromIDP";
     }
 
-    private String fetchNewOAuthIDToken() {
+    private String fetchNewOidcIdToken() {
         // Simulate API call to identity provider to refresh ID token
         logger.info("Using Refresh Token to fetch new ID Token...");
         // TODO: Implement real API call
