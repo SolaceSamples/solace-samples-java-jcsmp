@@ -16,19 +16,19 @@
 
 package com.solace.samples.jcsmp.features.distributedtracing;
 
+import java.util.concurrent.TimeUnit;
+
 import io.opentelemetry.api.baggage.propagation.W3CBaggagePropagator;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.ContextPropagators;
 import io.opentelemetry.context.propagation.TextMapPropagator;
-import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
 import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
-import io.opentelemetry.semconv.ResourceAttributes;
-import java.util.concurrent.TimeUnit;
+import io.opentelemetry.semconv.ServiceAttributes;
 
 // A class to facilitate OpenTelemetry Instrumentation. Can be commonly used across the application.
 public class TracingUtil {
@@ -39,7 +39,7 @@ public class TracingUtil {
     	
         // OpenTelemetry Resource object
         Resource resource = Resource.getDefault().merge(Resource.create(
-            Attributes.of(ResourceAttributes.SERVICE_NAME, serviceName)));
+            Attributes.of(ServiceAttributes.SERVICE_NAME, serviceName)));
 
         // OpenTelemetry provides gRPC, HTTP and NoOp span exporter.
         // Configure the endpoint details dependent on the protocol choice for your OTLP receiver endpoint
@@ -50,10 +50,10 @@ public class TracingUtil {
             .build();
 
         // If HTTP:
-        OtlpHttpSpanExporter spanExporterHttp = OtlpHttpSpanExporter.builder()
-            .setEndpoint("https://yourhost.com/opentelemetry/public/v1/traces/")
-            .addHeader("authorization", "dataKey example-key")
-            .build();
+//        OtlpHttpSpanExporter spanExporterHttp = OtlpHttpSpanExporter.builder()
+//            .setEndpoint("https://yourhost.com/opentelemetry/public/v1/traces/")
+//            .addHeader("authorization", "dataKey example-key")
+//            .build();
 
         // Use OpenTelemetry SdkTracerProvider as TracerProvider, picking between gRPC or HTTP:
         SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()

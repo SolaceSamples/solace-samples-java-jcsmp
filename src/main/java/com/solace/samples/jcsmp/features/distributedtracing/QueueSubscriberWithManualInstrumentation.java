@@ -15,10 +15,30 @@
  */
 
 package com.solace.samples.jcsmp.features.distributedtracing;
-import com.solace.messaging.trace.propagation.SolaceJCSMPTextMapGetter;
-import com.solacesystems.jcsmp.*;
 import java.io.IOException;
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.solace.messaging.trace.propagation.SolaceJCSMPTextMapGetter;
+import com.solacesystems.jcsmp.BytesXMLMessage;
+import com.solacesystems.jcsmp.ConsumerFlowProperties;
+import com.solacesystems.jcsmp.FlowEventArgs;
+import com.solacesystems.jcsmp.FlowEventHandler;
+import com.solacesystems.jcsmp.FlowReceiver;
+import com.solacesystems.jcsmp.JCSMPChannelProperties;
+import com.solacesystems.jcsmp.JCSMPErrorResponseException;
+import com.solacesystems.jcsmp.JCSMPException;
+import com.solacesystems.jcsmp.JCSMPFactory;
+import com.solacesystems.jcsmp.JCSMPProperties;
+import com.solacesystems.jcsmp.JCSMPSession;
+import com.solacesystems.jcsmp.JCSMPTransportException;
+import com.solacesystems.jcsmp.OperationNotSupportedException;
+import com.solacesystems.jcsmp.Queue;
+import com.solacesystems.jcsmp.SessionEventArgs;
+import com.solacesystems.jcsmp.SessionEventHandler;
+import com.solacesystems.jcsmp.XMLMessageListener;
 
 //OpenTelemetry Instrumentation Imports:
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -29,12 +49,11 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Scope;
-import io.opentelemetry.semconv.SemanticAttributes;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.context.Scope;
+import io.opentelemetry.semconv.NetworkAttributes;
+import io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes;
+import io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes.MessagingOperationTypeIncubatingValues;
 
 public class QueueSubscriberWithManualInstrumentation {
     // remember to add log4j2.xml to your classpath
@@ -161,6 +180,7 @@ public class QueueSubscriberWithManualInstrumentation {
             
             // Set the extracted context as current context as starting point
             try (Scope scope = extractedContext.makeCurrent()) {
+                scope.equals(null);  // to not get the compile warning due to not using scope.  stupid javac
 
                 // Create a child span to signal the message receive and set extracted/current context as parent of this span
                 final Span receiveSpan = tracer.
@@ -180,10 +200,10 @@ public class QueueSubscriberWithManualInstrumentation {
                     // Some transport attributes to include, in the SemanticAttributes name space:
                     // See: https://opentelemetry.io/docs/specs/semconv/general/trace/
 
-                    .setAttribute(SemanticAttributes.MESSAGING_SYSTEM, "solace")
-                    .setAttribute(SemanticAttributes.MESSAGING_OPERATION, "receive")
-                    .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_NAME, message.getDestination().getName())
-                    .setAttribute(SemanticAttributes.NET_PROTOCOL_NAME, "smf")
+                    .setAttribute(MessagingIncubatingAttributes.MESSAGING_SYSTEM, "solace")
+                    .setAttribute(MessagingIncubatingAttributes.MESSAGING_OPERATION_TYPE, MessagingOperationTypeIncubatingValues.RECEIVE)
+                    .setAttribute(MessagingIncubatingAttributes.MESSAGING_DESTINATION_NAME, message.getDestination().getName())
+                    .setAttribute(NetworkAttributes.NETWORK_PROTOCOL_NAME, "smf")
 
                     // Example attribute setting in a given namespace, information specific to this application 
                     .setAttribute("com.acme.product_update.receive_key.1", "myValue1")

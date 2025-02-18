@@ -29,9 +29,12 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapPropagator;
-import io.opentelemetry.semconv.SemanticAttributes;
-import io.opentelemetry.semconv.SemanticAttributes.MessagingDestinationKindValues;
-import io.opentelemetry.semconv.SemanticAttributes.MessagingOperationValues;
+//import io.opentelemetry.semconv.SemanticAttributes;
+//import io.opentelemetry.semconv.SemanticAttributes.MessagingDestinationKindValues;
+//import io.opentelemetry.semconv.SemanticAttributes.MessagingOperationValues;
+import io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes;
+import io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes.MessagingOperationTypeIncubatingValues;
+
 import java.util.function.Consumer;
 
 public class HowToImplementTracingManualInstrumentation {
@@ -70,6 +73,7 @@ public class HowToImplementTracingManualInstrumentation {
         .extract(Context.current(), receivedMessage, getter);
     //and then set the extractedContext as current context
     try (Scope scope = extractedContext.makeCurrent()) {
+      scope.equals(null);  // to not get the compile warning due to not using scope.  stupid javac
       //...
     }
   }
@@ -91,12 +95,9 @@ public class HowToImplementTracingManualInstrumentation {
 
     //Create a new span with a current context as parent of this span
     final Span sendSpan = tracer
-        .spanBuilder("mySolacePublisherApp" + " " + MessagingOperationValues.PROCESS)
+        .spanBuilder("mySolacePublisherApp" + " " + MessagingOperationTypeIncubatingValues.PROCESS)
         .setSpanKind(SpanKind.CLIENT)
-        // published to a topic endpoint (non temporary)
-        .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_KIND,
-            MessagingDestinationKindValues.TOPIC)
-        .setAttribute(SemanticAttributes.MESSAGING_TEMP_DESTINATION, false)
+        .setAttribute(MessagingIncubatingAttributes.MESSAGING_DESTINATION_TEMPORARY, false)
         //Set more attributes as needed
         //.setAttribute(...)
         //.setAttribute(...)
@@ -105,6 +106,7 @@ public class HowToImplementTracingManualInstrumentation {
 
     //set sendSpan as new current context
     try (Scope scope = sendSpan.makeCurrent()) {
+      scope.equals(null);  // to not get the compile warning due to not using scope.  stupid javac
       final SolaceJCSMPTextMapSetter setter = new SolaceJCSMPTextMapSetter();
       final TextMapPropagator propagator = openTelemetry.getPropagators().getTextMapPropagator();
       //and then inject current context with send span into the message
@@ -141,14 +143,15 @@ public class HowToImplementTracingManualInstrumentation {
 
     //Set the extracted context as current context
     try (Scope scope = extractedContext.makeCurrent()) {
+      scope.equals(null);  // to not get the compile warning due to not using scope.  stupid javac
       //Create a child span and set extracted/current context as parent of this span
       final Span receiveSpan = tracer
-          .spanBuilder("mySolaceReceiverApp" + " " + MessagingOperationValues.RECEIVE)
+          .spanBuilder("mySolaceReceiverApp" + " " + MessagingOperationTypeIncubatingValues.RECEIVE)
           .setSpanKind(SpanKind.CLIENT)
           // for the case the message was received on a non temporary queue endpoint
-          .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_KIND,
-              MessagingDestinationKindValues.QUEUE)
-          .setAttribute(SemanticAttributes.MESSAGING_TEMP_DESTINATION, false)
+//          .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_KIND,
+//              MessagingDestinationKindValues.QUEUE)
+          .setAttribute(MessagingIncubatingAttributes.MESSAGING_DESTINATION_TEMPORARY, false)
           //Set more attributes as needed
           //.setAttribute(...)
           //.setAttribute(...)

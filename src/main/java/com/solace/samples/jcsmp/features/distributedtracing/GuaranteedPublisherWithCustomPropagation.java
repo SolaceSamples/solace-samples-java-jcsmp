@@ -45,7 +45,9 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapPropagator;
-import io.opentelemetry.semconv.SemanticAttributes;
+import io.opentelemetry.semconv.NetworkAttributes;
+import io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes;
+import io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes.MessagingOperationTypeIncubatingValues;
 
 /**
  * A sample that shows how to generate a Publisher/send span with Solace OpenTelemetry Integration
@@ -157,10 +159,10 @@ public class GuaranteedPublisherWithCustomPropagation {
             // Some transport attributes to include, in the SemanticAttributes name space:
             // See: https://opentelemetry.io/docs/specs/semconv/general/trace/
 
-            .setAttribute(SemanticAttributes.MESSAGING_SYSTEM, "solace")
-            .setAttribute(SemanticAttributes.MESSAGING_OPERATION, "send")
-            .setAttribute(SemanticAttributes.MESSAGING_DESTINATION_NAME, messageDestination.getName())
-            .setAttribute(SemanticAttributes.NET_PROTOCOL_NAME, "smf")
+            .setAttribute(MessagingIncubatingAttributes.MESSAGING_SYSTEM, "solace")
+            .setAttribute(MessagingIncubatingAttributes.MESSAGING_OPERATION_TYPE, MessagingOperationTypeIncubatingValues.SEND)
+            .setAttribute(MessagingIncubatingAttributes.MESSAGING_DESTINATION_NAME, messageDestination.getName())
+            .setAttribute(NetworkAttributes.NETWORK_PROTOCOL_NAME, "smf")
 
             //.setParent(Context.current()) // set current context as parent	// empty in this case, same as .setNoParent()
             .setParent(manualContext)	// Changes things to PropagatedSpan vs SdkSpan, but doesn't show in Jaeger.
@@ -168,6 +170,7 @@ public class GuaranteedPublisherWithCustomPropagation {
             .startSpan();
                 
         try (Scope scope = sendSpan.makeCurrent()) {
+            scope.equals(null);  // to not get the compile warning due to not using scope.  stupid javac
 
             // Add some OTEL Baggage (key-value store) of contextual information 
             // that can 'propagate' across multiple systems and spans by being copied from one to another.
