@@ -44,7 +44,7 @@ public class HelloWorldJCSMPStringSerdes {
     /**
      * The main method that demonstrates the Solace JCSMP API usage with String serialization/deserialization.
      *
-     * @param args Command line arguments: <host:port> <username> <message-vpn> [password]
+     * @param args Command line arguments: <host:port> <message-vpn> <client-username> [password]
      * @throws Exception If any error occurs during execution
      */
     public static void main(String[] args) throws JCSMPException, IOException {
@@ -108,20 +108,20 @@ public class HelloWorldJCSMPStringSerdes {
     /**
      * Creates and returns a JCSMP session with the provided connection details.
      *
-     * @param args Command line arguments: <host:port> <username> <message-vpn> [password]
+     * @param args Command line arguments: <host:port> <message-vpn> <client-username> [password]
      * @return A connected JCSMPSession
      * @throws JCSMPException If there's an error creating or connecting the session
      */
     private static JCSMPSession getSession(String[] args) throws JCSMPException {
         if (args.length < 3) {  // Check command line arguments
-            System.out.println("Usage: <host:port> <username> <message-vpn> [password]");
+            System.out.println("Usage: <host:port> <message-vpn> <client-username> [password]");
             System.exit(-1);
         }
 
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);
-        properties.setProperty(JCSMPProperties.USERNAME, args[1]);
-        properties.setProperty(JCSMPProperties.VPN_NAME, args[2]);
+        properties.setProperty(JCSMPProperties.VPN_NAME, args[1]);
+        properties.setProperty(JCSMPProperties.USERNAME, args[2]);
         if (args.length > 3) {
             properties.setProperty(JCSMPProperties.PASSWORD, args[3]);
         }
