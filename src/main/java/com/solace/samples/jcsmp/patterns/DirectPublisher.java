@@ -24,32 +24,39 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.solacesystems.jcsmp.BytesMessage;
+import com.solacesystems.jcsmp.DeliveryMode;
 import com.solacesystems.jcsmp.JCSMPChannelProperties;
 import com.solacesystems.jcsmp.JCSMPErrorResponseException;
 import com.solacesystems.jcsmp.JCSMPErrorResponseSubcodeEx;
 import com.solacesystems.jcsmp.JCSMPException;
 import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
+import com.solacesystems.jcsmp.JCSMPReconnectEventHandler;
 import com.solacesystems.jcsmp.JCSMPSession;
 import com.solacesystems.jcsmp.JCSMPStreamingPublishCorrelatingEventHandler;
 import com.solacesystems.jcsmp.JCSMPTransportException;
 import com.solacesystems.jcsmp.SessionEventArgs;
 import com.solacesystems.jcsmp.SessionEventHandler;
+import com.solacesystems.jcsmp.Topic;
 import com.solacesystems.jcsmp.XMLMessageProducer;
 
 /**
  * A more performant sample that shows an application that publishes.
  */
 public class DirectPublisher {
-    
+
     private static final String SAMPLE_NAME = DirectPublisher.class.getSimpleName();
     private static final String TOPIC_PREFIX = "solace/samples/";  // used as the topic "root"
     private static final String API = "JCSMP";
     private static final int APPROX_MSG_RATE_PER_SEC = 100;
     private static final int PAYLOAD_SIZE = 100;
-    
+
     private static volatile int msgSentCounter = 0;                   // num messages sent
     private static volatile boolean isShutdown = false;
+    private static volatile boolean isConnected = true;               // tracks transport state via reconnect events
+    private static JCSMPSession session;
+    private static XMLMessageProducer producer;
+    private static ScheduledExecutorService statsPrintingThread;
 
     /** Main method. */
     public static void main(String... args) throws JCSMPException, IOException, InterruptedException {
@@ -58,7 +65,30 @@ public class DirectPublisher {
             System.exit(-1);
         }
         System.out.println(API + " " + SAMPLE_NAME + " initializing...");
+        try {
+            setupSolace(args);
+            // graceful shutdown: a SIGINT (Ctrl-C) signals the main loop to stop, then the
+            // hook joins the main thread so the cleanup in teardownSolace() (stop publishing,
+            // close the session) runs to completion before the JVM halts. The JVM exits as
+            // soon as all shutdown hooks return, so the hook must wait, not just set a flag.
+            final Thread mainThread = Thread.currentThread();
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("Shutdown signal received, stopping publisher...");
+                isShutdown = true;
+                try {
+                    mainThread.join(5000);  // wait for the main thread's session close
+                } catch (InterruptedException e) {
+                    // nothing more we can do; the JVM is halting
+                }
+            }));
+            runPublishLoop();
+        } finally {
+            teardownSolace();
+            System.out.println("Main thread quitting.");
+        }
+    }
 
+    private static void setupSolace(String[] args) throws JCSMPException {
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);          // host:port
         properties.setProperty(JCSMPProperties.VPN_NAME,  args[1]);     // message-vpn
@@ -72,17 +102,33 @@ public class DirectPublisher {
         channelProps.setConnectRetriesPerHost(5);  // recommended settings
         // https://docs.solace.com/Solace-PubSub-Messaging-APIs/API-Developer-Guide/Configuring-Connection-T.htm
         properties.setProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES, channelProps);
-        final JCSMPSession session;
+        // best practice: register a session event handler at session creation and handle
+        // each event appropriately, rather than only logging it
         session = JCSMPFactory.onlyInstance().createSession(properties, null, new SessionEventHandler() {
             @Override
-            public void handleEvent(SessionEventArgs event) {  // could be reconnecting, connection lost, etc.
+            public void handleEvent(SessionEventArgs event) {
                 System.out.printf("### Received a Session event: %s%n", event);
+                switch (event.getEvent()) {
+                    case RECONNECTING:  // session went down, automatic reconnect attempt in progress
+                        isConnected = false;
+                        break;
+                    case RECONNECTED:   // automatic reconnect succeeded, session re-established
+                        isConnected = true;
+                        break;
+                    case DOWN_ERROR:    // session was up and then went down; reconnects exhausted
+                        System.out.println("Session is down and reconnect attempts are exhausted, quitting.");
+                        // the session will not recover; end the main loop so teardownSolace()
+                        // runs in main's finally
+                        isShutdown = true;
+                        break;
+                    default:
+                        break;
+                }
             }
         });
         session.connect();  // connect to the broker
 
         // Simple anonymous inner-class for handling publishing events
-        final XMLMessageProducer producer;
         producer = session.getMessageProducer(new JCSMPStreamingPublishCorrelatingEventHandler() {
             // unused in Direct Messaging application, only for Guaranteed/Persistent publishing application
             @Override public void responseReceivedEx(Object key) {
@@ -103,23 +149,48 @@ public class DirectPublisher {
             }
         });
 
-        ScheduledExecutorService statsPrintingThread = Executors.newSingleThreadScheduledExecutor();
+        // best practice for publish-only applications: transport reconnect events are only
+        // exposed through a consumer, so acquire an empty one (never started) and register a
+        // reconnect event handler to pause publishing while the connection is re-established
+        session.getMessageConsumer(new JCSMPReconnectEventHandler() {
+            @Override
+            public boolean preReconnect() throws JCSMPException {
+                System.out.println("### preReconnect(): transport down, pausing publishing");
+                isConnected = false;
+                return true;  // true means let the API proceed with its reconnect attempts
+            }
+
+            @Override
+            public void postReconnect() throws JCSMPException {
+                System.out.println("### postReconnect(): transport restored, resuming publishing");
+                isConnected = true;
+            }
+        }, null);  // no message listener: this consumer exists only to surface transport events
+    }
+
+    private static void runPublishLoop() throws IOException, InterruptedException {
+        statsPrintingThread = Executors.newSingleThreadScheduledExecutor();
         statsPrintingThread.scheduleAtFixedRate(() -> {
             System.out.printf("%s %s Published msgs/s: %,d%n",API,SAMPLE_NAME,msgSentCounter);  // simple way of calculating message rates
             msgSentCounter = 0;
         }, 1, 1, TimeUnit.SECONDS);
-  
-        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
+
+        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] or Ctrl-C to quit.");
         // preallocate a binary message, reuse it each loop, for performance
         final BytesMessage message = JCSMPFactory.onlyInstance().createMessage(BytesMessage.class);
         byte[] payload = new byte[PAYLOAD_SIZE];  // preallocate memory, for reuse, for performance
         // loop the main thread, waiting for a quit signal
         while (System.in.available() == 0 && !isShutdown) {
+            if (!isConnected) {  // transport is down: wait for the API's automatic reconnect
+                Thread.sleep(100);
+                continue;
+            }
             try {
                 // each loop, change the payload, less trivial example than static payload
                 char chosenCharacter = (char)(Math.round(msgSentCounter % 26) + 65);  // rotate through letters [A-Z]
                 Arrays.fill(payload,(byte)chosenCharacter);  // fill the payload completely with that char
                 message.setData(payload);
+                message.setDeliveryMode(DeliveryMode.DIRECT);  // at-most-once; DIRECT is also the API default
                 message.setApplicationMessageId(UUID.randomUUID().toString());  // as an example of a header
                 // dynamic topics!!  "solace/samples/jcsmp/direct/pub/A"
                 String topicString = new StringBuilder(TOPIC_PREFIX).append(API.toLowerCase())
@@ -137,13 +208,24 @@ public class DirectPublisher {
                     Thread.sleep(1000 / APPROX_MSG_RATE_PER_SEC);  // do Thread.sleep(0) for max speed
                     // Note: STANDARD Edition Solace PubSub+ broker is limited to 10k msg/s max ingress
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();  // restore the interrupt status, do not swallow it
                     isShutdown = true;
                 }
             }
         }
         isShutdown = true;
-        statsPrintingThread.shutdown();  // stop printing stats
-        session.closeSession();  // will also close producer object
-        System.out.println("Main thread quitting.");
+    }
+
+    private static void teardownSolace() {
+        // teardownSolace() runs in main's finally on EVERY exit path (normal quit, ENTER,
+        // SIGINT, DOWN_ERROR, or an exception), so Solace teardown is never skipped.
+        isShutdown = true;
+        if (statsPrintingThread != null) {
+            statsPrintingThread.shutdown();  // stop printing stats
+        }
+        // direct is at-most-once: no outstanding broker ACKs to drain, so close immediately
+        if (session != null) {
+            session.closeSession();  // will also close producer object
+        }
     }
 }
