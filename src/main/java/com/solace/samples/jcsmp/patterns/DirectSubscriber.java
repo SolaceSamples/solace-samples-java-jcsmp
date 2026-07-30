@@ -39,6 +39,7 @@ public class DirectSubscriber {
     private static volatile int msgRecvCounter = 0;              // num messages received
     private static volatile boolean hasDetectedDiscard = false;  // detected any discards yet?
     private static volatile boolean isShutdown = false;          // are we done yet?
+    private static JCSMPSession session;
 
     /** the main method. */
     public static void main(String... args) throws JCSMPException, IOException, InterruptedException {
@@ -47,7 +48,30 @@ public class DirectSubscriber {
             System.exit(-1);
         }
         System.out.println(API + " " + SAMPLE_NAME + " initializing...");
+        try {
+            setupSolace(args);
+            // graceful shutdown: a SIGINT (Ctrl-C) signals the main loop to stop, then the
+            // hook joins the main thread so the cleanup in teardownSolace() (close the
+            // session) runs to completion before the JVM halts. The JVM exits as soon as all
+            // shutdown hooks return, so the hook must wait, not just set a flag.
+            final Thread mainThread = Thread.currentThread();
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("Shutdown signal received, stopping subscriber...");
+                isShutdown = true;
+                try {
+                    mainThread.join(5000);  // wait for the main thread's session close
+                } catch (InterruptedException e) {
+                    // nothing more we can do; the JVM is halting
+                }
+            }));
+            awaitMessages();
+        } finally {
+            teardownSolace();
+            System.out.println("Main thread quitting.");
+        }
+    }
 
+    private static void setupSolace(String[] args) throws JCSMPException {
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, args[0]);          // host:port
         properties.setProperty(JCSMPProperties.VPN_NAME,  args[1]);     // message-vpn
@@ -61,11 +85,28 @@ public class DirectSubscriber {
         channelProps.setConnectRetriesPerHost(5);  // recommended settings
         // https://docs.solace.com/Solace-PubSub-Messaging-APIs/API-Developer-Guide/Configuring-Connection-T.htm
         properties.setProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES, channelProps);
-        final JCSMPSession session;
+        // best practice: register a session event handler at session creation and handle
+        // each event appropriately, rather than only logging it
         session = JCSMPFactory.onlyInstance().createSession(properties, null, new SessionEventHandler() {
             @Override
-            public void handleEvent(SessionEventArgs event) {  // could be reconnecting, connection lost, etc.
+            public void handleEvent(SessionEventArgs event) {
                 System.out.printf("### Received a Session event: %s%n", event);
+                switch (event.getEvent()) {
+                    case RECONNECTING:  // session went down, automatic reconnect attempt in progress
+                        System.out.println("Session reconnecting; direct delivery is paused until re-established");
+                        break;
+                    case RECONNECTED:   // automatic reconnect succeeded, session re-established
+                        System.out.println("Session reconnected; the subscription is restored and delivery resumes");
+                        break;
+                    case DOWN_ERROR:    // session was up and then went down; reconnects exhausted
+                        System.out.println("Session is down and reconnect attempts are exhausted, quitting.");
+                        // the session will not recover; end the main loop so teardownSolace()
+                        // runs in main's finally
+                        isShutdown = true;
+                        break;
+                    default:
+                        break;
+                }
             }
         });
         session.connect();  // connect to the broker
@@ -100,7 +141,10 @@ public class DirectSubscriber {
         session.addSubscription(JCSMPFactory.onlyInstance().createTopic(TOPIC_PREFIX + "*/direct/>"));
         // add more subscriptions here if you want
         consumer.start();
-        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] to quit.");
+        System.out.println(API + " " + SAMPLE_NAME + " connected, and running. Press [ENTER] or Ctrl-C to quit.");
+    }
+
+    private static void awaitMessages() throws IOException, InterruptedException {
         while (System.in.available() == 0 && !isShutdown) {
             Thread.sleep(1000);  // wait 1 second
             System.out.printf("%s %s Received msgs/s: %,d%n",API,SAMPLE_NAME,msgRecvCounter);  // simple way of calculating message rates
@@ -112,7 +156,15 @@ public class DirectSubscriber {
             }
         }
         isShutdown = true;
-        session.closeSession();  // will also close consumer object
-        System.out.println("Main thread quitting.");
+    }
+
+    private static void teardownSolace() {
+        // teardownSolace() runs in main's finally on EVERY exit path (normal quit, ENTER,
+        // SIGINT, DOWN_ERROR, or an exception), so Solace teardown is never skipped.
+        isShutdown = true;
+        // direct is at-most-once: no acknowledgements to drain before exit, so close directly
+        if (session != null) {
+            session.closeSession();  // will also close consumer object
+        }
     }
 }
