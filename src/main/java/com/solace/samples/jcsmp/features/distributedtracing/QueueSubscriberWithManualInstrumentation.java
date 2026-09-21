@@ -74,7 +74,7 @@ public class QueueSubscriberWithManualInstrumentation {
         JCSMPChannelProperties channelProps = new JCSMPChannelProperties();
         channelProps.setReconnectRetries(20); // recommended settings
         channelProps.setConnectRetriesPerHost(5); // recommended settings
-        // https://docs.solace.com/API/API-Developer-Guide/Configuring-Connection-T.htm
+        // https://docs.solace.com/Solace-PubSub-Messaging-APIs/API-Developer-Guide/Configuring-Connection-T.htm
         properties.setProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES, channelProps);
         final JCSMPSession session;
         session = JCSMPFactory.onlyInstance().createSession(properties, null, new SessionEventHandler() {
