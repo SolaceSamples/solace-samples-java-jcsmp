@@ -48,10 +48,10 @@ import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.semconv.SemanticAttributes;
 
 /**
- * A sample that shows how to generate a Publisher/send span with Solace OpenTelemetry Integration
- * for JCSMP.
+ * A sample that shows how to generate a Publisher/send span with OpenTelemetry for Solace JCSMP
+ * API.
  * <p>
- * Setup a Solace PubSub+ Broker and OpenTelemetry Collector as per tutorial  >
+ * Setup a Solace Event Broker and OpenTelemetry Collector as per tutorial  >
  * https://codelabs.solace.dev/codelabs/dt-otel/index.html
  * <p>
  * This is the Publisher in the Publish-Subscribe messaging pattern.

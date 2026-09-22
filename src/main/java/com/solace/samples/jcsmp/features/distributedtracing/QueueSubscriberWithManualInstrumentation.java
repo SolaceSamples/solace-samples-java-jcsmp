@@ -111,7 +111,7 @@ public class QueueSubscriberWithManualInstrumentation {
         } catch (JCSMPErrorResponseException e) { // something else went wrong: queue not exist, queue shutdown, etc.
             logger.error(e);
             System.err.printf("%n*** Could not establish a connection to queue '%s': %s%n", queueName, e.getMessage());
-            System.err.println("Create queue using PubSub+ Manager WebGUI, and add subscription solace/tracing ");
+            System.err.println("Create queue using Broker Manager WebGUI, and add subscription solace/tracing ");
             System.err.println("  or see the SEMP CURL scripts inside the 'semp-rest-api' directory.");
             // could also try to retry, loop and retry until successfully able to connect to the queue
             System.err.println("NOTE: see QueueProvision sample for how to construct queue with consumer app.");
